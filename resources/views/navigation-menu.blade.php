@@ -29,9 +29,6 @@
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" title="CHAT">
                             <i class="fa-regular fa-comment-dots"></i>
                         </x-nav-link>
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" title="NOTIFICACIONES">
-                            <i class="fa-solid fa-bell"></i>
-                        </x-nav-link>
                     @endauth
                     <x-nav-link :href="route('contactanos.pintar')" :active="request()->routeIs('contactanos.pintar')" title="CONTACTANOS">
                         <i class="fa-regular fa-envelope"></i>
@@ -142,9 +139,6 @@
                 @endif
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     <i class="fa-regular fa-comment-dots"></i> CHAT
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    <i class="fa-solid fa-bell"></i> NOTIFICACIONES
                 </x-responsive-nav-link>
             @endauth
             <x-responsive-nav-link :href="route('contactanos.pintar')" :active="request()->routeIs('contactanos.pintar')">

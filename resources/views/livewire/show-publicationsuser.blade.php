@@ -1,4 +1,8 @@
-<div class="my-4">
+<div @class([
+    'min-[480px]:px-12',
+    'bg-gray-800' => auth()->check() && auth()->user()->temaoscuro,
+    'bg-white' => auth()->guest() || !auth()->user()->temaoscuro,
+])>
     <div class="flex min-[480px]:mx-12 mb-3">
         <div class="flex-1">
             <x-input class="w-full" type='search' placeholder="Buscar publicaciones..." wire:model="buscar"></x-input>
@@ -8,7 +12,10 @@
         </div>
     </div>
     @if ($publicaciones->count())
-        <div class="font-bold text-xl text-center">
+        <div @class([
+            'font-bold text-xl text-center mt-4',
+            'text-white' => auth()->check() && auth()->user()->temaoscuro,
+        ])>
             <span class="mx-3 cursor-pointer" wire:click="ordenar('titulo')" title="ORDENAR POR TITULO"><i
                     class="fa-solid fa-arrow-down-a-z"></i></span>
             <span class="mx-3 cursor-pointer" wire:click="ordenar('comunidades')" title="ORDENAR POR COMUNIDAD"><i

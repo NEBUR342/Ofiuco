@@ -30,7 +30,11 @@
 <body class="font-sans antialiased">
     <x-banner />
 
-    <div class="min-h-screen bg-gray-100">
+    <div @class([
+        'min-h-screen',
+        'bg-gray-800' => auth()->check() && auth()->user()->temaoscuro,
+        'bg-white' => auth()->guest() || !auth()->user()->temaoscuro,
+    ])>
         @livewire('navigation-menu')
 
         <!-- Page Heading -->

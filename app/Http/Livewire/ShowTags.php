@@ -22,12 +22,33 @@ class ShowTags extends Component
 
     public function render()
     {
-        $tags = Tag::where(function ($q) {
-            $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
-                ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
-        })
-            ->orderBy($this->campo, $this->orden)
-            ->paginate(15);
+        if (!auth()->user()->is_admin) abort(404);
+        switch($this->campo) {
+            case "creacion":
+                $tags = Tag::where(function ($q) {
+                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
+                        ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
+                })
+                    ->orderBy("id", $this->orden)
+                    ->paginate(15);
+                break;
+            case "nombre":
+                $tags = Tag::where(function ($q) {
+                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
+                        ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
+                })
+                    ->orderBy("nombre", $this->orden)
+                    ->paginate(15);
+                break;
+            default:
+            $tags = Tag::where(function ($q) {
+                $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
+                    ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
+            })
+                ->orderBy("id", $this->orden)
+                ->paginate(15);
+                break;
+        }
         return view('livewire.show-tags', compact('tags'));
     }
 

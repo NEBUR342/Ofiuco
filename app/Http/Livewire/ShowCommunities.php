@@ -20,12 +20,32 @@ class ShowCommunities extends Component
 
     public function render()
     {
-        $comunidades = Community::where(function ($q) {
-            $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
-                ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
-        })
-            ->orderBy($this->campo, $this->orden)
-            ->paginate(15);
+        switch($this->campo) {
+            case "creacion":
+                $comunidades = Community::where(function ($q) {
+                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
+                        ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
+                })
+                    ->orderBy("id", $this->orden)
+                    ->paginate(15);
+                break;
+            case "nombre":
+                $comunidades = Community::where(function ($q) {
+                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
+                        ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
+                })
+                    ->orderBy("nombre", $this->orden)
+                    ->paginate(15);
+                break;
+            default:
+            $comunidades = Community::where(function ($q) {
+                $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
+                    ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
+            })
+                ->orderBy("id", $this->orden)
+                ->paginate(15);
+                break;
+        }
         return view('livewire.show-communities', compact('comunidades'));
     }
 

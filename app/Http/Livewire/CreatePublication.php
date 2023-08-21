@@ -82,7 +82,7 @@ class CreatePublication extends Component
         // Para borrar la carpeta livewire-tmp que me genera livewire, pero no la borra, he usado la siguiente solucion
         File::deleteDirectory(storage_path('app/public/livewire-tmp'));
         $this->reset('openCrear', 'titulo', 'contenido', 'estado', 'arraytags', 'comunidad');
-        return redirect()->route('publicationsuser.show');
+        return redirect()->route('publicationsuser.show',['id'=>$publicacion->user->id]);
     }
 
     public function cerrar()

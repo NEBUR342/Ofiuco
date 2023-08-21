@@ -7,7 +7,7 @@
     </div>
     <x-dialog-modal wire:model="openCrear">
         <x-slot name="title">
-            CREAR ETIQUETA
+            <p class="text-white">CREAR ETIQUETA</p>
         </x-slot>
         <x-slot name="content">
             @wire('defer')

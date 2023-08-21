@@ -64,7 +64,7 @@ class ShowCommunity extends Component
     public function sacarParticipante(User $participante)
     {
         self::quitarParticipante($participante);
-        $this->emit('info', "Participante " . $participante->name . " eliminado");
+        $this->emit('info', "Participante " . $participante->name . " ha salido");
     }
 
     private function quitarParticipante(User $participante)
@@ -86,7 +86,7 @@ class ShowCommunity extends Component
         $user = auth()->user();
         // Da error en codigo, pero lo hace bien.
         $user->communities()->attach($this->comunidad);
-        $this->emit('info', "Participante " . $user->name . " añadido");
+        $this->emit('info', "Participante " . $user->name . " ha entrado");
     }
 
     public function editar(Community $comunidad)

@@ -8,11 +8,14 @@
         </div>
     </div>
     @if ($tags->count())
-        <div class="font-bold text-xl text-center">
+        <div @class([
+            'font-bold text-xl text-center my-4',
+            'text-white' => auth()->check() && auth()->user()->temaoscuro,
+        ])>
             <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR TITULO">
                 <i class="fa-solid fa-arrow-down-a-z"></i>
             </span>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('id')" title="ORDENAR POR ANTIGUEDAD">
+            <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD">
                 <i class="fa-regular fa-clock"></i>
             </span>
         </div>
@@ -48,7 +51,7 @@
     @if ($miTag)
         <x-dialog-modal wire:model="openEditar">
             <x-slot name="title">
-                Editar etiqueta
+                <p class="text-white">EDITAR ETIQUETA</p>
             </x-slot>
             <x-slot name="content">
                 @wire($miTag, 'defer')

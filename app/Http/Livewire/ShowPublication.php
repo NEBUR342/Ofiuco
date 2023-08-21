@@ -170,6 +170,18 @@ class ShowPublication extends Component
         $this->emit('info', 'Publicacion editada con éxito');
     }
 
+    public function cambiarEstado(){
+        if($this->publicacion->estado=="BORRADOR"){
+            $this->publicacion->update([
+                "estado"=>"PUBLICADO"
+            ]);
+        }else{
+            $this->publicacion->update([
+                "estado"=>"BORRADOR"
+            ]);
+        }
+    }
+
     // Si no debo mostrar la publicacion, voy a forzar el error 404 (pagina no encontrada).
     // No lo hago con politicas ya que no me aclaraba con como seria al tener que comprobar todos estos campos.
     // Se me hacia muy dificil comprobarlo con las comunidades, por lo que he decidido hacerlo a mano.

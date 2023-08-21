@@ -1,6 +1,5 @@
 <div>
     @if ($publicacion)
-
         <div class="mt-3 flex flex-wrap justify-center">
             <div class="flex min-[700px]:w-1/2 max-[700px]:mx-2 max-[700px]:mb-3">
                 <img src="{{ Storage::url($publicacion->imagen) }}" alt="Imagen de {{ $publicacion->user->name }}"
@@ -8,7 +7,11 @@
             </div>
             {{-- Contenido de la publicacion --}}
             <div class="flex flex-col min-[700px]:px-6 min-[700px]:w-1/2 max-[700px]:mx-2 mx-auto">
-                <div class="bg-gray-200 rounded-xl">
+                <div @class([
+                    'rounded-xl',
+                    'bg-gray-700 text-white' => auth()->check() && auth()->user()->temaoscuro,
+                    'bg-gray-200' => auth()->guest() || !auth()->user()->temaoscuro,
+                ])>
                     <div class="text-xl my-5 mx-5 text-center">{{ $publicacion->titulo }}</div>
                     <div class="mb-5 mx-5">{{ $publicacion->contenido }}</div>
                     <div class="flex flex-wrap justify-center">
@@ -20,15 +23,22 @@
                     <div class="flex flex-wrap justify-center text-center mt-5">
                         @auth
                             @if ($publicacion->likes->where('user_id', auth()->id())->count())
-                                <i class="fa-solid fa-heart cursor-pointer bg-red-200 px-2 py-1 rounded-lg mx-auto"
+                                <i @class([
+                                    'fa-solid fa-heart cursor-pointer px-2 py-1 rounded-lg mx-auto',
+                                    'bg-red-500' =>auth()->user()->temaoscuro,
+                                    'bg-red-200' =>!auth()->user()->temaoscuro,
+                                ])
                                     title="Quitar like" wire:click="quitarlike({{ $publicacion }})">
                                     <span class="mx-1">
                                         {{ $publicacion->likes->count() }}
                                     </span>
                                 </i>
                             @else
-                                <i class="fa-regular fa-heart cursor-pointer bg-red-200 px-2 py-1 rounded-lg mx-auto"
-                                    title="Dar like" wire:click="darlike({{ $publicacion }})">
+                                <i @class([
+                                    'fa-regular fa-heart cursor-pointer px-2 py-1 rounded-lg mx-auto',
+                                    'bg-red-500' =>auth()->user()->temaoscuro,
+                                    'bg-red-200' =>!auth()->user()->temaoscuro,
+                                ]) title="Dar like" wire:click="darlike({{ $publicacion }})">
                                     <span class="mx-1">
                                         {{ $publicacion->likes->count() }}
                                     </span>
@@ -43,23 +53,19 @@
                             </i>
                         @endauth
                         @auth
-                            @if ($publicacion->comunidad == 'SI')
-                                @if (auth()->user()->id == $publicacion->user_id ||
-                                        auth()->user()->is_admin ||
-                                        auth()->user()->id == $this->publicacion->community->user_id)
-                                    @if ($publicacion->estado == 'PUBLICADO')
-                                        <div class="mx-auto px-2 rounded-xl bg-green-400">PUBLICADO</div>
-                                    @else
-                                        <div class="mx-auto px-2 rounded-xl bg-red-500">BORRADOR</div>
-                                    @endif
-                                @endif
-                            @else
-                                @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin)
-                                    @if ($publicacion->estado == 'PUBLICADO')
-                                        <div class="mx-auto px-2 rounded-xl bg-green-400">PUBLICADO</div>
-                                    @else
-                                        <div class="mx-auto px-2 rounded-xl bg-red-500">BORRADOR</div>
-                                    @endif
+                            @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin)
+                                @if ($publicacion->estado == 'PUBLICADO')
+                                    <div wire:click="cambiarEstado" @class([
+                                        'mx-auto px-2 rounded-xl cursor-pointer',
+                                        'bg-green-600' =>auth()->user()->temaoscuro,
+                                        'bg-green-400' =>!auth()->user()->temaoscuro,
+                                    ])>PUBLICADO</div>
+                                @else
+                                    <div wire:click="cambiarEstado" @class([
+                                        'mx-auto px-2 rounded-xl cursor-pointer',
+                                        'bg-red-600' =>auth()->user()->temaoscuro,
+                                        'bg-red-400' =>!auth()->user()->temaoscuro,
+                                    ])>BORRADOR</div>
                                 @endif
                             @endif
                         @endauth
@@ -88,22 +94,28 @@
         </div>
         {{-- Comentarios --}}
         <div class="mt-4 mx-2">
-            <div class="flex flex-wrap">
-                <div class="relative mb-3 w-5/6 min-[700px]:w-1/2">
-                    @wire('defer')
-                        <x-form-input name="contenido" label="Añade un comentario" />
-                    @endwire
-                </div>
-                <div class="my-12 w-1/6 min-[700px]:w-1/2 mx-auto" title="ENVIAR COMENTARIO">
-                    <div wire:click="subirComentario"
-                        class="mx-1 text-xl w-6 text-center cursor-pointer bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white rounded">
-                        <i class="fa-solid fa-right-long"></i>
+            @auth
+                <div class="flex flex-wrap">
+                    <div class="relative mb-3 w-5/6 min-[700px]:w-1/2">
+                        @wire('defer')
+                            <x-form-input name="contenido" label="Añade un comentario" />
+                        @endwire
+                    </div>
+                    <div class="my-12 w-1/6 min-[700px]:w-1/2 mx-auto">
+                        <div wire:click="subirComentario" title="ENVIAR COMENTARIO"
+                            class="mx-1 text-xl w-6 text-center cursor-pointer bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white rounded">
+                            <i class="fa-solid fa-right-long"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endauth
             @foreach ($publicacion->comments->reverse() as $comment)
-                <div class="relative overflow-x-auto shadow-md rounded-lg my-3">
-                    <div class="mx-3 mt-1 text-xl text-gray-700">
+                <div @class([
+                    'relative overflow-x-auto shadow-md rounded-lg my-3',
+                    'bg-gray-700 hover:bg-gray-600 text-white' => auth()->check() && auth()->user()->temaoscuro,
+                    'hover:bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
+                ])>
+                    <div class="mx-3 mt-1 text-xl">
                         {{ $comment->user->name }}
                     </div>
                     <div class="mx-3 mt-1 text-l">
@@ -112,7 +124,7 @@
                     @auth
                         <div class="flex flex-row-reverse mx-6 my-4 ">
                             @if (auth()->user()->id == $publicacion->user->id || auth()->user()->id == $comment->user_id || auth()->user()->is_admin)
-                                <i class="fa-regular fa-trash-can cursor-pointer"
+                                <i class="fa-regular fa-trash-can cursor-pointer text-red-500"
                                     wire:click="quitarComentario({{ $comment }})"></i>
                             @endif
                         </div>
@@ -124,14 +136,14 @@
         @if ($miPublicacion)
             <x-dialog-modal wire:model="openEditar">
                 <x-slot name="title">
-                    EDITAR UNA PUBLICACION
+                    <p class="text-white">EDITAR UNA PUBLICACION</p>
                 </x-slot>
                 <x-slot name="content">
                     @wire($miPublicacion, 'defer')
                         <x-form-input name="miPublicacion.titulo" label="Título de la publicacion"
                             placeholder="Título ..." />
                         <x-form-textarea name="miPublicacion.contenido" placeholder="Contenido..."
-                            label="Contenido de la publicacion" rows="8"/>
+                            label="Contenido de la publicacion" rows="8" />
                         <x-form-select name="selectedComunidades" :options="$comunidades" label="Comunidad de la publicacion"
                             wire:model="selectedComunidades" />
                         <x-form-group name="selectedTags[]" label="Etiquetas" inline>

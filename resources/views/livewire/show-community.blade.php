@@ -1,4 +1,4 @@
-<div>
+<div class="cursor-default">
     <div class="mt-3 flex flex-wrap justify-center">
         <div class="flex min-[700px]:w-1/2 max-[700px]:mb-3">
             <img src="{{ Storage::url($comunidad->imagen) }}" alt="Imagen de {{ $comunidad->nombre }}"
@@ -90,7 +90,7 @@
                         <img src="{{ Storage::url($comunidad->imagen) }}" class="rounded-xl w-full h-full">
                     @endisset
                     <label for="img"
-                        class="absolute bottom-2 end-2
+                        class="absolute bottom-2 end-2 cursor-pointer
             bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                         <i class="fa-solid fa-cloud-arrow-up"></i> Subir Imagen</label>
                     <input type="file" name="imagen" accept="image/*" class="hidden" id="img"

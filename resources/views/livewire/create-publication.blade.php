@@ -34,7 +34,7 @@
                     <img src="{{ Storage::url('noimage.jpg') }}" class="rounded-xl w-full h-full">
                 @endisset
                 <label for="img"
-                    class="absolute bottom-2 end-2
+                    class="absolute bottom-2 end-2 cursor-pointer
                 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                     <i class="fa-solid fa-cloud-arrow-up"></i> Subir Imagen</label>
                 <input type="file" name="imagen" accept="image/*" class="hidden" id="img"

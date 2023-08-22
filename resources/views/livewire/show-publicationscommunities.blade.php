@@ -1,5 +1,5 @@
 <div @class([
-    'min-[480px]:px-12',
+    'min-[480px]:px-12 cursor-default',
     'bg-gray-800' => auth()->check() && auth()->user()->temaoscuro,
     'bg-white' => auth()->guest() || !auth()->user()->temaoscuro,
 ])>

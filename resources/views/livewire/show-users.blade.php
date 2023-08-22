@@ -1,4 +1,4 @@
-<div class="min-[480px]:px-12 my-4">
+<div class="min-[480px]:px-12 my-4 cursor-default">
     <div class="flex mb-3">
         <div class="flex-1">
             <x-input class="w-full" type='search' placeholder="Buscar usuario..." wire:model="buscar"></x-input>

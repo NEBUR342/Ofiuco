@@ -20,8 +20,13 @@ class ShowCommunities extends Component
 
     public function render()
     {
-        switch($this->campo) {
+        // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
+        // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
+        switch ($this->campo) {
             case "creacion":
+                // Busco lo introducido en el "buscador" en la vista.
+                // Si no hay nada, me saca todas las comunidades.
+                // Las muestro ordenadas por id.
                 $comunidades = Community::where(function ($q) {
                     $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
                         ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
@@ -30,6 +35,9 @@ class ShowCommunities extends Component
                     ->paginate(15);
                 break;
             case "nombre":
+                // Busco lo introducido en el "buscador" en la vista.
+                // Si no hay nada, me saca todas las comunidades.
+                // Las muestro ordenadas por nombre.
                 $comunidades = Community::where(function ($q) {
                     $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
                         ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
@@ -38,12 +46,15 @@ class ShowCommunities extends Component
                     ->paginate(15);
                 break;
             default:
-            $comunidades = Community::where(function ($q) {
-                $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
-                    ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
-            })
-                ->orderBy("id", $this->orden)
-                ->paginate(15);
+                // Busco lo introducido en el "buscador" en la vista.
+                // Si no hay nada, me saca todas las comunidades.
+                // Las muestro ordenadas por id, ya que no se ha encontrado otro.
+                $comunidades = Community::where(function ($q) {
+                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
+                        ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
+                })
+                    ->orderBy("id", $this->orden)
+                    ->paginate(15);
                 break;
         }
         return view('livewire.show-communities', compact('comunidades'));

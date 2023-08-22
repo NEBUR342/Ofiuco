@@ -20,7 +20,7 @@ class ShowUsers extends Component
     public function render()
     {
         if (!auth()->user()->is_admin) abort(404);
-        switch($this->campo) {
+        switch ($this->campo) {
             case "creacion":
                 $users = User::where(function ($q) {
                     $q->where('name', 'like', '%' . trim($this->buscar) . '%')
@@ -38,12 +38,12 @@ class ShowUsers extends Component
                     ->paginate(15);
                 break;
             default:
-            $users = User::where(function ($q) {
-                $q->where('name', 'like', '%' . trim($this->buscar) . '%')
-                    ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
-            })
-                ->orderBy("id", $this->orden)
-                ->paginate(15);
+                $users = User::where(function ($q) {
+                    $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                        ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                })
+                    ->orderBy("id", $this->orden)
+                    ->paginate(15);
                 break;
         }
         return view('livewire.show-users', compact('users'));

@@ -23,7 +23,7 @@ class ShowTags extends Component
     public function render()
     {
         if (!auth()->user()->is_admin) abort(404);
-        switch($this->campo) {
+        switch ($this->campo) {
             case "creacion":
                 $tags = Tag::where(function ($q) {
                     $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
@@ -41,12 +41,12 @@ class ShowTags extends Component
                     ->paginate(15);
                 break;
             default:
-            $tags = Tag::where(function ($q) {
-                $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
-                    ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
-            })
-                ->orderBy("id", $this->orden)
-                ->paginate(15);
+                $tags = Tag::where(function ($q) {
+                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
+                        ->orWhere('descripcion', 'like', '%' . trim($this->buscar) . '%');
+                })
+                    ->orderBy("id", $this->orden)
+                    ->paginate(15);
                 break;
         }
         return view('livewire.show-tags', compact('tags'));

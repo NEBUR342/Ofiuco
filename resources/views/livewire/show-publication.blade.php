@@ -25,10 +25,10 @@
                             @if ($publicacion->likes->where('user_id', auth()->id())->count())
                                 <i @class([
                                     'fa-solid fa-heart cursor-pointer px-2 py-1 rounded-lg mx-auto',
-                                    'bg-red-500' =>auth()->user()->temaoscuro,
-                                    'bg-red-200' =>!auth()->user()->temaoscuro,
-                                ])
-                                    title="Quitar like" wire:click="quitarlike({{ $publicacion }})">
+                                    'bg-red-500' => auth()->user()->temaoscuro,
+                                    'bg-red-200' => !auth()->user()->temaoscuro,
+                                ]) title="Quitar like"
+                                    wire:click="quitarlike({{ $publicacion }})">
                                     <span class="mx-1">
                                         {{ $publicacion->likes->count() }}
                                     </span>
@@ -36,8 +36,8 @@
                             @else
                                 <i @class([
                                     'fa-regular fa-heart cursor-pointer px-2 py-1 rounded-lg mx-auto',
-                                    'bg-red-500' =>auth()->user()->temaoscuro,
-                                    'bg-red-200' =>!auth()->user()->temaoscuro,
+                                    'bg-red-500' => auth()->user()->temaoscuro,
+                                    'bg-red-200' => !auth()->user()->temaoscuro,
                                 ]) title="Dar like" wire:click="darlike({{ $publicacion }})">
                                     <span class="mx-1">
                                         {{ $publicacion->likes->count() }}
@@ -57,14 +57,14 @@
                                 @if ($publicacion->estado == 'PUBLICADO')
                                     <div wire:click="cambiarEstado" @class([
                                         'mx-auto px-2 rounded-xl cursor-pointer',
-                                        'bg-green-600' =>auth()->user()->temaoscuro,
-                                        'bg-green-400' =>!auth()->user()->temaoscuro,
+                                        'bg-green-600' => auth()->user()->temaoscuro,
+                                        'bg-green-400' => !auth()->user()->temaoscuro,
                                     ])>PUBLICADO</div>
                                 @else
                                     <div wire:click="cambiarEstado" @class([
                                         'mx-auto px-2 rounded-xl cursor-pointer',
-                                        'bg-red-600' =>auth()->user()->temaoscuro,
-                                        'bg-red-400' =>!auth()->user()->temaoscuro,
+                                        'bg-red-600' => auth()->user()->temaoscuro,
+                                        'bg-red-400' => !auth()->user()->temaoscuro,
                                     ])>BORRADOR</div>
                                 @endif
                             @endif
@@ -112,13 +112,19 @@
             @foreach ($publicacion->comments->reverse() as $comment)
                 <div @class([
                     'relative overflow-x-auto shadow-md rounded-lg my-3',
-                    'bg-gray-700 hover:bg-gray-600 text-white' => auth()->check() && auth()->user()->temaoscuro,
+                    'bg-gray-700 hover:bg-gray-600 text-white' =>
+                        auth()->check() && auth()->user()->temaoscuro,
                     'hover:bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
                 ])>
-                    <div class="mx-3 mt-1 text-xl">
-                        {{ $comment->user->name }}
+                    <div class="flex flex-wrap mt-2">
+                        <span class="flex flex-col mr-3 cursor-pointer" wire:click="buscarUsuario({{ $comment->user->id }})">
+                            <img class="h-8 w-8 rounded-full ml-4" src="{{ $comment->user->profile_photo_url }}" alt="{{ $comment->user->name }}" />
+                        </span>
+                        <div class="flex flex-col text-xl">
+                            {{ $comment->user->name }}
+                        </div>
                     </div>
-                    <div class="mx-3 mt-1 text-l">
+                    <div class="flex flex-col text-l ml-2 mt-2">
                         {{ $comment->contenido }}
                     </div>
                     @auth

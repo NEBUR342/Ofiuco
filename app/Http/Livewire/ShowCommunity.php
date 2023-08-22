@@ -39,14 +39,11 @@ class ShowCommunity extends Component
         $creador = User::where('id', $comunidad->user_id)->first();
         $community_id = $comunidad->id;
         $user_id = auth()->user()->id;
-        $participantes = User::whereHas('communities', function ($query) use ($community_id) {
-            $query->where('community_id', $community_id);
-        })->orderBy('id', 'asc')->get();
         // Compruebo que el usuario autenticado pertenece o no a la comunidad
         $aux = User::whereHas('communities', function ($query) use ($community_id) {
             $query->where('communities.id', $community_id);
         })->where('id', $user_id)->exists();
-        return view('livewire.show-community', compact('comunidad', 'creador', 'participantes', 'aux'));
+        return view('livewire.show-community', compact('comunidad', 'creador', 'aux'));
     }
 
     public function borrarComunidad()
@@ -84,7 +81,7 @@ class ShowCommunity extends Component
     public function meterParticipante()
     {
         $user = auth()->user();
-        // Da error en codigo, pero lo hace bien.
+        // Da error en codigo, pero lo hace bien, no saltan excepciones.
         $user->communities()->attach($this->comunidad);
         $this->emit('info', "Participante " . $user->name . " ha entrado");
     }
@@ -122,5 +119,10 @@ class ShowCommunity extends Component
         if(auth()->user()->is_admin) return;
         if($comunidad->user_id == auth()->user()->id) return;
         abort(404);
+    }
+
+    public function buscarUsuario($id)
+    {
+        return redirect()->route('publicationsuser.show', compact('id'));
     }
 }

@@ -14,7 +14,7 @@
                 <div class="text-xl my-5 text-center mx-5">{{ $comunidad->nombre }}</div>
                 <div class="mb-5 mx-5">{{ $comunidad->descripcion }}</div>
                 <div class="mt-5 mx-5">Creador: {{ $creador->name }}</div>
-                <div class="my-5 mx-5">Esta comunidad cuenta con: {{ $participantes->count() }} participantes</div>
+                <div class="my-5 mx-5">Esta comunidad cuenta con: {{ $comunidad->users->count() }} participantes</div>
             </div>
             @auth
                 <div class="flex flex-wrap text-xl">
@@ -54,10 +54,16 @@
                         auth()->check() && auth()->user()->temaoscuro,
                     'hover:bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
                 ])>
-                    <div class="mx-3 mt-1 text-xl">
-                        {{ $participante->name }}
+                    <div class="flex flex-wrap mx-3 mt-2">
+                        <span class="flex flex-col mr-3 cursor-pointer" wire:click="buscarUsuario({{ $participante->id }})">
+                            <img class="h-8 w-8 rounded-full" src="{{ $participante->profile_photo_url }}"
+                                alt="{{ $participante->name }}" />
+                        </span>
+                        <div class="text-xl">
+                            {{ $participante->name }}
+                        </div>
                     </div>
-                    <div class="mx-3 mt-1 text-l">
+                    <div class="mx-3 mt-2 text-l">
                         {{ $participante->created_at->format('d/m/Y H:i') }}
                     </div>
                     <div class="flex flex-row-reverse mx-6 my-4 ">
@@ -76,7 +82,7 @@
             </x-slot>
             <x-slot name="content">
                 @wire($miComunidad, 'defer')
-                    <x-form-input name="miComunidad.nombre" label="Nombre de la comunidad"  placeholder="Nombre ..." />
+                    <x-form-input name="miComunidad.nombre" label="Nombre de la comunidad" placeholder="Nombre ..." />
                     <x-form-textarea name="miComunidad.descripcion" placeholder="Descripcion..."
                         label="Descripcion de la comunidad" rows="8" />
                 @endwire

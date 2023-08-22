@@ -26,16 +26,19 @@
                 'hover:bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
             ]) wire:click="buscarUsuario({{ $usuario->id }})"
                 title="Publicaciones de {{ $usuario->name }}">
-                <div class="my-3">
+                <div class="flex flex-wrap my-3">
+                    <span class="flex flex-col">
+                        <img class="h-8 w-8 rounded-full ml-4" src="{{ $usuario->profile_photo_url }}" alt="{{ $usuario->name }}" />
+                    </span>
                     <span @class([
-                        'mx-3 px-2 text-xl rounded-xl',
+                        'flex flex-col mx-3 px-2 text-xl rounded-xl',
                         'text-gray-700' => auth()->guest() || !auth()->user()->temaoscuro,
                     ])>
                         {{ $usuario->name }}
                     </span>
                 </div>
                 <div>
-                    <span class="mx-3 mt-1 px-2 text-l rounded-xl">
+                    <span class="mx-3 px-2 text-l rounded-xl">
                         {{ $usuario->email }}
                     </span>
                 </div>

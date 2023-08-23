@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Community;
 use App\Models\Publication;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -26,7 +27,10 @@ class ShowPublicationscommunities extends Component
             //si quieres buscar alguna publicacion, lo mostrare ordenado por id.
             $publicaciones = Publication::query()
                 ->where('estado', 'PUBLICADO')
-                ->whereIn('community_id', $comunidades->pluck('id'))
+                ->where(function ($query) use ($comunidades) {
+                    $query->whereIn('community_id', $comunidades->pluck('id'))
+                        ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
+                })
                 ->whereHas('user', function ($q) {
                     $q->where('name', 'like', '%' . trim($this->buscar) . '%');
                 })
@@ -43,8 +47,8 @@ class ShowPublicationscommunities extends Component
                     // Lo ordeno por el nombre de los usuarios.
                     $publicaciones = Publication::where('estado', 'PUBLICADO')
                         ->whereIn('community_id', $comunidades->pluck('id'))
-                        ->join('users', 'publications.user_id', 'users.id') // Unir la tabla users a la consulta
-                        ->orderBy('users.name', $this->orden)
+                        ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'))
+                        ->orderBy('id', $this->orden)
                         ->paginate(15);
                     break;
                 case "creacion":
@@ -54,6 +58,7 @@ class ShowPublicationscommunities extends Component
                     // Lo ordeno por el id de las publicaciones.
                     $publicaciones = Publication::where('estado', 'PUBLICADO')
                         ->whereIn('community_id', $comunidades->pluck('id'))
+                        ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'))
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
                     break;
@@ -64,6 +69,7 @@ class ShowPublicationscommunities extends Component
                     // Lo ordeno por el id de las comunidades.
                     $publicaciones = Publication::where('estado', 'PUBLICADO')
                         ->whereIn('community_id', $comunidades->pluck('id'))
+                        ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'))
                         ->where('estado', 'PUBLICADO')
                         ->orderBy('community_id', $this->orden)
                         ->paginate(15);
@@ -76,8 +82,11 @@ class ShowPublicationscommunities extends Component
                     // Agrego la agrupación para evitar resultados duplicados.
                     // Ordeno por la cantidad de likes.
                     $publicaciones = Publication::where('estado', 'PUBLICADO')
-                        ->whereIn('community_id', $comunidades->pluck('id'))
-                        ->join('likes', 'publications.id', 'likes.publication_id') // Unir la tabla likes a la consulta.
+                        ->where(function ($query) use ($comunidades) {
+                            $query->whereIn('community_id', $comunidades->pluck('id'))
+                                ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
+                        })
+                        ->leftJoin('likes', 'publications.id', 'likes.publication_id')
                         ->selectRaw('publications.*, COUNT(likes.id) as likes_count')
                         ->groupBy('publications.id')
                         ->orderBy('likes_count', $this->orden)
@@ -89,7 +98,10 @@ class ShowPublicationscommunities extends Component
                     // y de los que no pertenecen a comunidades.
                     // Lo ordeno por id, ya que no se ha encontrado otra.
                     $publicaciones = Publication::where('estado', 'PUBLICADO')
-                        ->whereIn('community_id', $comunidades->pluck('id'))
+                        ->where(function ($query) use ($comunidades) {
+                            $query->whereIn('community_id', $comunidades->pluck('id'))
+                                ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
+                        })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
             }

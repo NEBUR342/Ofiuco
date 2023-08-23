@@ -42,7 +42,8 @@ class CreateCommunity extends Component
             "imagen" => $rutaImagen,
             "user_id" => auth()->user()->id,
         ]);
-        // Para borrar la carpeta livewire-tmp que me genera livewire, pero no la borra, he usado la siguiente solucion
+        // Al trabajar con imagenes me genera la carpeta livewire-tmp pero no me la borra.
+        // Para borrar la carpeta livewire-tmp que me genera livewire, he usado la siguiente solucion:
         File::deleteDirectory(storage_path('app/public/livewire-tmp'));
         $this->reset('openCrear', 'nombre', 'descripcion');
         return redirect()->route('communities.show');

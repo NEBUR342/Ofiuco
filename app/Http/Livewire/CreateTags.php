@@ -12,6 +12,7 @@ class CreateTags extends Component
     public bool $openCrear = false;
     public string $nombre ="",$descripcion="", $color = "";
 
+    // Valido los campos de las etiquetas.
     protected function rules(): array
     {
         return [
@@ -26,25 +27,30 @@ class CreateTags extends Component
         return view('livewire.create-tags');
     }
 
-    public function openCrear(){
-        $this->openCrear = true;
-    }
-
     public function guardar(){
+        // Hago que compruebe que los campos esten correctos.
         $this->validate();
-        //Guardamos la categoría
+
+        //Guardamos la etiqueta
         Tag::create([
             "nombre"=>$this->nombre,
             "descripcion"=>$this->descripcion,
             "color"=>$this->color
         ]);
 
+        // Reseteo los campos de la ventana modal
         $this->reset(["openCrear","nombre","descripcion","color"]);
+
+        // Provoco que se vea la nueva etiqueta creada
         $this->emitTo("show-tags","render");
         $this->emit("info", "Etiqueta creada");
     }
 
     public function cerrar(){
         $this->reset(["openCrear","nombre","descripcion","color"]);
+    }
+
+    public function openCrear(){
+        $this->openCrear = true;
     }
 }

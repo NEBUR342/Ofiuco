@@ -27,6 +27,10 @@ class ShowPublication extends Component
 
     protected function rules(): array
     {
+        // Valido los campos diferenciando tres opciones:
+        // El contenido de los comentarios.
+        // Las publicaciones que pertenecen a una comunidad.
+        // Las publicaciones que no pertenecen a una comunidad.
         switch ($this->tipovalidacion) {
             case "comentario":
                 return [
@@ -63,23 +67,33 @@ class ShowPublication extends Component
 
     public function render()
     {
+        // Obtengo la publicacion.
         $publicacion = Publication::where('id', $this->publicacion->id)->first();
         $this->publicacion = $publicacion;
+
+        // compruebo que puedo acceder a la publicacion.
         self::comprobarPublicacion();
+
+        // obtengo al autor de la publicacion, las etiquetas y las comunidades a las que pertenece el autor, y las comunidades que ha creado.
         $autorPublicacion = $this->publicacion->user;
+        $etiquetas = Tag::orderBy('nombre')->pluck('nombre', 'id')->toArray();
         $comunidadesParticipado = $autorPublicacion->communities->pluck('nombre', 'id')->toArray();
         $comunidadesCreador = Community::where('user_id', $publicacion->user->id)->pluck('nombre', 'id')->toArray();
         $comunidades = $comunidadesParticipado + $comunidadesCreador;
         $comunidades[0] = "Sin comunidad";
         ksort($comunidades);
-        $etiquetas = Tag::orderBy('nombre')->pluck('nombre', 'id')->toArray();
         return view('livewire.show-publication', compact('publicacion', 'comunidades', 'etiquetas'));
     }
 
     public function borrarPublicacion()
     {
+        // Compruebo que eres administrador, si perteneces a la comunidad o si es tuya.
         self::comprobarPermisosPublicacion($this->publicacion);
+
+        // Borro la imagen de la carpeta
         Storage::delete($this->publicacion->imagen);
+
+        // Borro la publicacion
         $this->publicacion->delete();
         return redirect()->route('dashboard');
     }
@@ -101,46 +115,68 @@ class ShowPublication extends Component
 
     public function subirComentario()
     {
+        // Valido el comentario
         $this->tipovalidacion = "comentario";
         $this->validate();
+
+        // creo el comentario
         Comment::create([
             "contenido" => $this->contenido,
             "user_id" => auth()->user()->id,
             "publication_id" => $this->publicacion->id
         ]);
+
+        // Reseteo el contenido de la caja de texto.
         $this->contenido = "";
     }
 
     public function quitarComentario(Comment $comentario)
     {
+        // Compruebo si eres administrador, dueño de la publicacion o dueño del comentario.
         self::comprobarPermisosPublicacion2($comentario);
+
+        // Borro el comentario.
         $comentario->delete();
         $this->emit('info', "Comentario eliminado");
     }
 
     public function editar(Publication $publicacion)
     {
+        // Compruebo que eres administrador, si perteneces a la comunidad o si es tuya.
         self::comprobarPermisosPublicacion($publicacion);
+
+        // Le doy los valores de la publicacion a una variable auxiliar.
         $this->miPublicacion = $publicacion;
+
+        // Si pertenece a una comunidad he usado una variable auxiliar para guardar la comunidad a la que pertenece la publicacion.
         if ($publicacion->comunidad == "SI") $this->selectedComunidades = $this->miPublicacion->community->id;
+
+        // Guardo las etiquetas de la publicacion en un array.
         $this->selectedTags = $this->miPublicacion->tags->pluck('id')->toArray();
         $this->openEditar = true;
     }
 
     public function update()
     {
+        // Diferencio las validaciones en caso de que tenga comunidad o no.
         if ($this->selectedComunidades) {
             $this->tipovalidacion = "publicacion con comunidad";
         } else {
             $this->tipovalidacion = "publicacion sin comunidad";
         }
+
+        // Valido los campos de la ventana modal de la publicacion que quiero editar.
         $this->validate([
             'miPublicacion.titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo,' . $this->publicacion->id]
         ]);
+
+        // Si he modificado la imagen borro la antigua y guardo la nueva.
         if ($this->imagen) {
             Storage::delete($this->publicacion->imagen);
             $this->publicacion->imagen = $this->imagen->store('imagenesPublicacion');
         }
+
+        // Guardo los nuevos valores de la publicacion diferenciando si pertenece a una comunidad o no.
         if ($this->selectedComunidades) {
             $this->miPublicacion->update([
                 "titulo" => $this->miPublicacion->titulo,
@@ -160,8 +196,12 @@ class ShowPublication extends Component
                 "community_id" => null,
             ]);
         }
+        // guardo los cambios de la tabla auxiliar con las etiquetas.
         $this->miPublicacion->tags()->sync($this->selectedTags);
+
+        // Reseteo los campos de la variable auxiliar.
         $this->miPublicacion = new Publication();
+
         // Para borrar la carpeta livewire-tmp que me genera livewire, pero no la borra, he usado la siguiente solucion
         File::deleteDirectory(storage_path('app/public/livewire-tmp'));
         $this->reset('openEditar');

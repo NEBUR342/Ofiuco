@@ -20,9 +20,12 @@ class CreatePublication extends Component
     public string $titulo = "", $contenido = "", $estado = "", $comunidad = "";
     public array $arraytags = [];
 
+    // Aqui voy a gestionar las reglas de validacion que tienen que seguir las publicaciones al ser creadas.
     protected function rules(): array
     {
+        // Separo las correcciones de si has elegido que pertenezca a una comunidad o no.
         if ($this->comunidad) {
+            // Pertenece a una comunidad.
             return [
                 'titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo'],
                 'contenido' => ['required', 'string', 'min:10'],
@@ -32,6 +35,7 @@ class CreatePublication extends Component
                 'arraytags' => ['nullable', 'exists:tags,id']
             ];
         } else {
+            // No pertenece a una comunidad.
             return [
                 'titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo'],
                 'contenido' => ['required', 'string', 'min:10'],
@@ -44,20 +48,35 @@ class CreatePublication extends Component
 
     public function render()
     {
+        // Obtengo los tags.
         $tags = Tag::pluck('nombre', 'id')->toArray();
+
+        // Obtengo las comunidades en las que soy participante.
         $comunidadesParticipado = auth()->user()->communities->pluck('nombre', 'id')->toArray();
+
+        // Obtengo las comunidades en las que soy el creador.
         $comunidadesCreador = Community::where('user_id', auth()->user()->id)->pluck('nombre', 'id')->toArray();
+
+        // Guardo todas estas comunidades en una sola variable.
         $comunidades = $comunidadesParticipado + $comunidadesCreador;
+
+        // Doy la opcion de que no pertenezca a una comunidad.
         $comunidades[0] = "Sin comunidad";
+
+        // Ordeno las comunidades por id.
         ksort($comunidades);
         return view('livewire.create-publication', compact('tags', 'comunidades'));
     }
 
     public function guardar()
     {
+        // Validamos la publicacion antes de guardarla.
         $this->validate();
+
+        // Guardo la imagen.
         $rutaImagen = $this->imagen->store('imagenesPublicacion');
-        //Guardamos la categoría
+
+        // Guardo la publicacion, diferenciando si pertenece a una comunidad o no.
         if ($this->comunidad) {
             $publicacion = Publication::create([
                 "titulo" => $this->titulo,
@@ -78,11 +97,19 @@ class CreatePublication extends Component
                 "user_id" => auth()->user()->id,
             ]);
         }
+        // Guardo en la tabla auxiliar los tags añadidos a la publicacion.
         $publicacion->tags()->attach($this->arraytags);
+
         // Para borrar la carpeta livewire-tmp que me genera livewire, pero no la borra, he usado la siguiente solucion
         File::deleteDirectory(storage_path('app/public/livewire-tmp'));
+
+        // Reseteo los campos de la ventana modal
         $this->reset('openCrear', 'titulo', 'contenido', 'estado', 'arraytags', 'comunidad');
-        return redirect()->route('publicationsuser.show',['id'=>$publicacion->user->id]);
+
+        // Devuelvo a la persona a su vista.
+        // Si creas la publicacion viendo las publicaciones de otro usuario, te devuelvo a tu vista, no a la del otro usuario
+        $id=auth()->user()->id;
+        return redirect()->route('publicationsuser.show',compact('id'));
     }
 
     public function cerrar()

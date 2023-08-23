@@ -67,11 +67,9 @@ class ShowPublication extends Component
         $this->publicacion = $publicacion;
         self::comprobarPublicacion();
         $autorPublicacion = $this->publicacion->user;
-        if($publicacion->comunidad=="SI"){
-            $comunidadesParticipado = auth()->user()->communities->pluck('nombre', 'id')->toArray();
-            $comunidadesCreador = Community::where('user_id', $publicacion->user->id)->pluck('nombre', 'id')->toArray();
-            $comunidades = $comunidadesParticipado + $comunidadesCreador;
-        }
+        $comunidadesParticipado = $autorPublicacion->communities->pluck('nombre', 'id')->toArray();
+        $comunidadesCreador = Community::where('user_id', $publicacion->user->id)->pluck('nombre', 'id')->toArray();
+        $comunidades = $comunidadesParticipado + $comunidadesCreador;
         $comunidades[0] = "Sin comunidad";
         ksort($comunidades);
         $etiquetas = Tag::orderBy('nombre')->pluck('nombre', 'id')->toArray();
@@ -110,7 +108,7 @@ class ShowPublication extends Component
             "user_id" => auth()->user()->id,
             "publication_id" => $this->publicacion->id
         ]);
-        $this->contenido="";
+        $this->contenido = "";
     }
 
     public function quitarComentario(Comment $comentario)
@@ -170,14 +168,15 @@ class ShowPublication extends Component
         $this->emit('info', 'Publicacion editada con éxito');
     }
 
-    public function cambiarEstado(){
-        if($this->publicacion->estado=="BORRADOR"){
+    public function cambiarEstado()
+    {
+        if ($this->publicacion->estado == "BORRADOR") {
             $this->publicacion->update([
-                "estado"=>"PUBLICADO"
+                "estado" => "PUBLICADO"
             ]);
-        }else{
+        } else {
             $this->publicacion->update([
-                "estado"=>"BORRADOR"
+                "estado" => "BORRADOR"
             ]);
         }
     }
@@ -232,19 +231,21 @@ class ShowPublication extends Component
         }
     }
 
-    public function comprobarPermisosPublicacion(Publication $publicacion){
-        if(auth()->user()->is_admin) return;
-        if($publicacion->comunidad=="SI") {
-            if($publicacion->community->user_id==auth()->user()->id) return;
+    public function comprobarPermisosPublicacion(Publication $publicacion)
+    {
+        if (auth()->user()->is_admin) return;
+        if ($publicacion->comunidad == "SI") {
+            if ($publicacion->community->user_id == auth()->user()->id) return;
         }
-        if($publicacion->user_id == auth()->user()->id) return;
+        if ($publicacion->user_id == auth()->user()->id) return;
         abort(404);
     }
-    
-    public function comprobarPermisosPublicacion2(Comment $comentario){
-        if(auth()->user()->is_admin) return;
-        if($comentario->user_id == auth()->user()->id) return;
-        if($this->publicacion->user_id == auth()->user()->id)return;
+
+    public function comprobarPermisosPublicacion2(Comment $comentario)
+    {
+        if (auth()->user()->is_admin) return;
+        if ($comentario->user_id == auth()->user()->id) return;
+        if ($this->publicacion->user_id == auth()->user()->id) return;
         abort(404);
     }
 }

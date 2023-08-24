@@ -1,4 +1,4 @@
-<div class='min-[480px]:px-12 cursor-default'>
+<div class='min-[480px]:px-12 mt-4 cursor-default'>
     @if ($publicaciones->count())
         @foreach ($publicaciones as $publicacion)
             <div @class([

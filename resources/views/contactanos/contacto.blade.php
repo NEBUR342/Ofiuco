@@ -21,5 +21,12 @@
                 </a>
             </div>
         </form>
+        <div class="flex flex-wrap w-1/6 mx-auto">
+            <span class="flex flex-col mx-auto"><i class="fa-brands fa-tiktok cursor-pointer"></i></span>
+            <span class="flex flex-col mx-auto"><i class="fa-brands fa-twitter cursor-pointer"></i></span>
+            <span class="flex flex-col mx-auto"><i class="fa-brands fa-instagram cursor-pointer"></i></i></span>
+            <span class="flex flex-col mx-auto"><i class="fa-brands fa-facebook cursor-pointer"></i></span>
+            <span class="flex flex-col mx-auto"><i class="fa-brands fa-reddit cursor-pointer"></i></span>
+        </div>
     </div>
 </x-app-layout>

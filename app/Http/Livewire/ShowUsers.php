@@ -10,7 +10,7 @@ class ShowUsers extends Component
 {
     use WithPagination;
 
-    public string $campo = 'id', $orden = 'desc', $buscar = "";
+    public string $campo = 'creacion', $orden = 'desc', $buscar = "";
 
     public function updatingBuscar()
     {
@@ -58,7 +58,7 @@ class ShowUsers extends Component
     public function ordenar(string $campo)
     {
         $this->orden = ($this->orden == 'asc') ? 'desc' : 'asc';
-        $this->campo = ($campo != "name" && $campo != "id") ? "id" : $campo;
+        $this->campo = $campo;
     }
 
     public function buscarUsuario($id)

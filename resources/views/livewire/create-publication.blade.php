@@ -12,11 +12,13 @@
         <x-slot name="content">
             @wire('defer')
                 <x-form-input name="titulo" label="Título de la publicacion" placeholder="Título ..." />
-                <x-form-textarea name="contenido" placeholder="Contenido..." label="Contenido de la publicacion" rows="8"/>
+                <x-form-textarea name="contenido" placeholder="Contenido..." label="Contenido de la publicacion"
+                    rows="8" />
                 <x-form-select name="comunidad" :options="$comunidades" label="Comunidad de la publicacion" />
                 <x-form-group name="tags" label="Etiquetas" inline>
                     @foreach ($tags as $id => $nombre)
-                        <x-form-checkbox name="arraytags" label="{{ $nombre }}" value="{{ $id }}" :show-errors="false" wire:model.defer="arraytags"/>
+                        <x-form-checkbox name="arraytags" label="{{ $nombre }}" value="{{ $id }}"
+                            :show-errors="false" wire:model.defer="arraytags" />
                     @endforeach
                 </x-form-group>
                 <x-form-group name="estado" label="Estado de la publicacion" inline>
@@ -46,11 +48,13 @@
         </x-slot>
         <x-slot name="footer">
             <div class="flex flex-row-reverse text-center">
-                <button class="text-xl cursor-pointer bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 rounded mx-2"
+                <button
+                    class="text-xl cursor-pointer bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 rounded mx-2"
                     wire:click="guardar()" wire:loading.attr="disabled">
                     <i class="fas fa-save"></i>
                 </button>
-                <button class="text-xl cursor-pointer bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 rounded"
+                <button
+                    class="text-xl cursor-pointer bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 rounded"
                     wire:click="cerrar()">
                     <i class="fas fa-xmark"></i>
                 </button>

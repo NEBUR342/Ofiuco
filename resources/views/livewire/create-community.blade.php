@@ -11,8 +11,9 @@
         </x-slot>
         <x-slot name="content">
             @wire('defer')
-                <x-form-input name="nombre" label="Nombre de la comunidad" placeholder="Nombre ..."/>
-                <x-form-textarea name="descripcion" placeholder="Descripcion..." label="Descripcion de la comunidad" rows="8"/>
+                <x-form-input name="nombre" label="Nombre de la comunidad" placeholder="Nombre ..." />
+                <x-form-textarea name="descripcion" placeholder="Descripcion..." label="Descripcion de la comunidad"
+                    rows="8" />
             @endwire
             <div class="mt-4">
                 <span class="text-gray-700">Imagen de la comunidad</span>
@@ -36,11 +37,13 @@
         </x-slot>
         <x-slot name="footer">
             <div class="flex flex-row-reverse text-center">
-                <button class="text-xl cursor-pointer bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 rounded mx-2"
+                <button
+                    class="text-xl cursor-pointer bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 rounded mx-2"
                     wire:click="guardar()" wire:loading.attr="disabled">
                     <i class="fas fa-save"></i>
                 </button>
-                <button class="text-xl cursor-pointer bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 rounded"
+                <button
+                    class="text-xl cursor-pointer bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 rounded"
                     wire:click="cerrar()">
                     <i class="fas fa-xmark"></i>
                 </button>

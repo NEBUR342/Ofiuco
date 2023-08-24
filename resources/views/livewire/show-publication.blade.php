@@ -117,8 +117,10 @@
                     'hover:bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
                 ])>
                     <div class="flex flex-wrap mt-2">
-                        <span class="flex flex-col mr-3 cursor-pointer" wire:click="buscarUsuario({{ $comment->user->id }})">
-                            <img class="h-8 w-8 rounded-full ml-4" src="{{ $comment->user->profile_photo_url }}" alt="{{ $comment->user->name }}" />
+                        <span class="flex flex-col mr-3 cursor-pointer"
+                            wire:click="buscarUsuario({{ $comment->user->id }})">
+                            <img class="h-8 w-8 rounded-full ml-4" src="{{ $comment->user->profile_photo_url }}"
+                                alt="{{ $comment->user->name }}" />
                         </span>
                         <div class="flex flex-col text-xl">
                             {{ $comment->user->name }}

@@ -71,8 +71,8 @@
                         @else
                             <i @class([
                                 'fa-regular fa-heart px-2 py-1 rounded-lg mt-5 ml-2',
-                                'bg-red-500' =>auth()->user()->temaoscuro,
-                                'bg-red-200' =>!auth()->user()->temaoscuro,
+                                'bg-red-500' => auth()->user()->temaoscuro,
+                                'bg-red-200' => !auth()->user()->temaoscuro,
                             ])>
                                 <span class="mx-1">
                                     {{ $publicacion->likes->count() }}

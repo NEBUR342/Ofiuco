@@ -28,7 +28,7 @@
                         class="absolute bottom-0 right-0 h-full w-1 origin-top scale-y-0 transform bg-sky-400 duration-300 group-hover:scale-y-100">
                     </div>
                     <div @class([
-                        'text-white' => auth()->check() && auth()->user()->temaoscuro
+                        'text-white' => auth()->check() && auth()->user()->temaoscuro,
                     ])>
                         <p class="text-xl mb-5">
                             {{ $publicacion->titulo }}
@@ -49,8 +49,8 @@
                             @else
                                 <i @class([
                                     'fa-regular fa-heart px-2 py-1 rounded-lg mt-5 ml-2',
-                                    'bg-red-500' =>auth()->user()->temaoscuro,
-                                    'bg-red-200' =>!auth()->user()->temaoscuro,
+                                    'bg-red-500' => auth()->user()->temaoscuro,
+                                    'bg-red-200' => !auth()->user()->temaoscuro,
                                 ])>
                                     <span class="mx-1">
                                         {{ $publicacion->likes->count() }}

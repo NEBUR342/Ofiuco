@@ -29,7 +29,8 @@
             @foreach ($publicaciones as $publicacion)
                 <div wire:click="verPublicacion({{ $publicacion->id }})"
                     class="min-[480px]:rounded-lg flex flex-col w-1/3 h-1/3 min-[480px]:w-1/4 min-[480px]:m-3 border border-gray-800 cursor-pointer">
-                    <img src="{{ Storage::url($publicacion->imagen) }}" alt="{{$publicacion->titulo}}" class="min-[480px]:rounded-lg">
+                    <img src="{{ Storage::url($publicacion->imagen) }}" alt="{{ $publicacion->titulo }}"
+                        class="min-[480px]:rounded-lg">
 
                 </div>
             @endforeach

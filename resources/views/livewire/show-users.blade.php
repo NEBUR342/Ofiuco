@@ -22,13 +22,15 @@
         @foreach ($users as $usuario)
             <div @class([
                 'relative overflow-x-auto shadow-md rounded-lg my-3 mx-5 cursor-pointer',
-                'bg-gray-700 hover:bg-gray-600 text-white' => auth()->check() && auth()->user()->temaoscuro,
+                'bg-gray-700 hover:bg-gray-600 text-white' =>
+                    auth()->check() && auth()->user()->temaoscuro,
                 'hover:bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
             ]) wire:click="buscarUsuario({{ $usuario->id }})"
                 title="Publicaciones de {{ $usuario->name }}">
                 <div class="flex flex-wrap my-3">
                     <span class="flex flex-col">
-                        <img class="h-8 w-8 rounded-full ml-4" src="{{ $usuario->profile_photo_url }}" alt="{{ $usuario->name }}" />
+                        <img class="h-8 w-8 rounded-full ml-4" src="{{ $usuario->profile_photo_url }}"
+                            alt="{{ $usuario->name }}" />
                     </span>
                     <span @class([
                         'flex flex-col mx-3 px-2 text-xl rounded-xl',

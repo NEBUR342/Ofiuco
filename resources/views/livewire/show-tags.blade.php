@@ -43,7 +43,7 @@
                 </div>
             </div>
         @endforeach
-        {{$tags->links()}}
+        {{ $tags->links() }}
     @else
         <x-miscomponentes.sinresultados></x-miscomponentes.sinresultados>
     @endif

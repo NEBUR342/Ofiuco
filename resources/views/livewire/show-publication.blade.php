@@ -9,7 +9,7 @@
             <div class="flex flex-col min-[700px]:px-6 min-[700px]:w-1/2 max-[700px]:mx-2 mx-auto">
                 <div @class([
                     'rounded-xl',
-                    'bg-gray-700 text-white' => auth()->check() && auth()->user()->temaoscuro,
+                    'bg-gray-700' => auth()->check() && auth()->user()->temaoscuro,
                     'bg-gray-200' => auth()->guest() || !auth()->user()->temaoscuro,
                 ])>
                     <div class="text-xl my-5 mx-5 text-center">{{ $publicacion->titulo }}</div>
@@ -71,7 +71,11 @@
                         @endauth
 
                     </div>
-                    <div class="my-5 mx-5">Autor: {{ $publicacion->user->name }}</div>
+                    <div class="my-5 mx-5">Autor: <span @class([ 'rounded-xl cursor-pointer',
+                        'bg-gray-500 py-1 px-2' => auth()->check() && auth()->user()->temaoscuro,
+                        'bg-gray-400 py-1 px-2' => auth()->guest() || !auth()->user()->temaoscuro,
+                    ]) wire:click="buscarUsuario({{ $publicacion->user->id }})">{{ $publicacion->user->name }}
+                    </span></div>
                     @if ($publicacion->comunidad == 'SI')
                         <div class="mb-5 mx-5">Comunidad: {{ $publicacion->community->nombre }}</div>
                     @endif
@@ -114,7 +118,7 @@
                     'relative overflow-x-auto shadow-md rounded-lg my-3',
                     'bg-gray-700 hover:bg-gray-600 text-white' =>
                         auth()->check() && auth()->user()->temaoscuro,
-                    'hover:bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
+                    'bg-gray-200 hover:bg-gray-100' => auth()->guest() || !auth()->user()->temaoscuro,
                 ])>
                     <div class="flex flex-wrap mt-2">
                         <span class="flex flex-col mr-3 cursor-pointer"

@@ -32,8 +32,8 @@
 
     <div @class([
         'min-h-screen',
-        'bg-gray-800' => auth()->check() && auth()->user()->temaoscuro,
-        'bg-white' => auth()->guest() || !auth()->user()->temaoscuro,
+        'bg-gray-800 text-white' => auth()->check() && auth()->user()->temaoscuro,
+        'bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
     ])>
         @livewire('navigation-menu')
 
@@ -62,21 +62,6 @@
                 title: mensaje,
                 showConfirmButton: false,
                 timer: 1500
-            })
-        })
-        Livewire.on('pedirPermiso', fotoId => {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Livewire.emitTo('ver-user-fotos', 'borrar', fotoId)
-                }
             })
         })
         @if (session('info'))

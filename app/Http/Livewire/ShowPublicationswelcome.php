@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class ShowPublicationswelcome extends Component
 {
-
+    // Muestro las publicaciones que no pertenecen a ninguna comunidad
     public function render()
     {
         $publicaciones = Publication::where('estado', 'PUBLICADO')

@@ -20,9 +20,9 @@
             </span>
         </div>
         @foreach ($tags as $tag)
-            <div class="relative overflow-x-auto shadow-md rounded-lg my-3 mx-5" style="background:{{ $tag->color }}">
+            <div class='relative overflow-x-auto shadow-md rounded-lg my-3 mx-5 text-gray-900' style="background:{{ $tag->color }}">
                 <div class="my-3">
-                    <span class="mx-3 px-2 text-xl text-gray-700 rounded-xl bg-gray-100">
+                    <span class="mx-3 px-2 text-xl rounded-xl bg-gray-100">
                         {{ $tag->nombre }}
                     </span>
                 </div>

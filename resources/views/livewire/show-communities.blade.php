@@ -1,8 +1,4 @@
-<div @class([
-    'min-[480px]:px-12 cursor-default',
-    'bg-gray-800' => auth()->check() && auth()->user()->temaoscuro,
-    'bg-white' => auth()->guest() || !auth()->user()->temaoscuro,
-])>
+<div class='min-[480px]:px-12 cursor-default'>
     <div class="flex mb-3">
         <div class="flex-1">
             <x-input class="w-full" type='search' placeholder="Buscar publicaciones..." wire:model="buscar"></x-input>

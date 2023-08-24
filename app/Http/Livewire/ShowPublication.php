@@ -208,6 +208,7 @@ class ShowPublication extends Component
         $this->emit('info', 'Publicacion editada con éxito');
     }
 
+    // Aqui cambio el estado del post de publicado a borrador y viceversa
     public function cambiarEstado()
     {
         if ($this->publicacion->estado == "BORRADOR") {
@@ -271,6 +272,7 @@ class ShowPublication extends Component
         }
     }
 
+    // Compruebo que eres administrador, si perteneces a la comunidad o si es tuya.
     public function comprobarPermisosPublicacion(Publication $publicacion)
     {
         if (auth()->user()->is_admin) return;
@@ -281,6 +283,7 @@ class ShowPublication extends Component
         abort(404);
     }
 
+    // Compruebo si eres administrador, dueño de la publicacion o dueño del comentario.
     public function comprobarPermisosPublicacion2(Comment $comentario)
     {
         if (auth()->user()->is_admin) return;

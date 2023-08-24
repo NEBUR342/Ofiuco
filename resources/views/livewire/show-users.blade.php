@@ -24,7 +24,7 @@
                 'relative overflow-x-auto shadow-md rounded-lg my-3 mx-5 cursor-pointer',
                 'bg-gray-700 hover:bg-gray-600 text-white' =>
                     auth()->check() && auth()->user()->temaoscuro,
-                'hover:bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
+                'bg-gray-200 hover:bg-gray-100' => auth()->guest() || !auth()->user()->temaoscuro,
             ]) wire:click="buscarUsuario({{ $usuario->id }})"
                 title="Publicaciones de {{ $usuario->name }}">
                 <div class="flex flex-wrap my-3">

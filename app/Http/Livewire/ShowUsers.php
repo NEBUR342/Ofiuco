@@ -19,8 +19,12 @@ class ShowUsers extends Component
 
     public function render()
     {
+        // Compruebo que el usuario autenticado sea un administrador.
         if (!auth()->user()->is_admin) abort(404);
+        // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
+        // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
         switch ($this->campo) {
+            // Ordeno los usuarios por id.
             case "creacion":
                 $users = User::where(function ($q) {
                     $q->where('name', 'like', '%' . trim($this->buscar) . '%')
@@ -29,6 +33,7 @@ class ShowUsers extends Component
                     ->orderBy("id", $this->orden)
                     ->paginate(15);
                 break;
+            // ordeno los usuarios por nombre.
             case "nombre":
                 $users = User::where(function ($q) {
                     $q->where('name', 'like', '%' . trim($this->buscar) . '%')
@@ -37,6 +42,7 @@ class ShowUsers extends Component
                     ->orderBy("name", $this->orden)
                     ->paginate(15);
                 break;
+            // En el default, para evitar que de error, he puesto que me los ordene por id.
             default:
                 $users = User::where(function ($q) {
                     $q->where('name', 'like', '%' . trim($this->buscar) . '%')

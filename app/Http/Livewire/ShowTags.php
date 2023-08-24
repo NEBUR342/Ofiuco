@@ -10,7 +10,7 @@ class ShowTags extends Component
 {
     use WithPagination;
 
-    public string $campo = 'id', $orden = 'desc', $buscar = "";
+    public string $campo = 'creacion', $orden = 'desc', $buscar = "";
     public Tag $miTag;
     public bool $openEditar = false;
     protected $listeners = ["render"];
@@ -20,10 +20,24 @@ class ShowTags extends Component
         $this->resetPage();
     }
 
+    protected function rules(): array
+    {
+        // Compruebo los campos de la ventana modal para editar las etiquetas
+        return [
+            'miTag.nombre' => ['required', 'string', 'min:3', 'unique:tags,nombre,' . $this->miTag->id],
+            'miTag.descripcion' => ['required', 'string', 'min:3'],
+            'miTag.color' => ['nullable', 'regex:/#[A-Fa-f0-9]{6}/']
+        ];
+    }
+
     public function render()
     {
+        // Compruebo que el usuario autenticado sea un administrador.
         if (!auth()->user()->is_admin) abort(404);
+        // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
+        // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
         switch ($this->campo) {
+            // Ordeno las etiquetas por id.
             case "creacion":
                 $tags = Tag::where(function ($q) {
                     $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
@@ -32,6 +46,7 @@ class ShowTags extends Component
                     ->orderBy("id", $this->orden)
                     ->paginate(15);
                 break;
+            // Ordeno las etiquetas por nombre.
             case "nombre":
                 $tags = Tag::where(function ($q) {
                     $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
@@ -40,6 +55,7 @@ class ShowTags extends Component
                     ->orderBy("nombre", $this->orden)
                     ->paginate(15);
                 break;
+            // En el default, para evitar que de error, he puesto que me las ordene por id.
             default:
                 $tags = Tag::where(function ($q) {
                     $q->where('nombre', 'like', '%' . trim($this->buscar) . '%')
@@ -71,24 +87,17 @@ class ShowTags extends Component
         $this->openEditar = true;
     }
 
-    protected function rules(): array
-    {
-        return [
-            'miTag.nombre' => ['required', 'string', 'min:3', 'unique:tags,nombre,' . $this->miTag->id],
-            'miTag.descripcion' => ['required', 'string', 'min:3'],
-            'miTag.color' => ['nullable', 'regex:/#[A-Fa-f0-9]{6}/']
-        ];
-    }
-
     public function update()
     {
+        // Valido los campos de la ventana modal.
         $this->validate();
-        //Actualizamos el registro
+        // Modifico los valores de la base da datos.
         $this->miTag->update([
             'nombre' => $this->miTag->nombre,
             'descripcion' => $this->miTag->descripcion,
             'color' => $this->miTag->color,
         ]);
+        // Reseteo la variable
         $this->miTag = new Tag;
         $this->reset('openEditar');
         $this->emit('info', 'Etiqueta editada con éxito');

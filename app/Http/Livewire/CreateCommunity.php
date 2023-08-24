@@ -20,6 +20,7 @@ class CreateCommunity extends Component
 
     protected function rules(): array
     {
+        // compruebo los campos de la ventana modal.
         return [
             'nombre' => ['required', 'string', 'min:3', 'unique:communities,nombre'],
             'descripcion' => ['required', 'string', 'min:10'],
@@ -34,8 +35,11 @@ class CreateCommunity extends Component
 
     public function guardar()
     {
+        // Valido los campos de la ventana modal.
         $this->validate();
+        // guardo la imagen en la carpeta.
         $rutaImagen = $this->imagen->store('imagenesComunidad');
+        // Creo la comunidad en la base de datos.
         Community::create([
             "nombre" => $this->nombre,
             "descripcion" => $this->descripcion,

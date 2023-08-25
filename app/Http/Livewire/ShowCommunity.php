@@ -163,4 +163,9 @@ class ShowCommunity extends Component
     {
         return redirect()->route('publicationsuser.show', compact('id'));
     }
+
+    public function verPublicacionesComunidad(){
+        $id=$this->comunidad->id;
+        return redirect()->route('publicationscommunity.show', compact('id'));
+    }
 }

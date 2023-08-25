@@ -8,16 +8,18 @@
         <div class="flex flex-col min-[700px]:px-6 min-[700px]:w-1/2 max-[700px]:mx-5 mx-auto">
             <div @class([
                 'rounded-xl',
-                'bg-gray-700' => auth()->check() && auth()->user()->temaoscuro,
-                'bg-gray-200' => auth()->guest() || !auth()->user()->temaoscuro,
+                'bg-gray-700' => auth()->user()->temaoscuro,
+                'bg-gray-200' => !auth()->user()->temaoscuro,
             ])>
                 <div class="text-xl my-5 text-center mx-5">{{ $comunidad->nombre }}</div>
                 <div class="mb-5 mx-5">{{ $comunidad->descripcion }}</div>
                 <div class="mt-5 mx-5">Creador:
-                    <span @class([ 'rounded-xl cursor-pointer',
-                        'bg-gray-500 py-1 px-2' => auth()->check() && auth()->user()->temaoscuro,
-                        'bg-gray-400 py-1 px-2' => auth()->guest() || !auth()->user()->temaoscuro,
-                    ]) wire:click="buscarUsuario({{ $creador->id }})">{{ $creador->name }}
+                    <span @class([
+                        'rounded-xl cursor-pointer',
+                        'bg-gray-500 py-1 px-2' => auth()->user()->temaoscuro,
+                        'bg-gray-400 py-1 px-2' => !auth()->user()->temaoscuro,
+                    ])
+                        wire:click="buscarUsuario({{ $creador->id }})">{{ $creador->name }}
                     </span>
                 </div>
                 <div class="my-5 mx-5">Esta comunidad cuenta con: {{ $comunidad->users->count() }} participantes</div>
@@ -36,6 +38,12 @@
                                 <i class="fa-solid fa-user-plus"></i>
                             </div>
                         @endif
+                    @endif
+                    @if ($aux || auth()->user()->id == $comunidad->user_id || auth()->user()->is_admin)
+                        <div class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 rounded"
+                            wire:click="verPublicacionesComunidad" title="VER PUBLICACIONES DE LA COMUNIDAD">
+                            <i class="fa-solid fa-users-rays"></i>
+                        </div>
                     @endif
                     @if (auth()->user()->id == $comunidad->user_id || auth()->user()->is_admin)
                         <div title="EDITAR COMUNIDAD" wire:click="editar({{ $comunidad->id }})"
@@ -56,10 +64,8 @@
             @foreach ($comunidad->users->reverse() as $participante)
                 <div @class([
                     'relative overflow-x-auto shadow-md rounded-lg my-3',
-                    'bg-gray-700 hover:bg-gray-600 text-white' =>
-                        auth()->check() && auth()->user()->temaoscuro,
-                    'bg-gray-200 hover:bg-gray-100' =>
-                        auth()->guest() || !auth()->user()->temaoscuro,
+                    'bg-gray-700 hover:bg-gray-600 text-white' => auth()->user()->temaoscuro,
+                    'bg-gray-200 hover:bg-gray-100' => !auth()->user()->temaoscuro,
                 ])>
                     <div class="flex flex-wrap mx-3 mt-2">
                         <span class="flex flex-col mr-3 cursor-pointer"

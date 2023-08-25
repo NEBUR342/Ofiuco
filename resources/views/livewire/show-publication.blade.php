@@ -81,7 +81,7 @@
                     @endif
                 </div>
                 @auth
-                    @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin)
+                    @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin || $aux)
                         <div class="flex flex-wrap text-xl">
                             <div title="EDITAR PUBLICACION" wire:click="editar({{ $publicacion->id }})"
                                 class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-yellow-500 text-yellow-700 font-semibold hover:text-white py-2 px-4 rounded">

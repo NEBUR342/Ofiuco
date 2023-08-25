@@ -10,7 +10,7 @@
     @if ($tags->count())
         <div @class([
             'font-bold text-xl text-center my-4',
-            'text-white' => auth()->check() && auth()->user()->temaoscuro,
+            'text-white' => auth()->user()->temaoscuro,
         ])>
             <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR TITULO">
                 <i class="fa-solid fa-arrow-down-a-z"></i>

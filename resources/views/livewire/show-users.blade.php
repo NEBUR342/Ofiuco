@@ -10,7 +10,7 @@
     @if ($users->count())
         <div @class([
             'font-bold text-xl text-center my-4',
-            'text-white' => auth()->check() && auth()->user()->temaoscuro,
+            'text-white' => auth()->user()->temaoscuro,
         ])>
             <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR NOMBRE">
                 <i class="fa-solid fa-arrow-down-a-z"></i>
@@ -23,8 +23,8 @@
             <div @class([
                 'relative overflow-x-auto shadow-md rounded-lg my-3 mx-5 cursor-pointer',
                 'bg-gray-700 hover:bg-gray-600 text-white' =>
-                    auth()->check() && auth()->user()->temaoscuro,
-                'bg-gray-200 hover:bg-gray-100' => auth()->guest() || !auth()->user()->temaoscuro,
+                    auth()->user()->temaoscuro,
+                'bg-gray-200 hover:bg-gray-100' => !auth()->user()->temaoscuro,
             ]) wire:click="buscarUsuario({{ $usuario->id }})"
                 title="Publicaciones de {{ $usuario->name }}">
                 <div class="flex flex-wrap my-3">
@@ -34,7 +34,7 @@
                     </span>
                     <span @class([
                         'flex flex-col mx-3 px-2 text-xl rounded-xl',
-                        'text-gray-700' => auth()->guest() || !auth()->user()->temaoscuro,
+                        'text-gray-700' => !auth()->user()->temaoscuro,
                     ])>
                         {{ $usuario->name }}
                     </span>

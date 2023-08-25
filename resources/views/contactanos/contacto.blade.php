@@ -21,12 +21,22 @@
                 </a>
             </div>
         </form>
-        <div class="flex flex-wrap w-1/6 mx-auto">
-            <span class="flex flex-col mx-auto"><i class="fa-brands fa-tiktok cursor-pointer"></i></span>
-            <span class="flex flex-col mx-auto"><i class="fa-brands fa-twitter cursor-pointer"></i></span>
-            <span class="flex flex-col mx-auto"><i class="fa-brands fa-instagram cursor-pointer"></i></i></span>
-            <span class="flex flex-col mx-auto"><i class="fa-brands fa-facebook cursor-pointer"></i></span>
-            <span class="flex flex-col mx-auto"><i class="fa-brands fa-reddit cursor-pointer"></i></span>
+        <div class="flex flex-wrap w-5/6 min-[640px]:w-4/6 min-[760px]:w-2/6 mt-4 mx-auto text-xl">
+            <span class="flex flex-col mx-auto cursor-pointer">
+                <i class="fa-brands fa-tiktok"></i>
+            </span>
+            <span class="flex flex-col mx-auto cursor-pointer">
+                <i class="fa-brands fa-twitter"></i>
+            </span>
+            <span class="flex flex-col mx-auto cursor-pointer">
+                <i class="fa-brands fa-instagram"></i>
+            </span>
+            <span class="flex flex-col mx-auto cursor-pointer">
+                <i class="fa-brands fa-facebook"></i>
+            </span>
+            <span class="flex flex-col mx-auto cursor-pointer">
+                <i class="fa-brands fa-reddit"></i>
+            </span>
         </div>
     </div>
 </x-app-layout>

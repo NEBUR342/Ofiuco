@@ -82,7 +82,10 @@ class ShowPublication extends Component
         $comunidades = $comunidadesParticipado + $comunidadesCreador;
         $comunidades[0] = "Sin comunidad";
         ksort($comunidades);
-        return view('livewire.show-publication', compact('publicacion', 'comunidades', 'etiquetas'));
+        $aux = false;
+        $comunidad = $publicacion->community;
+        if (auth()->user() && $comunidad != null && $comunidad->user_id == auth()->user()->id) $aux = true;
+        return view('livewire.show-publication', compact('publicacion', 'comunidades', 'etiquetas', 'aux'));
     }
 
     public function borrarPublicacion()
@@ -232,44 +235,32 @@ class ShowPublication extends Component
     // Se me hacia muy dificil comprobarlo con las comunidades, por lo que he decidido hacerlo a mano.
     private function comprobarPublicacion()
     {
-        // Si el usuario no esta autenticado compruebo dos cosas
-        // Publicacion en BORRADOR y comunidad en SI (si se cumple al menos una muestro el error)
-        // El usuario no autenticado, por lo que no pertenece a una comunidad y si el estado esta en borrador, no puede verlo.
-        if (!auth()->user() && ($this->publicacion->estado == "BORRADOR" || $this->publicacion->comunidad == "SI")) {
-            abort(404);
-        } elseif (auth()->user()) {
-            // Si el usuario no es administrador y la publicacion no le pertenece es posible que deba mostrar el mensaje de error
-            if (!auth()->user()->is_admin && auth()->user()->id != $this->publicacion->user_id) {
-                // Compruebo que la publicacion pertenezca a una comunidad
-                if ($this->publicacion->comunidad == "SI") {
-                    // la publicacion pertenece a una comunidad, pero ahora debo comprobar que el usuario autenticado pertenece a dicha comunidad
-                    $aux = false;
-                    foreach (auth()->user()->communities as $comunidad) {
-                        if ($comunidad->id == $this->publicacion->community_id) {
-                            $aux = true;
-                        }
-                    }
-                    // Si eres el dueño de una comunidad y la publicacion pertenece a tu comunidad
-                    // En el foreach de antes solo compruebo los participantes, no al creador.
-                    if (auth()->user()->id == $this->publicacion->community->user_id) {
-                        $aux = true;
-                    }
-                    // aux=false no pertenece | aux=true si pertenece
-                    if ($aux) {
-                        // Si perteneces a la comunidad pero esta en estado de BORRADOR no puedes verlo.
-                        if ($this->publicacion->estado == "BORRADOR") {
-                            abort(404);
-                        }
-                    } else {
-                        // Si no perteneces a la comunidad no puedes ver la publicacion
-                        abort(404);
-                    }
-                    // Si la publicacion no pertenece a una comunidad compruebo su estado.
-                } elseif ($this->publicacion->estado == "BORRADOR") {
-                    abort(404);
-                }
-            }
+        // Compruebo dos cosas.
+        // Estado de la publicacion en PUBLICADO.
+        // Comunidad en no.
+        if ($this->publicacion->estado == "PUBLICADO" && $this->publicacion->comunidad == "NO")  return;
+        if (!auth()->user()) abort(404);
+
+        // si el usuario autenticado es adminidtrador.
+        if (auth()->user()->is_admin) return;
+
+        // si la publicacion te pertenece
+        if ($this->publicacion->user_id == auth()->user()->id) return;
+
+        if ($this->publicacion->comunidad == "NO") abort(404);
+
+        // si eres el dueño de la comunidad a la que pertenece la publicacion
+        if ($this->publicacion->community->user_id == auth()->user()->id) return;
+
+        // Si la publicacion esta en estado borrador, dara un error.
+        if ($this->publicacion->estado == "BORRADOR") abort(404);
+
+        // compruebo que pertenezcas a la comunidad a la que pertenece la publicacion.
+        $comunidad = $this->publicacion->community;
+        foreach ($comunidad->users as $usuario) {
+            if ($usuario->id == auth()->user()->id) return;
         }
+        abort(404);
     }
 
     // Compruebo que eres administrador, si perteneces a la comunidad o si es tuya.

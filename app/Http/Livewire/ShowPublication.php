@@ -91,7 +91,7 @@ class ShowPublication extends Component
 
     public function borrarPublicacion()
     {
-        // Compruebo que eres administrador, si perteneces a la comunidad o si es tuya.
+        // Compruebo que eres administrador o si es tuya.
         self::comprobarPermisosPublicacion($this->publicacion);
 
         // Borro la imagen de la carpeta
@@ -182,7 +182,7 @@ class ShowPublication extends Component
             // Primero borro los comentarios de los usuarios que no pertenecen a la nueva comunidad.
             $comentarios=$this->publicacion->comments;
             foreach ($comentarios as $comentario) {
-                $usuario=User::where('id',$comentario->user_id)->first();
+                $usuario=$comentario->user;
                 if(!$usuario->is_admin && ($comunidadseleccionada->user_id!=$usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))){
                     $comentario->delete();
                 }
@@ -191,7 +191,7 @@ class ShowPublication extends Component
             // A continuacion borro los likes de los usuarios que no pertenecen a la nueva comunidad.
             $likes=$this->publicacion->likes;
             foreach ($likes as $like) {
-                $usuario=User::where('id',$like->user_id)->first();
+                $usuario=$like->usuario;
                 if(!$usuario->is_admin && ($comunidadseleccionada->user_id!=$usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))){
                     $like->delete();
                 }
@@ -288,13 +288,10 @@ class ShowPublication extends Component
         abort(404);
     }
 
-    // Compruebo que eres administrador, si perteneces a la comunidad o si es tuya.
+    // Compruebo que eres administrador o si es tuya.
     public function comprobarPermisosPublicacion(Publication $publicacion)
     {
         if (auth()->user()->is_admin) return;
-        if ($publicacion->comunidad == "SI") {
-            if ($publicacion->community->user_id == auth()->user()->id) return;
-        }
         if ($publicacion->user_id == auth()->user()->id) return;
         abort(404);
     }

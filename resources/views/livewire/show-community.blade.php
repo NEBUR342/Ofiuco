@@ -42,7 +42,7 @@
                     @if ($aux || auth()->user()->id == $comunidad->user_id || auth()->user()->is_admin)
                         <div class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 rounded"
                             wire:click="verPublicacionesComunidad" title="VER PUBLICACIONES DE LA COMUNIDAD">
-                            <i class="fa-solid fa-users-rays"></i>
+                            <i class="fa-solid fa-users-rectangle"></i>
                         </div>
                     @endif
                     @if (auth()->user()->id == $comunidad->user_id || auth()->user()->is_admin)

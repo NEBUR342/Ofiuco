@@ -75,7 +75,7 @@
                                     {{ __('Manage Account') }}
                                 </div>
                                 <x-dropdown-link href="{{ route('profile.show') }}">
-                                    {{ __('Profile') }}
+                                    <i class="fa-solid fa-user-gear"></i> {{ __('Profile') }}
                                 </x-dropdown-link>
                                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                     <x-dropdown-link href="{{ route('api-tokens.index') }}">
@@ -87,20 +87,20 @@
                                 <x-dropdown-link href="{{ route('temaoscuro.cambiartema') }}"
                                     active="request()->routeIs('temaoscuro.cambiartema')">
                                     @if (auth()->user()->temaoscuro)
-                                        <i class="fa-regular fa-moon"></i> MODO OSCURO
+                                        <i class="fa-regular fa-moon"></i> Modo oscuro
                                     @else
-                                        <i class="fa-regular fa-sun"></i> MODO CLARO
+                                        <i class="fa-regular fa-sun"></i> Modo claro
                                     @endif
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
                                 <!-- Guardados -->
                                 <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
-                                    <i class="fa-regular fa-floppy-disk"></i> GUARDADOS
+                                    <i class="fa-regular fa-floppy-disk"></i> Guardados
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
                                 <!-- Likes -->
                                 <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
-                                    <i class="fa-regular fa-heart"></i> LIKES
+                                    <i class="fa-regular fa-heart"></i> Likes
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
                                 <!-- Authentication -->
@@ -189,8 +189,8 @@
                         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                             <button
                                 class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}"
-                                    alt="{{ Auth::user()->name }}" />
+                                <img class="h-8 w-8 rounded-full object-cover"
+                                    src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                             </button>
                         @else
                             <span class="inline-flex rounded-md">
@@ -214,7 +214,7 @@
                         </div>
 
                         <x-dropdown-link href="{{ route('profile.show') }}">
-                            {{ __('Profile') }}
+                            <i class="fa-solid fa-user-gear"></i> {{ __('Profile') }}
                         </x-dropdown-link>
 
                         @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
@@ -228,20 +228,20 @@
                         <x-dropdown-link href="{{ route('temaoscuro.cambiartema') }}"
                             active="request()->routeIs('temaoscuro.cambiartema')">
                             @if (auth()->user()->temaoscuro)
-                                <i class="fa-regular fa-moon"></i> MODO OSCURO
+                                <i class="fa-regular fa-moon"></i> Modo oscuro
                             @else
-                                <i class="fa-regular fa-sun"></i> MODO CLARO
+                                <i class="fa-regular fa-sun"></i> Modo claro
                             @endif
                         </x-dropdown-link>
                         <div class="border-t border-gray-200"></div>
                         <!-- Guardados -->
                         <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
-                            <i class="fa-regular fa-floppy-disk"></i> GUARDADOS
+                            <i class="fa-regular fa-floppy-disk"></i> Guardados
                         </x-dropdown-link>
                         <div class="border-t border-gray-200"></div>
                         <!-- Likes -->
                         <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
-                            <i class="fa-regular fa-heart"></i> LIKES
+                            <i class="fa-regular fa-heart"></i> Likes
                         </x-dropdown-link>
                         <div class="border-t border-gray-200"></div>
                         <!-- Authentication -->

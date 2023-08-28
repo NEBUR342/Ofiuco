@@ -44,6 +44,7 @@
                                     </span>
                                 </i>
                             @endif
+                            {{-- Aqui agrego el guardar la publicacion --}}
                         @else
                             <i class="fa-regular fa-heart bg-red-200 px-2 py-1 rounded-lg mx-auto"
                                 title="No puedes dar like">

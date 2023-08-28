@@ -7,6 +7,7 @@ use App\Models\Community;
 use App\Models\Like;
 use App\Models\Publication;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -172,6 +173,30 @@ class ShowPublication extends Component
         $this->validate([
             'miPublicacion.titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo,' . $this->publicacion->id]
         ]);
+
+        // Agregar borrar likes, comentarios y guardados al cambiar la comunidad.
+        // Compruebo si elijes una comunidad diferente a la que ya tenias.
+        if ($this->selectedComunidades && $this->selectedComunidades != $this->publicacion->community_id) {
+            $comunidadseleccionada = Community::where('id',$this->selectedComunidades)->first();
+
+            // Primero borro los comentarios de los usuarios que no pertenecen a la nueva comunidad.
+            $comentarios=$this->publicacion->comments;
+            foreach ($comentarios as $comentario) {
+                $usuario=User::where('id',$comentario->user_id)->first();
+                if(!$usuario->is_admin && ($comunidadseleccionada->user_id!=$usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))){
+                    $comentario->delete();
+                }
+            }
+
+            // A continuacion borro los likes de los usuarios que no pertenecen a la nueva comunidad.
+            $likes=$this->publicacion->likes;
+            foreach ($likes as $like) {
+                $usuario=User::where('id',$like->user_id)->first();
+                if(!$usuario->is_admin && ($comunidadseleccionada->user_id!=$usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))){
+                    $like->delete();
+                }
+            }
+        }
 
         // Si he modificado la imagen borro la antigua y guardo la nueva.
         if ($this->imagen) {

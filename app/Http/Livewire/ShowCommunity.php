@@ -76,15 +76,14 @@ class ShowCommunity extends Component
 
     public function sacarParticipante(User $participante)
     {
-        // Compruebo que el usuario que sale es con el que estas autenticado.
-        if(auth()->user()->id != $participante->id) abort(404);
-
+        // Compruebo que el usuario que sale es con el que estas autenticado, es administrador o es dueño de la comunidad.
+        self::comprobarUsuario();
         // Elimino al participante deseado
         self::quitarParticipante($participante);
         $this->emit('info', "Participante " . $participante->name . " ha salido");
     }
 
-    private function quitarParticipante(User $participante)
+    private function quitarParticipante(User $participante) // Agregar borrar likes, comentarios y guardados al sacar al participante.
     {
         // Obtengo la id del participante y de la comunidad.
         $userId = $participante->id;
@@ -167,5 +166,15 @@ class ShowCommunity extends Component
     public function verPublicacionesComunidad(){
         $id=$this->comunidad->id;
         return redirect()->route('publicationscommunity.show', compact('id'));
+    }
+
+    public function comprobarUsuario(){
+        // Compruebo que seas administrador o el dueño de la comunidad, 
+        if(auth()->user()->is_admin) return;
+        if($this->comunidad->user_id == auth()->user()->id) return;
+        foreach ($this->comunidad->users as $usuario) {
+            if ($usuario->id == auth()->user()->id) return;
+        }
+        abort(404);
     }
 }

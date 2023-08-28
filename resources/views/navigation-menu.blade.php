@@ -29,6 +29,7 @@
                             <x-nav-link :href="route('tags.show')" :active="request()->routeIs('tags.show')" title="TAGS">
                                 <i class="fa-solid fa-tags"></i>
                             </x-nav-link>
+
                             <x-nav-link :href="route('users.show')" :active="request()->routeIs('users.show')" title="USUARIOS">
                                 <i class="fa-solid fa-users"></i>
                             </x-nav-link>
@@ -40,15 +41,6 @@
                     <x-nav-link :href="route('contactanos.pintar')" :active="request()->routeIs('contactanos.pintar')" title="CONTACTANOS">
                         <i class="fa-regular fa-envelope"></i>
                     </x-nav-link>
-                    @auth
-                        <x-nav-link :href="route('temaoscuro.cambiartema')" :active="request()->routeIs('temaoscuro.cambiartema')" title="CAMBIAR TEMA">
-                            @if (auth()->user()->temaoscuro)
-                                <i class="fa-regular fa-moon"></i>
-                            @else
-                                <i class="fa-regular fa-sun"></i>
-                            @endif
-                        </x-nav-link>
-                    @endauth
                 </div>
             </div>
             <!-- Settings Dropdown -->
@@ -90,6 +82,26 @@
                                         {{ __('API Tokens') }}
                                     </x-dropdown-link>
                                 @endif
+                                <div class="border-t border-gray-200"></div>
+                                <!-- Tema oscuro -->
+                                <x-dropdown-link href="{{ route('temaoscuro.cambiartema') }}"
+                                    active="request()->routeIs('temaoscuro.cambiartema')">
+                                    @if (auth()->user()->temaoscuro)
+                                        <i class="fa-regular fa-moon"></i> MODO OSCURO
+                                    @else
+                                        <i class="fa-regular fa-sun"></i> MODO CLARO
+                                    @endif
+                                </x-dropdown-link>
+                                <div class="border-t border-gray-200"></div>
+                                <!-- Guardados -->
+                                <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                                    <i class="fa-regular fa-floppy-disk"></i> GUARDADOS
+                                </x-dropdown-link>
+                                <div class="border-t border-gray-200"></div>
+                                <!-- Likes -->
+                                <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                                    <i class="fa-regular fa-heart"></i> LIKES
+                                </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
                                 <!-- Authentication -->
                                 <form method="POST" action="{{ route('logout') }}" x-data>
@@ -168,15 +180,6 @@
             <x-responsive-nav-link :href="route('contactanos.pintar')" :active="request()->routeIs('contactanos.pintar')">
                 <i class="fa-regular fa-envelope"></i> CONTACTANOS
             </x-responsive-nav-link>
-            @auth
-                <x-responsive-nav-link :href="route('temaoscuro.cambiartema')" :active="request()->routeIs('temaoscuro.cambiartema')">
-                    @if (auth()->user()->temaoscuro)
-                        <i class="fa-regular fa-moon"></i> CAMBIAR TEMA
-                    @else
-                        <i class="fa-regular fa-sun"></i> CAMBIAR TEMA
-                    @endif
-                </x-responsive-nav-link>
-            @endauth
         </div>
         <!-- Responsive Settings Options -->
         @auth
@@ -221,11 +224,29 @@
                         @endif
 
                         <div class="border-t border-gray-200"></div>
-
+                        <!-- Tema oscuro -->
+                        <x-dropdown-link href="{{ route('temaoscuro.cambiartema') }}"
+                            active="request()->routeIs('temaoscuro.cambiartema')">
+                            @if (auth()->user()->temaoscuro)
+                                <i class="fa-regular fa-moon"></i> MODO OSCURO
+                            @else
+                                <i class="fa-regular fa-sun"></i> MODO CLARO
+                            @endif
+                        </x-dropdown-link>
+                        <div class="border-t border-gray-200"></div>
+                        <!-- Guardados -->
+                        <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                            <i class="fa-regular fa-floppy-disk"></i> GUARDADOS
+                        </x-dropdown-link>
+                        <div class="border-t border-gray-200"></div>
+                        <!-- Likes -->
+                        <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                            <i class="fa-regular fa-heart"></i> LIKES
+                        </x-dropdown-link>
+                        <div class="border-t border-gray-200"></div>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}" x-data>
                             @csrf
-
                             <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>

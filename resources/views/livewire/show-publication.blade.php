@@ -100,7 +100,7 @@
         <div class="mt-4 mx-2">
             @auth
                 <div class="flex flex-wrap">
-                    <div class="relative mb-3 w-5/6 min-[700px]:w-1/2">
+                    <div class="relative mb-3 w-5/6 min-[700px]:w-1/2 text-gray-800">
                         @wire('defer')
                             <x-form-input name="contenido" label="Añade un comentario" />
                         @endwire

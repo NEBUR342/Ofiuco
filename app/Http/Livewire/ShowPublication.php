@@ -182,7 +182,7 @@ class ShowPublication extends Component
             // Primero borro los comentarios de los usuarios que no pertenecen a la nueva comunidad.
             $comentarios=$this->publicacion->comments;
             foreach ($comentarios as $comentario) {
-                $usuario=$comentario->user;
+                $usuario=$comentario->user; 
                 if(!$usuario->is_admin && ($comunidadseleccionada->user_id!=$usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))){
                     $comentario->delete();
                 }

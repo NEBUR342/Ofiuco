@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="max-[640px]:mx-5 min-[640px]:px-12 my-4">
+    <div class="max-[640px]:mx-5 min-[640px]:px-12 my-4 text-gray-800">
         <form action="{{ route('contactanos.procesar') }}" method="POST">
             @csrf
             <x-form-input name="nombre" label="Nombre del Contacto" placeholder="Nombre del remitente..." />

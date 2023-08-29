@@ -1,7 +1,7 @@
 <div class='min-[480px]:px-12 mt-4 cursor-default'>
     <div class="flex mb-3">
         <div class="flex-1">
-            <x-input class="w-full" type='search' placeholder="Buscar publicaciones..." wire:model="buscar"></x-input>
+            <x-input class="w-full text-gray-800" type='search' placeholder="Buscar publicaciones..." wire:model="buscar"></x-input>
         </div>
         <div>
             @livewire('create-publication')

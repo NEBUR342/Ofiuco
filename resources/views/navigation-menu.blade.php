@@ -127,7 +127,7 @@
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
                                 <!-- Likes -->
-                                <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                                <x-dropdown-link href="{{route('publicationslikes.show', ['id' => auth()->user()->id])}}">
                                     <i class="fa-regular fa-heart"></i> Likes
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>

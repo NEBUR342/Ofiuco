@@ -40,7 +40,7 @@ class ShowPublicationscommunities extends Component
                     ->where(function ($q) {
                         $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
                     })
-                    ->orderBy('id', $this->orden)
+                    ->orderBy('titulo', $this->orden)
                     ->paginate(15);
                 break;
             case "creacion":

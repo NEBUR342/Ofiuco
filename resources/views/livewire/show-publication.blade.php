@@ -72,11 +72,13 @@
                         @endauth
 
                     </div>
-                    <div class="my-5 mx-5">Autor: <span @class([ 'rounded-xl cursor-pointer',
+                    <div class="my-5 mx-5">Autor: <span @class([
+                        'rounded-xl cursor-pointer',
                         'bg-gray-500 py-1 px-2' => auth()->check() && auth()->user()->temaoscuro,
                         'bg-gray-400 py-1 px-2' => auth()->guest() || !auth()->user()->temaoscuro,
-                    ]) wire:click="buscarUsuario({{ $publicacion->user->id }})">{{ $publicacion->user->name }}
-                    </span></div>
+                    ])
+                            wire:click="buscarUsuario({{ $publicacion->user->id }})">{{ $publicacion->user->name }}
+                        </span></div>
                     @if ($publicacion->comunidad == 'SI')
                         <div class="mb-5 mx-5">Comunidad: {{ $publicacion->community->nombre }}</div>
                     @endif
@@ -119,7 +121,8 @@
                     'relative overflow-x-auto shadow-md rounded-lg my-3',
                     'bg-gray-700 hover:bg-gray-600 text-white' =>
                         auth()->check() && auth()->user()->temaoscuro,
-                    'bg-gray-200 hover:bg-gray-100' => auth()->guest() || !auth()->user()->temaoscuro,
+                    'bg-gray-200 hover:bg-gray-100' =>
+                        auth()->guest() || !auth()->user()->temaoscuro,
                 ])>
                     <div class="flex flex-wrap mt-2">
                         <span class="flex flex-col mr-3 cursor-pointer"
@@ -135,12 +138,13 @@
                         {{ $comment->contenido }}
                     </div>
                     @auth
-                        <div class="flex flex-row-reverse mx-6 my-4 ">
-                            @if (auth()->user()->id == $publicacion->user->id || auth()->user()->id == $comment->user_id || auth()->user()->is_admin)
+                        @if (auth()->user()->id == $publicacion->user->id || auth()->user()->id == $comment->user_id || auth()->user()->is_admin)
+                            <div class="flex flex-row-reverse mx-6 my-4 ">
                                 <i class="fa-regular fa-trash-can cursor-pointer text-red-500"
                                     wire:click="quitarComentario({{ $comment }})"></i>
-                            @endif
-                        </div>
+                            </div>
+                        @endif
+
                     @endauth
                 </div>
             @endforeach

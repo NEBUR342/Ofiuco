@@ -7,6 +7,7 @@ use App\Http\Livewire\ShowCommunity;
 use App\Http\Livewire\ShowPublication;
 use App\Http\Livewire\ShowPublicationscommunities;
 use App\Http\Livewire\ShowPublicationscommunity;
+use App\Http\Livewire\ShowPublicationslikes;
 use App\Http\Livewire\ShowPublicationsuser;
 use App\Http\Livewire\ShowPublicationswelcome;
 use App\Http\Livewire\ShowTags;
@@ -33,13 +34,15 @@ Route::middleware([
     'verified'
 ])->group(function () {
     Route::get('/dashboard', ShowPublicationscommunities::class)->name('dashboard');
-    Route::get('communities', ShowCommunities::class)->name('communities.show');
     Route::get('publicationscommunity/{id}', ShowPublicationscommunity::class)->name('publicationscommunity.show');
+    Route::get('communities', ShowCommunities::class)->name('communities.show');
     Route::get('community/{id}', ShowCommunity::class)->name('community.show');
     Route::get('publications/{id}', ShowPublicationsuser::class)->name('publicationsuser.show');
     Route::get('tags', ShowTags::class)->name('tags.show');
     Route::get('users', ShowUsers::class)->name('users.show');
+    Route::get('publicationslikes/{id}', ShowPublicationslikes::class)->name('publicationslikes.show');
     Route::get('temaoscuro',[TemaoscuroController::class, "cambiartema"])->name('temaoscuro.cambiartema');
+    
 });
 Route::get('contactanos',[MailController::class, "pintarFormulario"])->name('contactanos.pintar');
 Route::post('contactanos',[MailController::class, "procesarFormulario"])->name('contactanos.procesar');

@@ -1,7 +1,8 @@
 <div class="min-[480px]:px-12 my-4 cursor-default">
     <div class="flex mb-3">
         <div class="flex-1">
-            <x-input class="w-full text-gray-800" type='search' placeholder="Buscar usuario..." wire:model="buscar"></x-input>
+            <x-input class="w-full text-gray-800" type='search' placeholder="Buscar usuario..."
+                wire:model="buscar"></x-input>
         </div>
         <div>
             @livewire('create-users')
@@ -21,16 +22,15 @@
         </div>
         @foreach ($users as $usuario)
             <div @class([
-                'relative overflow-x-auto shadow-md rounded-lg my-3 mx-5 cursor-pointer',
-                'bg-gray-700 hover:bg-gray-600 text-white' =>
-                    auth()->user()->temaoscuro,
+                'relative overflow-x-auto shadow-md rounded-lg my-3 mx-5',
+                'bg-gray-700 hover:bg-gray-600 text-white' => auth()->user()->temaoscuro,
                 'bg-gray-200 hover:bg-gray-100' => !auth()->user()->temaoscuro,
-            ]) wire:click="buscarUsuario({{ $usuario->id }})"
-                title="Publicaciones de {{ $usuario->name }}">
+            ])>
                 <div class="flex flex-wrap my-3">
                     <span class="flex flex-col">
-                        <img class="h-8 w-8 rounded-full ml-4" src="{{ $usuario->profile_photo_url }}"
-                            alt="{{ $usuario->name }}" />
+                        <img class="h-8 w-8 rounded-full ml-4 cursor-pointer" src="{{ $usuario->profile_photo_url }}"
+                            wire:click="buscarUsuario({{ $usuario->id }})"
+                            title="Publicaciones de {{ $usuario->name }}" alt="{{ $usuario->name }}" />
                     </span>
                     <span @class([
                         'flex flex-col mx-3 px-2 text-xl rounded-xl',
@@ -43,6 +43,9 @@
                     <span class="mx-3 px-2 text-l rounded-xl">
                         {{ $usuario->email }}
                     </span>
+                </div>
+                <div class="flex flex-row-reverse mx-6 my-4 ">
+                    <i class="fa-regular fa-heart cursor-pointer text-red-500" wire:click="buscarLikesUsuario({{ $usuario->id }})"></i>
                 </div>
             </div>
         @endforeach

@@ -12,14 +12,15 @@
             'font-bold text-xl text-center my-4',
             'text-white' => auth()->user()->temaoscuro,
         ])>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR USUARIOS"><i
-                    class="fa-solid fa-arrow-down-a-z"></i></span>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('comunidades')" title="ORDENAR POR COMUNIDAD"><i
-                    class="fa-solid fa-users"></i></span>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('likes')" title="ORDENAR POR LIKES"><i
-                    class="fa-solid fa-fire"></i></span>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD"><i
-                    class="fa-regular fa-clock"></i></span>
+            <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR USUARIOS">
+                <i class="fa-solid fa-arrow-down-a-z"></i>
+            </span>
+            <span class="mx-3 cursor-pointer" wire:click="ordenar('likes')" title="ORDENAR POR LIKES">
+                <i class="fa-solid fa-fire"></i>
+            </span>
+            <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD">
+                <i class="fa-regular fa-clock"></i>
+            </span>
         </div>
         @foreach ($publicaciones as $publicacion)
             <div @class([
@@ -48,12 +49,14 @@
                         'text-white' => auth()->user()->temaoscuro,
                     ])>
                         <p class="text-xl mb-5">
-                            {{ $publicacion->user->name }}
+                            {{ $publicacion->titulo }}
                         </p>
                         <img src="{{ Storage::url($publicacion->imagen) }}"
                             alt="imagen de la comunidad {{ $publicacion->community->nombre }}"
                             class="rounded-lg mx-auto">
-
+                        <p class="text-xl mt-5 text-left">
+                            Creador: {{ $publicacion->user->name }}
+                        </p>
                         @if ($publicacion->likes->where('user_id', auth()->id())->count())
                             <i @class([
                                 'fa-solid fa-heart px-2 py-1 rounded-lg mt-5 ml-2',

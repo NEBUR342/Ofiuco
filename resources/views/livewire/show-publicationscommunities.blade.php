@@ -48,12 +48,17 @@
                         'text-white' => auth()->user()->temaoscuro,
                     ])>
                         <p class="text-xl mb-5">
-                            {{ $publicacion->user->name }}
+                            {{ $publicacion->titulo }}
                         </p>
                         <img src="{{ Storage::url($publicacion->imagen) }}"
                             alt="imagen de la comunidad {{ $publicacion->community->nombre }}"
                             class="rounded-lg mx-auto">
-
+                            <p class="text-xl my-5 text-left">
+                                Creador: {{ $publicacion->user->name }}
+                            </p>
+                            <p class="text-xl text-left">
+                                Comunidad: {{ $publicacion->community->nombre }}
+                            </p>
                         @if ($publicacion->likes->where('user_id', auth()->id())->count())
                             <i @class([
                                 'fa-solid fa-heart px-2 py-1 rounded-lg mt-5 ml-2',

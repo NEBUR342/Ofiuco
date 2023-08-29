@@ -34,6 +34,39 @@
                                 <i class="fa-solid fa-users"></i>
                             </x-nav-link>
                         @endif
+                        {{-- Notificaciones --}}
+                        @auth
+                            <div @class([
+                                'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-300 hover:border-gray-100 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out' => auth()->user()->temaoscuro,
+                                'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out' => !auth()->user()->temaoscuro,
+                            ])>
+                                <x-dropdown width="48">
+                                    <x-slot name="trigger">
+                                        <i class="fa-regular fa-bell cursor-pointer" title="NOTIFICACIONES"></i>
+                                    </x-slot>
+                                    <x-slot name="content">
+                                        {{-- Likes --}}
+                                        <x-dropdown-link href="{{ route('dashboard') }}"
+                                            active="request()->routeIs('dashboard')">
+                                            <i class="fa-regular fa-heart"></i> Likes
+                                        </x-dropdown-link>
+                                        <div class="border-t border-gray-200"></div>
+                                        {{-- Guardados --}}
+                                        <x-dropdown-link href="{{ route('dashboard') }}"
+                                            active="request()->routeIs('dashboard')">
+                                            <i class="fa-regular fa-floppy-disk"></i> Guardados
+                                        </x-dropdown-link>
+                                        <div class="border-t border-gray-200"></div>
+                                        {{-- comentarios --}}
+                                        <x-dropdown-link href="{{ route('dashboard') }}"
+                                            active="request()->routeIs('dashboard')">
+                                            <i class="fa-regular fa-message"></i> Comentarios
+                                        </x-dropdown-link>
+                                    </x-slot>
+                                </x-dropdown>
+                            </div>
+                        @endauth
+                        {{-- Chat parte de investigacion --}}
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" title="CHAT">
                             <i class="fa-regular fa-comment-dots"></i>
                         </x-nav-link>
@@ -93,21 +126,21 @@
                                     @endif
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
-                                <!-- Guardados -->
-                                <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
-                                    <i class="fa-regular fa-floppy-disk"></i> Guardados
-                                </x-dropdown-link>
-                                <div class="border-t border-gray-200"></div>
                                 <!-- Likes -->
                                 <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
                                     <i class="fa-regular fa-heart"></i> Likes
+                                </x-dropdown-link>
+                                <div class="border-t border-gray-200"></div>
+                                <!-- Guardados -->
+                                <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                                    <i class="fa-regular fa-floppy-disk"></i> Guardados
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
                                 <!-- Authentication -->
                                 <form method="POST" action="{{ route('logout') }}" x-data>
                                     @csrf
                                     <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                                        {{ __('Log Out') }}
+                                        <i class="fa-solid fa-right-from-bracket"></i> {{ __('Log Out') }}
                                     </x-dropdown-link>
                                 </form>
                             </x-slot>
@@ -173,6 +206,36 @@
                         <i class="fa-solid fa-users"></i> USUARIOS
                     </x-responsive-nav-link>
                 @endif
+                {{-- Notificaciones --}}
+                <div @class([
+                    'cursor-pointer',
+                    'block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-500 hover:text-gray-300 hover:bg-gray-700 hover:border-indigo-700 focus:outline-none focus:text-gray-100 focus:bg-indigo-800 focus:border-indigo-700 transition duration-150 ease-in-out' => auth()->user()->temaoscuro,
+                    'block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out' => !auth()->user()->temaoscuro,
+                ])>
+                    <x-dropdown align="left" width="48">
+                        <x-slot name="trigger">
+                            <i class="fa-regular fa-bell"></i> NOTIFICACIONES
+                        </x-slot>
+
+                        <x-slot name="content">
+                            {{-- Likes --}}
+                            <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                                <i class="fa-regular fa-heart"></i> Likes
+                            </x-dropdown-link>
+                            <div class="border-t border-gray-200"></div>
+                            {{-- Guardados --}}
+                            <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                                <i class="fa-regular fa-floppy-disk"></i> Guardados
+                            </x-dropdown-link>
+                            <div class="border-t border-gray-200"></div>
+                            {{-- comentarios --}}
+                            <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                                <i class="fa-regular fa-message"></i> Comentarios
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+                {{-- Chat parte de investigacion --}}
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     <i class="fa-regular fa-comment-dots"></i> CHAT
                 </x-responsive-nav-link>
@@ -184,7 +247,7 @@
         <!-- Responsive Settings Options -->
         @auth
             <div class="ml-3 relative">
-                <x-dropdown align="right" width="48">
+                <x-dropdown align="left" width="48">
                     <x-slot name="trigger">
                         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                             <button
@@ -234,21 +297,21 @@
                             @endif
                         </x-dropdown-link>
                         <div class="border-t border-gray-200"></div>
-                        <!-- Guardados -->
-                        <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
-                            <i class="fa-regular fa-floppy-disk"></i> Guardados
-                        </x-dropdown-link>
-                        <div class="border-t border-gray-200"></div>
                         <!-- Likes -->
                         <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
                             <i class="fa-regular fa-heart"></i> Likes
+                        </x-dropdown-link>
+                        <div class="border-t border-gray-200"></div>
+                        <!-- Guardados -->
+                        <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                            <i class="fa-regular fa-floppy-disk"></i> Guardados
                         </x-dropdown-link>
                         <div class="border-t border-gray-200"></div>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}" x-data>
                             @csrf
                             <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                                {{ __('Log Out') }}
+                                <i class="fa-solid fa-right-from-bracket"></i> {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>

@@ -11,7 +11,7 @@ class ShowPublicationscommunities extends Component
 {
     use WithPagination;
 
-    public string $campo = 'id', $orden = 'desc', $buscar = "";
+    public string $campo = 'creacion', $orden = 'desc', $buscar = "";
 
     public function updatingBuscar()
     {
@@ -33,10 +33,12 @@ class ShowPublicationscommunities extends Component
                 // Lo ordeno por el nombre de los usuarios.
                 $publicaciones = Publication::query()
                     ->where('estado', 'PUBLICADO')
-                    ->whereIn('community_id', $comunidades->pluck('id'))
-                    ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'))
-                    ->whereHas('user', function ($q) {
-                        $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                    ->where(function ($query) use ($comunidades) {
+                        $query->whereIn('community_id', $comunidades->pluck('id'))
+                            ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
+                    })
+                    ->where(function ($q) {
+                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
                     })
                     ->orderBy('id', $this->orden)
                     ->paginate(15);
@@ -48,10 +50,12 @@ class ShowPublicationscommunities extends Component
                 // Lo ordeno por el id de las publicaciones.
                 $publicaciones = Publication::query()
                     ->where('estado', 'PUBLICADO')
-                    ->whereIn('community_id', $comunidades->pluck('id'))
-                    ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'))
-                    ->whereHas('user', function ($q) {
-                        $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                    ->where(function ($query) use ($comunidades) {
+                        $query->whereIn('community_id', $comunidades->pluck('id'))
+                            ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
+                    })
+                    ->where(function ($q) {
+                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
                     })
                     ->orderBy('id', $this->orden)
                     ->paginate(15);
@@ -63,10 +67,12 @@ class ShowPublicationscommunities extends Component
                 // Lo ordeno por el id de las comunidades.
                 $publicaciones = Publication::query()
                     ->where('estado', 'PUBLICADO')
-                    ->whereIn('community_id', $comunidades->pluck('id'))
-                    ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'))
-                    ->whereHas('user', function ($q) {
-                        $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                    ->where(function ($query) use ($comunidades) {
+                        $query->whereIn('community_id', $comunidades->pluck('id'))
+                            ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
+                    })
+                    ->where(function ($q) {
+                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
                     })
                     ->orderBy('community_id', $this->orden)
                     ->paginate(15);
@@ -84,8 +90,8 @@ class ShowPublicationscommunities extends Component
                         $query->whereIn('community_id', $comunidades->pluck('id'))
                             ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
                     })
-                    ->whereHas('user', function ($q) {
-                        $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                    ->where(function ($q) {
+                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
                     })
                     ->leftJoin('likes', 'publications.id', 'likes.publication_id')
                     ->selectRaw('publications.*, COUNT(likes.id) as likes_count')
@@ -104,8 +110,8 @@ class ShowPublicationscommunities extends Component
                         $query->whereIn('community_id', $comunidades->pluck('id'))
                             ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
                     })
-                    ->whereHas('user', function ($q) {
-                        $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                    ->where(function ($q) {
+                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
                     })
                     ->orderBy('id', $this->orden)
                     ->paginate(15);

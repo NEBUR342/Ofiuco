@@ -8,6 +8,7 @@ use App\Http\Livewire\ShowPublication;
 use App\Http\Livewire\ShowPublicationscommunities;
 use App\Http\Livewire\ShowPublicationscommunity;
 use App\Http\Livewire\ShowPublicationslikes;
+use App\Http\Livewire\ShowPublicationssaves;
 use App\Http\Livewire\ShowPublicationsuser;
 use App\Http\Livewire\ShowPublicationswelcome;
 use App\Http\Livewire\ShowTags;
@@ -40,7 +41,8 @@ Route::middleware([
     Route::get('publications/{id}', ShowPublicationsuser::class)->name('publicationsuser.show');
     Route::get('tags', ShowTags::class)->name('tags.show');
     Route::get('users', ShowUsers::class)->name('users.show');
-    Route::get('publicationslikes/{id}', ShowPublicationslikes::class)->name('publicationslikes.show');
+    Route::get('likes/{id}', ShowPublicationslikes::class)->name('publicationslikes.show');
+    Route::get('saves/{id}', ShowPublicationssaves::class)->name('publicationssaves.show');
     Route::get('temaoscuro',[TemaoscuroController::class, "cambiartema"])->name('temaoscuro.cambiartema');
     
 });

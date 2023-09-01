@@ -60,6 +60,35 @@
                                 </span>
                             </i>
                         @endauth
+                        @auth
+                            @if ($publicacion->saves->where('user_id', auth()->id())->count())
+                                <i @class([
+                                    'fa-solid fa-bookmark px-2 py-1 rounded-lg mt-5 ml-2',
+                                    'bg-yellow-500' => auth()->user()->temaoscuro,
+                                    'bg-yellow-200' => !auth()->user()->temaoscuro,
+                                ])>
+                                    <span class="mx-1">
+                                        {{ $publicacion->saves->count() }}
+                                    </span>
+                                </i>
+                            @else
+                                <i @class([
+                                    'fa-regular fa-bookmark px-2 py-1 rounded-lg mt-5 ml-2',
+                                    'bg-yellow-500' => auth()->user()->temaoscuro,
+                                    'bg-yellow-200' => !auth()->user()->temaoscuro,
+                                ])>
+                                    <span class="mx-1">
+                                        {{ $publicacion->saves->count() }}
+                                    </span>
+                                </i>
+                            @endif
+                        @else
+                            <i class='fa-regular fa-bookmark px-2 py-1 rounded-lg mt-5 ml-2 bg-yellow-200'>
+                                <span class="mx-1">
+                                    {{ $publicacion->saves->count() }}
+                                </span>
+                            </i>
+                        @endauth
                         @if ($publicacion->comments->count())
                             <i @class([
                                 'fa-solid fa-message px-2 py-1 rounded-lg mt-5 ml-2',

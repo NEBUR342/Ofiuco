@@ -1,7 +1,8 @@
 <div class='min-[480px]:px-12 mt-4 cursor-default'>
     <div class="flex mb-3">
         <div class="flex-1">
-            <x-input class="w-full text-gray-800" type='search' placeholder="Buscar publicaciones..." wire:model="buscar"></x-input>
+            <x-input class="w-full text-gray-800" type='search' placeholder="Buscar publicaciones..."
+                wire:model="buscar"></x-input>
         </div>
         <div>
             @livewire('create-publication')
@@ -53,12 +54,12 @@
                         <img src="{{ Storage::url($publicacion->imagen) }}"
                             alt="imagen de la comunidad {{ $publicacion->community->nombre }}"
                             class="rounded-lg mx-auto">
-                            <p class="text-xl my-5 text-left">
-                                Creador: {{ $publicacion->user->name }}
-                            </p>
-                            <p class="text-xl text-left">
-                                Comunidad: {{ $publicacion->community->nombre }}
-                            </p>
+                        <p class="text-xl my-5 text-left">
+                            Creador: {{ $publicacion->user->name }}
+                        </p>
+                        <p class="text-xl text-left">
+                            Comunidad: {{ $publicacion->community->nombre }}
+                        </p>
                         @if ($publicacion->likes->where('user_id', auth()->id())->count())
                             <i @class([
                                 'fa-solid fa-heart px-2 py-1 rounded-lg mt-5 ml-2',
@@ -77,6 +78,27 @@
                             ])>
                                 <span class="mx-1">
                                     {{ $publicacion->likes->count() }}
+                                </span>
+                            </i>
+                        @endif
+                        @if ($publicacion->saves->where('user_id', auth()->id())->count())
+                            <i @class([
+                                'fa-solid fa-bookmark px-2 py-1 rounded-lg mt-5 ml-2',
+                                'bg-yellow-500' => auth()->user()->temaoscuro,
+                                'bg-yellow-200' => !auth()->user()->temaoscuro,
+                            ])>
+                                <span class="mx-1">
+                                    {{ $publicacion->saves->count() }}
+                                </span>
+                            </i>
+                        @else
+                            <i @class([
+                                'fa-regular fa-bookmark px-2 py-1 rounded-lg mt-5 ml-2',
+                                'bg-yellow-500' => auth()->user()->temaoscuro,
+                                'bg-yellow-200' => !auth()->user()->temaoscuro,
+                            ])>
+                                <span class="mx-1">
+                                    {{ $publicacion->saves->count() }}
                                 </span>
                             </i>
                         @endif

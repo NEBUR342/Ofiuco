@@ -31,5 +31,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PublicationSeeder::class);
         Comment::factory(500)->create();
         $this->call(LikeSeeder::class);
+        $this->call(SaveSeeder::class);
     }
 }

@@ -44,8 +44,13 @@
                         {{ $usuario->email }}
                     </span>
                 </div>
-                <div class="flex flex-row-reverse mx-6 my-4 ">
-                    <i class="fa-regular fa-heart cursor-pointer text-red-500" wire:click="buscarLikesUsuario({{ $usuario->id }})"></i>
+                <div class="flex flex-row-reverse my-4">
+                    <span class="mx-4">
+                        <i class="fa-regular fa-bookmark cursor-pointer text-yellow-500" wire:click="buscarSavesUsuario({{ $usuario->id }})"></i>
+                    </span>
+                    <span>
+                        <i class="fa-regular fa-heart cursor-pointer text-red-500" wire:click="buscarLikesUsuario({{ $usuario->id }})"></i>
+                    </span>
                 </div>
             </div>
         @endforeach

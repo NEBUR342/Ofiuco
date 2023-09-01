@@ -2,8 +2,11 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Comment;
 use App\Models\Community;
+use App\Models\Like;
 use App\Models\Publication;
+use App\Models\Save;
 use App\Models\User;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -100,6 +103,23 @@ class ShowCommunity extends Component
             $publicacion->delete();
         }
 
+        // Elimino los comentarios, likes y saves del participante
+        $publicaciones = $this->comunidad->publications;
+        foreach ($publicaciones as $publicacion) {
+            $like = Like::where('user_id', $userId)
+                ->where('publication_id', $publicacion->id)
+                ->first();
+            $save = Save::where('user_id', $userId)
+                ->where('publication_id', $publicacion->id)
+                ->first();
+            $comment = Comment::where('user_id', $userId)
+                ->where('publication_id', $publicacion->id)
+                ->first();
+                if($like) $like->delete();
+                if($save) $save->delete();
+                if($comment) $comment->delete();
+        }
+
         // Saco al usuario de la comunidad Borrandolo de la base de datos.
         $participante->communities()->detach($this->comunidad->id);
     }
@@ -108,7 +128,7 @@ class ShowCommunity extends Component
     {
         // Obtengo al usuario autenticado.
         $user = auth()->user();
-        
+
         // Añado el usuario a la comunidad.
         // Da error en codigo, pero lo hace bien, no saltan excepciones.
         $user->communities()->attach($this->comunidad);
@@ -138,11 +158,11 @@ class ShowCommunity extends Component
 
         // Cambio todos los campos de la comunidad
         $this->miComunidad->update([
-                "nombre" => $this->miComunidad->nombre,
-                "descripcion" => $this->miComunidad->descripcion,
-                "imagen" => $this->comunidad->imagen,
-            ]);
-        
+            "nombre" => $this->miComunidad->nombre,
+            "descripcion" => $this->miComunidad->descripcion,
+            "imagen" => $this->comunidad->imagen,
+        ]);
+
         // Reseteo la variable.
         $this->miComunidad = new Community();
         $this->reset('openEditar');
@@ -151,10 +171,11 @@ class ShowCommunity extends Component
         File::deleteDirectory(storage_path('livewire-tmp'));
     }
 
-    public function comprobarPermisosComunidad(Community $comunidad){
+    public function comprobarPermisosComunidad(Community $comunidad)
+    {
         // Compruebo que seas administrador o el dueño de la comunidad.
-        if(auth()->user()->is_admin) return;
-        if($comunidad->user_id == auth()->user()->id) return;
+        if (auth()->user()->is_admin) return;
+        if ($comunidad->user_id == auth()->user()->id) return;
         abort(404);
     }
 
@@ -163,15 +184,17 @@ class ShowCommunity extends Component
         return redirect()->route('publicationsuser.show', compact('id'));
     }
 
-    public function verPublicacionesComunidad(){
-        $id=$this->comunidad->id;
+    public function verPublicacionesComunidad()
+    {
+        $id = $this->comunidad->id;
         return redirect()->route('publicationscommunity.show', compact('id'));
     }
 
-    public function comprobarUsuario(){
+    public function comprobarUsuario()
+    {
         // Compruebo que seas administrador o el dueño de la comunidad, 
-        if(auth()->user()->is_admin) return;
-        if($this->comunidad->user_id == auth()->user()->id) return;
+        if (auth()->user()->is_admin) return;
+        if ($this->comunidad->user_id == auth()->user()->id) return;
         foreach ($this->comunidad->users as $usuario) {
             if ($usuario->id == auth()->user()->id) return;
         }

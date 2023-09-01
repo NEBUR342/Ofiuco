@@ -39,4 +39,8 @@ class Publication extends Model
         return $this->belongsTo(User::class);
     }
     
+    public function saves(): HasMany
+    {
+        return $this->hasMany(Save::class);
+    }
 }

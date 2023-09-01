@@ -70,4 +70,8 @@ class ShowUsers extends Component
     {
         return redirect()->route('publicationslikes.show', compact('id'));
     }
+    public function buscarSavesUsuario($id)
+    {
+        return redirect()->route('publicationssaves.show', compact('id'));
+    }
 }

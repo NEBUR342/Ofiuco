@@ -45,6 +45,28 @@
                                 </i>
                             @endif
                             {{-- Aqui agrego el guardar la publicacion --}}
+                            @if ($publicacion->saves->where('user_id', auth()->id())->count())
+                                <i @class([
+                                    'fa-solid fa-bookmark cursor-pointer px-2 py-1 rounded-lg mx-auto',
+                                    'bg-yellow-500' => auth()->user()->temaoscuro,
+                                    'bg-yellow-200' => !auth()->user()->temaoscuro,
+                                ]) title="Quitar like"
+                                    wire:click="quitarsave({{ $publicacion }})">
+                                    <span class="mx-1">
+                                        {{ $publicacion->saves->count() }}
+                                    </span>
+                                </i>
+                            @else
+                                <i @class([
+                                    'fa-regular fa-bookmark cursor-pointer px-2 py-1 rounded-lg mx-auto',
+                                    'bg-yellow-500' => auth()->user()->temaoscuro,
+                                    'bg-yellow-200' => !auth()->user()->temaoscuro,
+                                ]) title="Dar like" wire:click="darsave({{ $publicacion }})">
+                                    <span class="mx-1">
+                                        {{ $publicacion->saves->count() }}
+                                    </span>
+                                </i>
+                            @endif
                         @else
                             <i class="fa-regular fa-heart bg-red-200 px-2 py-1 rounded-lg mx-auto"
                                 title="No puedes dar like">
@@ -84,8 +106,12 @@
                     @endif
                 </div>
                 @auth
-                    @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin || $aux)
-                        <div class="flex flex-wrap text-xl">
+                    <div class="flex flex-wrap text-xl">
+                        <div title="VER LIKES DEL USUARIO" wire:click="buscarLikesUsuario({{ $publicacion->user->id }})"
+                            class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-yellow-500 text-yellow-700 font-semibold hover:text-white py-2 px-4 rounded">
+                            <i class="fa-regular fa-face-grin-hearts"></i>
+                        </div>
+                        @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin || $aux)
                             <div title="EDITAR PUBLICACION" wire:click="editar({{ $publicacion->id }})"
                                 class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-yellow-500 text-yellow-700 font-semibold hover:text-white py-2 px-4 rounded">
                                 <i class="fa-regular fa-pen-to-square"></i>
@@ -94,8 +120,8 @@
                                 class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 rounded">
                                 <i class="fa-solid fa-trash"></i>
                             </div>
-                        </div>
-                    @endif
+                        @endif
+                    </div>
                 @endauth
             </div>
         </div>

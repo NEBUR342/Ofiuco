@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Community;
 use App\Models\Like;
 use App\Models\Publication;
+use App\Models\Save;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Facades\File;
@@ -117,6 +118,21 @@ class ShowPublication extends Component
         $like->delete();
     }
 
+    public function darsave()
+    {
+        $save = new Save();
+        $save->user_id = auth()->user()->id;
+        $this->publicacion->saves()->save($save);
+    }
+
+    public function quitarsave()
+    {
+        $save = Save::where('publication_id', $this->publicacion->id)
+            ->where('user_id', auth()->user()->id)
+            ->first();
+        $save->delete();
+    }
+
     public function subirComentario()
     {
         // Valido el comentario
@@ -191,9 +207,18 @@ class ShowPublication extends Component
             // A continuacion borro los likes de los usuarios que no pertenecen a la nueva comunidad.
             $likes=$this->publicacion->likes;
             foreach ($likes as $like) {
-                $usuario=$like->usuario;
+                $usuario=$like->user;
                 if(!$usuario->is_admin && ($comunidadseleccionada->user_id!=$usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))){
                     $like->delete();
+                }
+            }
+
+            // A continuacion borro los saves de los usuarios que no pertenecen a la nueva comunidad.
+            $saves=$this->publicacion->saves;
+            foreach ($saves as $save) {
+                $usuario=$save->user;
+                if(!$usuario->is_admin && ($comunidadseleccionada->user_id!=$usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))){
+                    $save->delete();
                 }
             }
         }
@@ -253,6 +278,11 @@ class ShowPublication extends Component
     public function buscarUsuario($id)
     {
         return redirect()->route('publicationsuser.show', compact('id'));
+    }
+
+    public function buscarLikesUsuario($id)
+    {
+        return redirect()->route('publicationslikes.show', compact('id'));
     }
 
     // Si no debo mostrar la publicacion, voy a forzar el error 404 (pagina no encontrada).

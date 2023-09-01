@@ -46,20 +46,17 @@
                                     </x-slot>
                                     <x-slot name="content">
                                         {{-- Likes --}}
-                                        <x-dropdown-link href="{{ route('dashboard') }}"
-                                            active="request()->routeIs('dashboard')">
+                                        <x-dropdown-link href="{{ route('notificaciones.show', ['id' => '1']) }}">
                                             <i class="fa-regular fa-heart"></i> Likes
                                         </x-dropdown-link>
                                         <div class="border-t border-gray-200"></div>
                                         {{-- Guardados --}}
-                                        <x-dropdown-link href="{{ route('dashboard') }}"
-                                            active="request()->routeIs('dashboard')">
+                                        <x-dropdown-link href="{{ route('notificaciones.show', ['id' => '2']) }}">
                                             <i class="fa-regular fa-floppy-disk"></i> Guardados
                                         </x-dropdown-link>
                                         <div class="border-t border-gray-200"></div>
                                         {{-- comentarios --}}
-                                        <x-dropdown-link href="{{ route('dashboard') }}"
-                                            active="request()->routeIs('dashboard')">
+                                        <x-dropdown-link href="{{ route('notificaciones.show', ['id' => '3']) }}">
                                             <i class="fa-regular fa-message"></i> Comentarios
                                         </x-dropdown-link>
                                     </x-slot>
@@ -127,12 +124,14 @@
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
                                 <!-- Likes -->
-                                <x-dropdown-link href="{{route('publicationslikes.show', ['id' => auth()->user()->id])}}">
+                                <x-dropdown-link
+                                    href="{{ route('publicationslikes.show', ['id' => auth()->user()->id]) }}">
                                     <i class="fa-regular fa-heart"></i> Likes
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
                                 <!-- Guardados -->
-                                <x-dropdown-link href="{{route('publicationssaves.show', ['id' => auth()->user()->id])}}">
+                                <x-dropdown-link
+                                    href="{{ route('publicationssaves.show', ['id' => auth()->user()->id]) }}">
                                     <i class="fa-regular fa-floppy-disk"></i> Guardados
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
@@ -219,17 +218,17 @@
 
                         <x-slot name="content">
                             {{-- Likes --}}
-                            <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                            <x-dropdown-link href="{{ route('notificaciones.show', ['id' => '1']) }}">
                                 <i class="fa-regular fa-heart"></i> Likes
                             </x-dropdown-link>
                             <div class="border-t border-gray-200"></div>
                             {{-- Guardados --}}
-                            <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                            <x-dropdown-link href="{{ route('notificaciones.show', ['id' => '2']) }}">
                                 <i class="fa-regular fa-floppy-disk"></i> Guardados
                             </x-dropdown-link>
                             <div class="border-t border-gray-200"></div>
                             {{-- comentarios --}}
-                            <x-dropdown-link href="{{ route('dashboard') }}" active="request()->routeIs('dashboard')">
+                            <x-dropdown-link href="{{ route('notificaciones.show', ['id' => '3']) }}">
                                 <i class="fa-regular fa-message"></i> Comentarios
                             </x-dropdown-link>
                         </x-slot>
@@ -298,12 +297,12 @@
                         </x-dropdown-link>
                         <div class="border-t border-gray-200"></div>
                         <!-- Likes -->
-                        <x-dropdown-link  href="{{route('publicationslikes.show', ['id' => auth()->user()->id])}}">
+                        <x-dropdown-link href="{{ route('publicationslikes.show', ['id' => auth()->user()->id]) }}">
                             <i class="fa-regular fa-heart"></i> Likes
                         </x-dropdown-link>
                         <div class="border-t border-gray-200"></div>
                         <!-- Guardados -->
-                        <x-dropdown-link  href="{{route('publicationssaves.show', ['id' => auth()->user()->id])}}">
+                        <x-dropdown-link href="{{ route('publicationssaves.show', ['id' => auth()->user()->id]) }}">
                             <i class="fa-regular fa-floppy-disk"></i> Guardados
                         </x-dropdown-link>
                         <div class="border-t border-gray-200"></div>

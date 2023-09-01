@@ -14,7 +14,7 @@ class Save extends Model
 
     public function publication(): BelongsTo
     {
-        return $this->belongsTo(publication::class);
+        return $this->belongsTo(Publication::class);
     }
     
     public function user(): BelongsTo

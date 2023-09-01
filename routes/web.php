@@ -4,6 +4,7 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\TemaoscuroController;
 use App\Http\Livewire\ShowCommunities;
 use App\Http\Livewire\ShowCommunity;
+use App\Http\Livewire\ShowNotificaciones;
 use App\Http\Livewire\ShowPublication;
 use App\Http\Livewire\ShowPublicationscommunities;
 use App\Http\Livewire\ShowPublicationscommunity;
@@ -43,6 +44,7 @@ Route::middleware([
     Route::get('users', ShowUsers::class)->name('users.show');
     Route::get('likes/{id}', ShowPublicationslikes::class)->name('publicationslikes.show');
     Route::get('saves/{id}', ShowPublicationssaves::class)->name('publicationssaves.show');
+    Route::get('notificaciones/{id}', ShowNotificaciones::class)->name('notificaciones.show');
     Route::get('temaoscuro',[TemaoscuroController::class, "cambiartema"])->name('temaoscuro.cambiartema');
     
 });

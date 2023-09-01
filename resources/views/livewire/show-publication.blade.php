@@ -94,24 +94,22 @@
                         @endauth
 
                     </div>
-                    <div class="my-5 mx-5">Autor: <span @class([
-                        'rounded-xl cursor-pointer',
-                        'bg-gray-500 py-1 px-2' => auth()->check() && auth()->user()->temaoscuro,
-                        'bg-gray-400 py-1 px-2' => auth()->guest() || !auth()->user()->temaoscuro,
-                    ])
+                    <div class="my-5 mx-5">Autor:
+                        <span @class([
+                            'rounded-xl cursor-pointer',
+                            'bg-gray-500 py-1 px-2' => auth()->check() && auth()->user()->temaoscuro,
+                            'bg-gray-400 py-1 px-2' => auth()->guest() || !auth()->user()->temaoscuro,
+                        ])
                             wire:click="buscarUsuario({{ $publicacion->user->id }})">{{ $publicacion->user->name }}
-                        </span></div>
+                        </span>
+                    </div>
                     @if ($publicacion->comunidad == 'SI')
                         <div class="mb-5 mx-5">Comunidad: {{ $publicacion->community->nombre }}</div>
                     @endif
                 </div>
                 @auth
-                    <div class="flex flex-wrap text-xl">
-                        <div title="VER LIKES DEL USUARIO" wire:click="buscarLikesUsuario({{ $publicacion->user->id }})"
-                            class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-yellow-500 text-yellow-700 font-semibold hover:text-white py-2 px-4 rounded">
-                            <i class="fa-regular fa-face-grin-hearts"></i>
-                        </div>
-                        @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin || $aux)
+                    @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin || $aux)
+                        <div class="flex flex-wrap text-xl">
                             <div title="EDITAR PUBLICACION" wire:click="editar({{ $publicacion->id }})"
                                 class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-yellow-500 text-yellow-700 font-semibold hover:text-white py-2 px-4 rounded">
                                 <i class="fa-regular fa-pen-to-square"></i>
@@ -120,8 +118,8 @@
                                 class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 rounded">
                                 <i class="fa-solid fa-trash"></i>
                             </div>
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                 @endauth
             </div>
         </div>

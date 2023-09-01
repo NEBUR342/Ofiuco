@@ -280,11 +280,6 @@ class ShowPublication extends Component
         return redirect()->route('publicationsuser.show', compact('id'));
     }
 
-    public function buscarLikesUsuario($id)
-    {
-        return redirect()->route('publicationslikes.show', compact('id'));
-    }
-
     // Si no debo mostrar la publicacion, voy a forzar el error 404 (pagina no encontrada).
     // No lo hago con politicas ya que no me aclaraba con como seria al tener que comprobar todos estos campos.
     // Se me hacia muy dificil comprobarlo con las comunidades, por lo que he decidido hacerlo a mano.

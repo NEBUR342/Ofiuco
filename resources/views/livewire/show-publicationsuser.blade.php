@@ -1,7 +1,8 @@
 <div class='min-[480px]:px-12 mt-4 cursor-default'>
     <div class="flex mb-3">
         <div class="flex-1">
-            <x-input class="w-full text-gray-800" type='search' placeholder="Buscar publicaciones..." wire:model="buscar"></x-input>
+            <x-input class="w-full text-gray-800" type='search' placeholder="Buscar publicaciones..."
+                wire:model="buscar"></x-input>
         </div>
         <div>
             @livewire('create-publication')
@@ -20,6 +21,10 @@
                     class="fa-solid fa-fire"></i></span>
             <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD"><i
                     class="fa-regular fa-clock"></i></span>
+            <span title="VER LIKES DEL USUARIO" wire:click="buscarLikesUsuario({{ auth()->user()->id }})"
+                class="ml-6 min-[480px]:ml-12 cursor-pointer mx-auto my-5 bg-transparent hover:bg-yellow-500 text-yellow-700 font-semibold hover:text-white py-2 px-4 rounded">
+                <i class="fa-regular fa-face-grin-hearts"></i>
+            </span>
         </div>
         <div class="mt-3 flex flex-wrap justify-center text-center">
             @foreach ($publicaciones as $publicacion)

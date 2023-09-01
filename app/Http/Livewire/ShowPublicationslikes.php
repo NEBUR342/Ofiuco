@@ -54,7 +54,6 @@ class ShowPublicationslikes extends Component
                     // y de los que no pertenecen a comunidades.
                     // Lo ordeno por el id de las publicaciones.
                     $publicaciones = Publication::query()
-                        ->where('estado', 'PUBLICADO')
                         ->whereIn('id', Like::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
                             $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');

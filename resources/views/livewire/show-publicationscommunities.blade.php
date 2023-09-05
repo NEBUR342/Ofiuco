@@ -13,7 +13,7 @@
             'font-bold text-xl text-center my-4',
             'text-white' => auth()->user()->temaoscuro,
         ])>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR USUARIOS"><i
+            <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR TITULO"><i
                     class="fa-solid fa-arrow-down-a-z"></i></span>
             <span class="mx-3 cursor-pointer" wire:click="ordenar('comunidades')" title="ORDENAR POR COMUNIDAD"><i
                     class="fa-solid fa-users"></i></span>

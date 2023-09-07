@@ -11,8 +11,7 @@
                         <img class="h-8 w-8 rounded-full ml-4 cursor-pointer"
                             src="{{ $solicitud->user->profile_photo_url }}"
                             wire:click="buscarUsuario({{ $solicitud->user->id }})"
-                            title="Publicaciones de {{ $solicitud->user->name }}"
-                            alt="{{ $solicitud->user->name }}" />
+                            title="Publicaciones de {{ $solicitud->user->name }}" alt="{{ $solicitud->user->name }}" />
                     </span>
                     <span @class([
                         'flex flex-col mx-3 px-2 text-xl rounded-xl',
@@ -33,15 +32,17 @@
                         wire:click="verComunidad({{ $solicitud->community_id }})">{{ $solicitud->community->nombre }}
                     </span>
                     <div class="mt-2">
-                        {{$solicitud->created_at->format('d/m/Y H:i')}}
+                        {{ $solicitud->created_at->format('d/m/Y H:i') }}
                     </div>
                 </div>
-                <div class="flex flex-row-reverse my-4">
+                <div class="flex flex-row-reverse my-4 text-xl">
                     <span class="mx-4">
-                        <i class="fa-regular fa-bookmark cursor-pointer text-yellow-500" wire:click="rechazarUsuario({{ $solicitud }})"></i>
+                        <i class="fa-regular fa-rectangle-xmark cursor-pointer text-red-500"
+                            wire:click="rechazarUsuario({{ $solicitud }})"></i>
                     </span>
                     <span>
-                        <i class="fa-regular fa-heart cursor-pointer text-red-500" wire:click="aceptarUsuario({{ $solicitud }})"></i>
+                        <i class="fa-regular fa-square-check cursor-pointer text-green-500"
+                            wire:click="aceptarUsuario({{ $solicitud }})"></i>
                     </span>
                 </div>
             </div>

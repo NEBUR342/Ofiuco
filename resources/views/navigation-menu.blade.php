@@ -59,6 +59,11 @@
                                         <x-dropdown-link href="{{ route('notificaciones.show', ['id' => '3']) }}">
                                             <i class="fa-regular fa-message"></i> Comentarios
                                         </x-dropdown-link>
+                                        <div class="border-t border-gray-200"></div>
+                                        {{-- solicitudes --}}
+                                        <x-dropdown-link href="{{ route('solicitudes.show') }}">
+                                            <i class="fa-solid fa-users-gear"></i> Comunidades
+                                        </x-dropdown-link>
                                     </x-slot>
                                 </x-dropdown>
                             </div>
@@ -230,6 +235,11 @@
                             {{-- comentarios --}}
                             <x-dropdown-link href="{{ route('notificaciones.show', ['id' => '3']) }}">
                                 <i class="fa-regular fa-message"></i> Comentarios
+                            </x-dropdown-link>
+                            <div class="border-t border-gray-200"></div>
+                            {{-- comunidades --}}
+                            <x-dropdown-link href="{{ route('solicitudes.show')}}">
+                                <i class="fa-solid fa-users-gear"></i> Comunidades
                             </x-dropdown-link>
                         </x-slot>
                     </x-dropdown>

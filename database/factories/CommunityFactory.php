@@ -22,6 +22,7 @@ class CommunityFactory extends Factory
             'nombre'=>ucfirst($this->faker->unique()->words(random_int(2,4), true)),
             'descripcion'=>$this->faker->text(),
             'imagen'=>'imagenesComunidad/'.$this->faker->picsum($dir = 'public/storage/imagenesComunidad/', $width = 640, $height = 480, $fullPath = false),
+            'privacidad'=>random_int(1,2),
             'user_id'=>User::all()->random()->id,
         ];
     }

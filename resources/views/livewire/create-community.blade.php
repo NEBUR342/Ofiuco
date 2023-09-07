@@ -14,6 +14,10 @@
                 <x-form-input name="nombre" label="Nombre de la comunidad" placeholder="Nombre ..." />
                 <x-form-textarea name="descripcion" placeholder="Descripcion..." label="Descripcion de la comunidad"
                     rows="8" />
+                <x-form-group name="privacidad" label="Estado de privacidad" inline>
+                    <x-form-radio name="privacidad" value="PRIVADO" label="Privado" />
+                    <x-form-radio name="privacidad" value="PUBLICO" label="Publico" />
+                </x-form-group>
             @endwire
             <div class="mt-4">
                 <span class="text-gray-700">Imagen de la comunidad</span>

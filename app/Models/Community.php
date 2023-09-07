@@ -11,7 +11,7 @@ class Community extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['nombre', 'descripcion', 'imagen', 'user_id'];
+    protected $fillable = ['nombre', 'descripcion', 'imagen', 'privacidad', 'user_id'];
 
     public function publications(): HasMany
     {
@@ -21,5 +21,10 @@ class Community extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)->withTimestamps();
+    }
+
+    public function requests(): HasMany
+    {
+        return $this->hasMany(Request::class);
     }
 }

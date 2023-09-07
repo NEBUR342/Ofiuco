@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Community;
 use App\Models\Like;
 use App\Models\Publication;
+use App\Models\Request;
 use App\Models\Save;
 use App\Models\User;
 use Illuminate\Support\Facades\File;
@@ -32,6 +33,7 @@ class ShowCommunity extends Component
         return [
             'miComunidad.nombre' => "",
             'miComunidad.descripcion' => ['required', 'string', 'min:10'],
+            'miComunidad.privacidad' => ['required', 'in:PRIVADO,PUBLICO'],
             'miComunidad.imagen' => ['required', 'image', 'max:2048'],
         ];
     }
@@ -115,9 +117,9 @@ class ShowCommunity extends Component
             $comment = Comment::where('user_id', $userId)
                 ->where('publication_id', $publicacion->id)
                 ->first();
-                if($like) $like->delete();
-                if($save) $save->delete();
-                if($comment) $comment->delete();
+            if ($like) $like->delete();
+            if ($save) $save->delete();
+            if ($comment) $comment->delete();
         }
 
         // Saco al usuario de la comunidad Borrandolo de la base de datos.
@@ -128,11 +130,18 @@ class ShowCommunity extends Component
     {
         // Obtengo al usuario autenticado.
         $user = auth()->user();
-
-        // Añado el usuario a la comunidad.
-        // Da error en codigo, pero lo hace bien, no saltan excepciones.
-        $user->communities()->attach($this->comunidad);
-        $this->emit('info', "Participante " . $user->name . " ha entrado");
+        if ($this->comunidad->privacidad == "PRIVADO") {
+            Request::create([
+                'user_id' => auth()->user()->id,
+                'community_id' => $this->comunidad->id,
+            ]);
+            $this->emit('info', "Solicitud para participar en la comunidad enviada");
+        } else {
+            // Añado el usuario a la comunidad.
+            // Da error en codigo, pero lo hace bien, no saltan excepciones.
+            $user->communities()->attach($this->comunidad);
+            $this->emit('info', "Participante " . $user->name . " ha entrado");
+        }
     }
 
     public function editar(Community $comunidad)
@@ -161,6 +170,7 @@ class ShowCommunity extends Component
             "nombre" => $this->miComunidad->nombre,
             "descripcion" => $this->miComunidad->descripcion,
             "imagen" => $this->comunidad->imagen,
+            "privacidad" => $this->miComunidad->privacidad,
         ]);
 
         // Reseteo la variable.

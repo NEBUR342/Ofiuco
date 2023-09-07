@@ -15,7 +15,7 @@ class CreateCommunity extends Component
     use WithFileUploads;
 
     public bool $openCrear = false;
-    public string $nombre = "", $descripcion = "";
+    public string $nombre = "", $descripcion = "", $privacidad = "";
     public $imagen;
 
     protected function rules(): array
@@ -25,6 +25,7 @@ class CreateCommunity extends Component
             'nombre' => ['required', 'string', 'min:3', 'unique:communities,nombre'],
             'descripcion' => ['required', 'string', 'min:10'],
             'imagen' => ['required', 'image', 'max:2048'],
+            'privacidad' => ['required', 'in:PRIVADO,PUBLICO'],
         ];
     }
 
@@ -44,18 +45,19 @@ class CreateCommunity extends Component
             "nombre" => $this->nombre,
             "descripcion" => $this->descripcion,
             "imagen" => $rutaImagen,
+            "privacidad" => $this->privacidad,
             "user_id" => auth()->user()->id,
         ]);
         // Al trabajar con imagenes me genera la carpeta livewire-tmp pero no me la borra.
         // Para borrar la carpeta livewire-tmp que me genera livewire, he usado la siguiente solucion:
         File::deleteDirectory(storage_path('app/public/livewire-tmp'));
-        $this->reset('openCrear', 'nombre', 'descripcion');
+        $this->reset('openCrear', 'nombre', 'descripcion', 'privacidad');
         return redirect()->route('communities.show');
     }
 
     public function cerrar()
     {
-        $this->reset('openCrear', 'nombre', 'descripcion');
+        $this->reset('openCrear', 'nombre', 'descripcion', 'privacidad');
     }
 
     public function openCrear()

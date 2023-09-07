@@ -23,6 +23,7 @@
                     </span>
                 </div>
                 <div class="my-5 mx-5">Esta comunidad cuenta con: {{ $comunidad->users->count() }} participantes</div>
+                <div class="my-5 mx-5">Estado de privacidad actual: {{ $comunidad->privacidad }}</div>
             </div>
             @auth
                 <div class="flex flex-wrap text-xl">
@@ -33,10 +34,12 @@
                                 <i class="fa-solid fa-user-minus"></i>
                             </div>
                         @else
-                            <div title="ENTRAR A LA COMUNIDAD" wire:click="meterParticipante"
-                                class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 rounded">
-                                <i class="fa-solid fa-user-plus"></i>
-                            </div>
+                            @if ($comunidad->privacidad == 'PUBLICO' || !auth()->user()->requests->contains('community_id', $comunidad->id))
+                                <div title="ENTRAR A LA COMUNIDAD" wire:click="meterParticipante"
+                                    class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 rounded">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </div>
+                            @endif
                         @endif
                     @endif
                     @if ($aux || auth()->user()->id == $comunidad->user_id || auth()->user()->is_admin)
@@ -99,6 +102,10 @@
                     <x-form-input name="miComunidad.nombre" label="Nombre de la comunidad" placeholder="Nombre ..." />
                     <x-form-textarea name="miComunidad.descripcion" placeholder="Descripcion..."
                         label="Descripcion de la comunidad" rows="8" />
+                    <x-form-group name="miComunidad.privacidad" label="Estado de privacidad" inline>
+                        <x-form-radio name="miComunidad.privacidad" value="PRIVADO" label="Privado" />
+                        <x-form-radio name="miComunidad.privacidad" value="PUBLICO" label="Publico" />
+                    </x-form-group>
                 @endwire
                 <div class="mt-4">
                     <span class="text-gray-700">Imagen de la comunidad</span>

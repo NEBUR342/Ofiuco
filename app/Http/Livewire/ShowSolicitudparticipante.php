@@ -39,6 +39,12 @@ class ShowSolicitudparticipante extends Component
     }
 
     private function comprobarUsuarios(User $user, Community $community){
-
+        $solicitudes=Request::whereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'))->get();
+        foreach($solicitudes as $solicitud){
+            if($solicitud->user_id == $user->id && $solicitud->community_id==$community->id){
+                return;
+            }
+        }
+        abort(404);
     }
 }

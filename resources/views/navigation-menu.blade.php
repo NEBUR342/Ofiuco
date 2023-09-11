@@ -64,6 +64,11 @@
                                         <x-dropdown-link href="{{ route('solicitudes.show') }}">
                                             <i class="fa-solid fa-users-gear"></i> Comunidades
                                         </x-dropdown-link>
+                                        <div class="border-t border-gray-200"></div>
+                                        {{-- Amigos --}}
+                                        <x-dropdown-link href="{{ route('solicitudes.show') }}">
+                                            <i class="fa-solid fa-user-group"></i> Amigos
+                                        </x-dropdown-link>
                                     </x-slot>
                                 </x-dropdown>
                             </div>
@@ -117,6 +122,12 @@
                                         {{ __('API Tokens') }}
                                     </x-dropdown-link>
                                 @endif
+                                <div class="border-t border-gray-200"></div>
+                                <!-- Amigos -->
+                                <x-dropdown-link
+                                    href="{{ route('publicationssaves.show', ['id' => auth()->user()->id]) }}">
+                                    <i class="fa-solid fa-user-group"></i> Amigos
+                                </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
                                 <!-- Tema oscuro -->
                                 <x-dropdown-link href="{{ route('temaoscuro.cambiartema') }}"
@@ -241,6 +252,11 @@
                             <x-dropdown-link href="{{ route('solicitudes.show')}}">
                                 <i class="fa-solid fa-users-gear"></i> Comunidades
                             </x-dropdown-link>
+                            <div class="border-t border-gray-200"></div>
+                            {{-- amigos --}}
+                            <x-dropdown-link href="{{ route('solicitudes.show')}}">
+                                <i class="fa-solid fa-user-group"></i> Amigos
+                            </x-dropdown-link>
                         </x-slot>
                     </x-dropdown>
                 </div>
@@ -295,6 +311,11 @@
                             </x-dropdown-link>
                         @endif
 
+                        <div class="border-t border-gray-200"></div>
+                        <!-- amigos -->
+                        <x-dropdown-link href="{{ route('publicationslikes.show', ['id' => auth()->user()->id]) }}">
+                            <i class="fa-solid fa-user-group"></i> Amigos
+                        </x-dropdown-link>
                         <div class="border-t border-gray-200"></div>
                         <!-- Tema oscuro -->
                         <x-dropdown-link href="{{ route('temaoscuro.cambiartema') }}"

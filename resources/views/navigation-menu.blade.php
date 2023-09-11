@@ -1,8 +1,7 @@
 <nav x-data="{ open: false }" @class([
     'border-b border-gray-100',
-    'bg-gray-900' => auth()->check() && auth()->user()->temaoscuro,
-    'bg-white' => auth()->guest() || !auth()->user()->temaoscuro,
-])>
+    'bg-white' => auth()->guest() || !auth()->user()->temaoscuro
+]) @style(['background-color: #041124' => auth()->check() && auth()->user()->temaoscuro,])>
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">

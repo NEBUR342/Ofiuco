@@ -93,4 +93,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Request::class);
     }
+
+    public function friends(): HasMany
+    {
+        return $this->hasMany(Friend::class);
+    }
 }

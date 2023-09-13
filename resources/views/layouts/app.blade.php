@@ -27,14 +27,14 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased">
+<body @class([
+    'font-sans antialiased',
+    'bg-gray-800 text-white' => auth()->check() && auth()->user()->temaoscuro,
+    'bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
+])>
     <x-banner />
 
-    <div @class([
-        'min-h-screen',
-        'bg-gray-800 text-white' => auth()->check() && auth()->user()->temaoscuro,
-        'bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
-    ])>
+    <div class='min-h-screen'>
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
@@ -51,22 +51,22 @@
             {{ $slot }}
         </main>
         <!-- Footer para todas las vistas -->
-        <footer>
+        <footer class="my-6">
             <div class="flex flex-wrap w-5/6 min-[640px]:w-4/6 min-[760px]:w-2/6 mt-4 mx-auto text-xl">
-                <a class="flex flex-col mx-auto cursor-pointer">
-                    <i class="fa-brands fa-tiktok"></i>
+                <a href="https://www.facebook.com/ofiuco.facebook/" class="flex flex-col mx-auto cursor-pointer">
+                    <i class="fa-brands fa-facebook"></i>
                 </a>
-                <a class="flex flex-col mx-auto cursor-pointer">
+                <a href="https://twitter.com/Ofiuco_X" class="flex flex-col mx-auto cursor-pointer">
                     <i class="fa-brands fa-twitter"></i>
                 </a>
-                <a class="flex flex-col mx-auto cursor-pointer">
+                <a href="https://www.reddit.com/user/ofiuco_reddit/" class="flex flex-col mx-auto cursor-pointer">
+                    <i class="fa-brands fa-reddit"></i>
+                </a>
+                <a href="https://www.instagram.com/ofiuco_insta_oficial/" class="flex flex-col mx-auto cursor-pointer">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
                 <a class="flex flex-col mx-auto cursor-pointer">
-                    <i class="fa-brands fa-facebook"></i>
-                </a>
-                <a class="flex flex-col mx-auto cursor-pointer">
-                    <i class="fa-brands fa-reddit"></i>
+                    <i class="fa-brands fa-tiktok"></i>
                 </a>
             </div>
         </footer>

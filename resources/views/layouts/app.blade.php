@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,6 +20,7 @@
     <!-- Styles -->
     @livewireStyles
 </head>
+
 <body @class([
     'font-sans antialiased',
     'bg-gray-800 text-white' => auth()->check() && auth()->user()->temaoscuro,
@@ -37,10 +39,10 @@
             </header>
         @endif
         <div class="flex-grow">
-          <!-- Page Content -->
-        <main>
-            {{ $slot }}
-        </main>
+            <!-- Page Content -->
+            <main>
+                {{ $slot }}
+            </main>
         </div>
         <footer>
             <div class="flex flex-wrap w-5/6 min-[640px]:w-4/6 min-[760px]:w-2/6 mt-4 mx-auto text-xl">
@@ -62,7 +64,7 @@
             </div>
             <div class="h-4"></div>
         </footer>
-      </div>
+    </div>
     @stack('modals')
     @livewireScripts
     <script>
@@ -84,4 +86,5 @@
         @endif
     </script>
 </body>
+
 </html>

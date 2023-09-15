@@ -1,32 +1,24 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>OFIUCO</title>
-
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
     <!--Sweet Alert 2-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <!-- FontAwsome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
     <!-- Styles -->
     @livewireStyles
 </head>
-
 <body @class([
     'font-sans antialiased',
     'bg-gray-800 text-white' => auth()->check() && auth()->user()->temaoscuro,
@@ -34,9 +26,8 @@
 ])>
     <x-banner />
 
-    <div class='min-h-screen'>
+    <div class="h-screen flex flex-col">
         @livewire('navigation-menu')
-
         <!-- Page Heading -->
         @if (isset($header))
             <header class="bg-white shadow">
@@ -45,13 +36,13 @@
                 </div>
             </header>
         @endif
-
-        <!-- Page Content -->
+        <div class="flex-grow">
+          <!-- Page Content -->
         <main>
             {{ $slot }}
         </main>
-        <!-- Footer para todas las vistas -->
-        <footer class="my-6">
+        </div>
+        <footer>
             <div class="flex flex-wrap w-5/6 min-[640px]:w-4/6 min-[760px]:w-2/6 mt-4 mx-auto text-xl">
                 <a href="https://www.facebook.com/ofiuco.facebook/" class="flex flex-col mx-auto cursor-pointer">
                     <i class="fa-brands fa-facebook"></i>
@@ -69,11 +60,10 @@
                     <i class="fa-brands fa-tiktok"></i>
                 </a>
             </div>
+            <div class="h-4"></div>
         </footer>
-    </div>
-
+      </div>
     @stack('modals')
-
     @livewireScripts
     <script>
         Livewire.on('info', mensaje => {
@@ -94,5 +84,4 @@
         @endif
     </script>
 </body>
-
 </html>

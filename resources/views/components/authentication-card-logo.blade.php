@@ -1,3 +1,3 @@
 <a href="/">
-  <img src="{{ Storage::url('fantasmaclaro.jpg') }}" class="h-16">
+  <img src="{{ Storage::url('fantasmaclaro.jpg') }}" class="h-36">
 </a>

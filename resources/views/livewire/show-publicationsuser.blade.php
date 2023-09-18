@@ -21,10 +21,13 @@
                     class="fa-solid fa-fire"></i></span>
             <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD"><i
                     class="fa-regular fa-clock"></i></span>
-            <span title="VER LIKES DEL USUARIO" wire:click="buscarLikesUsuario({{ $publicaciones->first()->user->id }})"
-                class="ml-6 min-[480px]:ml-12 cursor-pointer mx-auto my-5 bg-transparent hover:bg-yellow-500 text-yellow-700 font-semibold hover:text-white py-2 px-4 rounded">
-                <i class="fa-regular fa-face-grin-hearts"></i>
-            </span>
+            @if (auth()->user()->id != $publicaciones->first()->user->id)
+                <span title="VER LIKES DEL USUARIO"
+                    wire:click="buscarLikesUsuario()"
+                    class="ml-6 min-[480px]:ml-12 cursor-pointer mx-auto my-5 bg-transparent hover:bg-yellow-500 text-yellow-700 font-semibold hover:text-white py-2 px-4 rounded">
+                    <i class="fa-regular fa-face-grin-hearts"></i>
+                </span>
+            @endif
         </div>
         <div class="mt-3 flex flex-wrap justify-center text-center">
             @foreach ($publicaciones as $publicacion)

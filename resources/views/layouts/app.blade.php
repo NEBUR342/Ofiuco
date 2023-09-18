@@ -58,7 +58,7 @@
                 <a href="https://www.instagram.com/ofiuco_insta_oficial/" class="flex flex-col mx-auto cursor-pointer">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
-                <a class="flex flex-col mx-auto cursor-pointer">
+                <a href="" class="flex flex-col mx-auto cursor-pointer">
                     <i class="fa-brands fa-tiktok"></i>
                 </a>
             </div>

@@ -10,7 +10,7 @@ class Friend extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'friend_id'];
+    protected $fillable = ['user_id', 'frienduno_id', 'frienddos_id', 'aceptado'];
     
     public function user(): BelongsTo
     {

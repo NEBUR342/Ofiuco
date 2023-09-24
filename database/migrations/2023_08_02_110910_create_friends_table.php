@@ -14,24 +14,24 @@ return new class extends Migration
         Schema::create('friends', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('friend_id');
-            $table->timestamps();
-
+            $table->unsignedBigInteger('frienduno_id');
+            $table->unsignedBigInteger('frienddos_id');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-
-            $table->foreign('friend_id')
+            $table->foreign('frienduno_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-
-            // Asegura que la combinación (user_id, friend_id) sea única
-            $table->unique(['user_id', 'friend_id']);
-
-            // Agrega una restricción de verificación para (friend_id, user_id)
-            $table->unique(['friend_id', 'user_id']);
+            $table->foreign('frienddos_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            // Asegura que la combinación (frienduno_id, frienddos_id) sea única
+            $table->unique(['frienduno_id', 'frienddos_id']);
+            $table->enum("aceptado", ["SI", "NO"]);
+            $table->timestamps();
         });
     }
 

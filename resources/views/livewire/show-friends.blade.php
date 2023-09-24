@@ -5,7 +5,7 @@
                 wire:model="buscar"></x-input>
         </div>
     </div>
-    @if ($users->count())
+    @if ($solicitudes->count())
         <div @class([
             'font-bold text-xl text-center my-4',
             'text-white' => auth()->user()->temaoscuro,
@@ -17,7 +17,7 @@
                 <i class="fa-regular fa-clock"></i>
             </span>
         </div>
-        @foreach ($users as $usuario)
+        @foreach ($solicitudes as $solicitud)
             <div @class([
                 'relative overflow-x-auto shadow-md rounded-lg my-3 mx-5',
                 'bg-gray-700 hover:bg-gray-600 text-white' => auth()->user()->temaoscuro,
@@ -25,48 +25,43 @@
             ])>
                 <div class="flex flex-wrap my-3">
                     <span class="flex flex-col">
-                        <img class="h-8 w-8 rounded-full ml-4 cursor-pointer" src="{{ $usuario->profile_photo_url }}"
-                            wire:click="buscarUsuario({{ $usuario->id }})"
-                            title="Publicaciones de {{ $usuario->name }}" alt="{{ $usuario->name }}" />
+                        <img class="h-8 w-8 rounded-full ml-4 cursor-pointer"
+                            src="{{ $solicitud->user->profile_photo_url }}"
+                            wire:click="buscarUsuario({{ $solicitud->user->id }})"
+                            title="Publicaciones de {{ $solicitud->user->name }}" alt="{{ $solicitud->user->name }}" />
                     </span>
                     <span @class([
                         'flex flex-col mx-3 px-2 text-xl rounded-xl',
                         'text-gray-700' => !auth()->user()->temaoscuro,
                     ])>
-                        {{ $usuario->name }}
+                        {{ $solicitud->user->name }}
                     </span>
                 </div>
                 <div>
                     <span class="mx-3 px-2 text-l rounded-xl">
-                        {{ $usuario->email }}
+                        {{ $solicitud->user->email }}
                     </span>
                 </div>
+
                 <div class="flex flex-row-reverse my-4 mr-2">
-                    @if (auth()->user()->is_admin || $usuario->id == auth()->user()->id)
+                    @if (auth()->user()->is_admin)
                         <span class="mx-2">
                             <i class="fa-regular fa-bookmark cursor-pointer text-yellow-500"
-                                wire:click="buscarSavesUsuario({{ $usuario->id }})"></i>
+                                wire:click="buscarSavesUsuario({{ $solicitud->user->id }})"></i>
                         </span>
                     @endif
                     <span class="mx-2">
                         <i class="fa-regular fa-heart cursor-pointer text-red-500"
-                            wire:click="buscarLikesUsuario({{ $usuario->id }})"></i>
+                            wire:click="buscarLikesUsuario({{ $solicitud->user->id }})"></i>
                     </span>
-                    @if (auth()->user()->id != $usuario->id && !($amigos->contains('frienduno_id', $usuario->id) || $amigos->contains('frienddos_id', $usuario->id)))
-                        <span class="mx-2">
-                            <i class="fa-solid fa-user-plus cursor-pointer text-blue-500"
-                                wire:click="solicitudamigo({{ $usuario->id }})"></i>
-                        </span>
-                    @elseif(auth()->user()->id != $usuario->id)
                     <span class="mx-2">
                         <i class="fa-solid fa-user-minus cursor-pointer text-red-500"
-                            wire:click="borraramigo({{ $usuario->id }})"></i>
+                            wire:click="borrarsolicitudamigo({{ $solicitud->user->id }})"></i>
                     </span>
-                    @endif
                 </div>
             </div>
         @endforeach
-        {{ $users->links() }}
+        {{ $solicitudes->links() }}
     @else
         <x-miscomponentes.sinresultados></x-miscomponentes.sinresultados>
     @endif

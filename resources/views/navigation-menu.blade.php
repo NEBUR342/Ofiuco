@@ -1,7 +1,7 @@
 <nav x-data="{ open: false }" @class([
     'border-b border-gray-100',
-    'bg-white' => auth()->guest() || !auth()->user()->temaoscuro
-]) @style(['background-color: #041124' => auth()->check() && auth()->user()->temaoscuro,])>
+    'bg-white' => auth()->guest() || !auth()->user()->temaoscuro,
+]) @style(['background-color: #041124' => auth()->check() && auth()->user()->temaoscuro])>
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -28,11 +28,10 @@
                             <x-nav-link :href="route('tags.show')" :active="request()->routeIs('tags.show')" title="TAGS">
                                 <i class="fa-solid fa-tags"></i>
                             </x-nav-link>
-
-                            <x-nav-link :href="route('users.show')" :active="request()->routeIs('users.show')" title="USUARIOS">
-                                <i class="fa-solid fa-users"></i>
-                            </x-nav-link>
                         @endif
+                        <x-nav-link :href="route('users.show')" :active="request()->routeIs('users.show')" title="USUARIOS">
+                            <i class="fa-solid fa-users"></i>
+                        </x-nav-link>
                         {{-- Notificaciones --}}
                         @auth
                             <div @class([
@@ -65,7 +64,7 @@
                                         </x-dropdown-link>
                                         <div class="border-t border-gray-200"></div>
                                         {{-- Amigos --}}
-                                        <x-dropdown-link href="{{ route('solicitudes.show') }}">
+                                        <x-dropdown-link href="{{ route('solicitudesamigos.show') }}">
                                             <i class="fa-solid fa-user-group"></i> Amigos
                                         </x-dropdown-link>
                                     </x-slot>
@@ -124,7 +123,7 @@
                                 <div class="border-t border-gray-200"></div>
                                 <!-- Amigos -->
                                 <x-dropdown-link
-                                    href="{{ route('publicationssaves.show', ['id' => auth()->user()->id]) }}">
+                                    href="{{ route('friends.show') }}">
                                     <i class="fa-solid fa-user-group"></i> Amigos
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
@@ -216,10 +215,10 @@
                     <x-responsive-nav-link :href="route('tags.show')" :active="request()->routeIs('tags.show')">
                         <i class="fa-solid fa-tags"></i> TAGS
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('users.show')" :active="request()->routeIs('users.show')">
-                        <i class="fa-solid fa-users"></i> USUARIOS
-                    </x-responsive-nav-link>
                 @endif
+                <x-responsive-nav-link :href="route('users.show')" :active="request()->routeIs('users.show')">
+                    <i class="fa-solid fa-users"></i> USUARIOS
+                </x-responsive-nav-link>
                 {{-- Notificaciones --}}
                 <div @class([
                     'cursor-pointer',
@@ -248,12 +247,12 @@
                             </x-dropdown-link>
                             <div class="border-t border-gray-200"></div>
                             {{-- comunidades --}}
-                            <x-dropdown-link href="{{ route('solicitudes.show')}}">
+                            <x-dropdown-link href="{{ route('solicitudes.show') }}">
                                 <i class="fa-solid fa-users-gear"></i> Comunidades
                             </x-dropdown-link>
                             <div class="border-t border-gray-200"></div>
                             {{-- amigos --}}
-                            <x-dropdown-link href="{{ route('solicitudes.show')}}">
+                            <x-dropdown-link href="{{ route('solicitudesamigos.show') }}">
                                 <i class="fa-solid fa-user-group"></i> Amigos
                             </x-dropdown-link>
                         </x-slot>
@@ -312,7 +311,7 @@
 
                         <div class="border-t border-gray-200"></div>
                         <!-- amigos -->
-                        <x-dropdown-link href="{{ route('publicationslikes.show', ['id' => auth()->user()->id]) }}">
+                        <x-dropdown-link href="{{ route('friends.show') }}">
                             <i class="fa-solid fa-user-group"></i> Amigos
                         </x-dropdown-link>
                         <div class="border-t border-gray-200"></div>

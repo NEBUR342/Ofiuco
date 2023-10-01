@@ -216,7 +216,8 @@ class ShowPublicationsuser extends Component
             }
         }
         $tags = Tag::pluck('nombre', 'id')->toArray();
-        return view('livewire.show-publicationsuser', compact('publicaciones', 'tags'));
+        $usuario=$this->usuario;
+        return view('livewire.show-publicationsuser', compact('publicaciones', 'tags','usuario'));
     }
 
     public function ordenar(string $campo)

@@ -24,7 +24,7 @@ class CreateCommunity extends Component
         return [
             'nombre' => ['required', 'string', 'min:3', 'unique:communities,nombre'],
             'descripcion' => ['required', 'string', 'min:10'],
-            'imagen' => ['required', 'image', 'max:2048'],
+            'imagen' => ['required', 'image', 'max:2048', 'mimes:jpg,jpeg,png'],
             'privacidad' => ['required', 'in:PRIVADO,PUBLICO'],
         ];
     }

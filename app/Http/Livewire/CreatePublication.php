@@ -31,7 +31,7 @@ class CreatePublication extends Component
                 'contenido' => ['required', 'string', 'min:10'],
                 'estado' => ['required', 'in:PUBLICADO,BORRADOR'],
                 'comunidad' => ['required', 'exists:communities,id'],
-                'imagen' => ['required', 'image', 'max:2048'],
+                'imagen' => ['required', 'image', 'max:2048', 'mimes:jpg,jpeg,png'],
                 'arraytags' => ['nullable', 'exists:tags,id']
             ];
         } else {
@@ -40,7 +40,7 @@ class CreatePublication extends Component
                 'titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo'],
                 'contenido' => ['required', 'string', 'min:10'],
                 'estado' => ['required', 'in:PUBLICADO,BORRADOR'],
-                'imagen' => ['required', 'image', 'max:2048'],
+                'imagen' => ['required', 'image', 'max:2048', 'mimes:jpg,jpeg,png'],
                 'arraytags' => ['nullable', 'exists:tags,id'],
             ];
         }

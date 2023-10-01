@@ -1,5 +1,27 @@
 <div class='min-[480px]:px-12 mt-4 cursor-default'>
+    <div class="flex mb-3">
+        <div class="flex-1">
+            <x-input class="w-full text-gray-800" type='search' placeholder="Buscar publicaciones..."
+                wire:model="buscar"></x-input>
+        </div>
+        @auth
+            <div>
+                @livewire('create-publication')
+            </div>
+        @endauth
+    </div>
     @if ($publicaciones->count())
+        <div @class([
+            'font-bold text-xl text-center my-4',
+            'text-white' => auth()->check() && auth()->user()->temaoscuro,
+        ])>
+            <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR TITULO"><i
+                    class="fa-solid fa-arrow-down-a-z"></i></span>
+            <span class="mx-3 cursor-pointer" wire:click="ordenar('likes')" title="ORDENAR POR LIKES"><i
+                    class="fa-solid fa-fire"></i></span>
+            <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD"><i
+                    class="fa-regular fa-clock"></i></span>
+        </div>
         @foreach ($publicaciones as $publicacion)
             <div @class([
                 'mb-5 rounded-lg text-center',
@@ -29,66 +51,54 @@
                         <p class="text-xl mb-5">
                             {{ $publicacion->titulo }}
                         </p>
-                        <img src="{{ Storage::url($publicacion->imagen) }}" alt="imagen de {{ $publicacion->user->name }}"
+                        <img src="{{ Storage::url($publicacion->imagen) }}"
+                            alt="imagen del autor {{ $publicacion->user->nombre }}"
                             class="rounded-lg mx-auto">
-                        @auth
-                            @if ($publicacion->likes->where('user_id', auth()->id())->count())
-                                <i @class([
-                                    'fa-solid fa-heart px-2 py-1 rounded-lg mt-5 ml-2',
-                                    'bg-red-500' => auth()->user()->temaoscuro,
-                                    'bg-red-200' => !auth()->user()->temaoscuro,
-                                ])>
-                                    <span class="mx-1">
-                                        {{ $publicacion->likes->count() }}
-                                    </span>
-                                </i>
-                            @else
-                                <i @class([
-                                    'fa-regular fa-heart px-2 py-1 rounded-lg mt-5 ml-2',
-                                    'bg-red-500' => auth()->user()->temaoscuro,
-                                    'bg-red-200' => !auth()->user()->temaoscuro,
-                                ])>
-                                    <span class="mx-1">
-                                        {{ $publicacion->likes->count() }}
-                                    </span>
-                                </i>
-                            @endif
-                        @else
-                            <i class='fa-regular fa-heart px-2 py-1 rounded-lg mt-5 ml-2 bg-red-200'>
+                        <p class="text-xl my-5 text-left">
+                            Creador: {{ $publicacion->user->name }}
+                        </p>
+                        @if ($publicacion->likes->where('user_id', auth()->id())->count())
+                            <i @class([
+                                'fa-solid fa-heart px-2 py-1 rounded-lg mt-5 ml-2',
+                                'bg-red-500' => auth()->check() && auth()->user()->temaoscuro,
+                                'bg-red-200' => auth()->guest() || !auth()->user()->temaoscuro,
+                            ])>
                                 <span class="mx-1">
                                     {{ $publicacion->likes->count() }}
                                 </span>
                             </i>
-                        @endauth
-                        @auth
-                            @if ($publicacion->saves->where('user_id', auth()->id())->count())
-                                <i @class([
-                                    'fa-solid fa-bookmark px-2 py-1 rounded-lg mt-5 ml-2',
-                                    'bg-yellow-500' => auth()->user()->temaoscuro,
-                                    'bg-yellow-200' => !auth()->user()->temaoscuro,
-                                ])>
-                                    <span class="mx-1">
-                                        {{ $publicacion->saves->count() }}
-                                    </span>
-                                </i>
-                            @else
-                                <i @class([
-                                    'fa-regular fa-bookmark px-2 py-1 rounded-lg mt-5 ml-2',
-                                    'bg-yellow-500' => auth()->user()->temaoscuro,
-                                    'bg-yellow-200' => !auth()->user()->temaoscuro,
-                                ])>
-                                    <span class="mx-1">
-                                        {{ $publicacion->saves->count() }}
-                                    </span>
-                                </i>
-                            @endif
                         @else
-                            <i class='fa-regular fa-bookmark px-2 py-1 rounded-lg mt-5 ml-2 bg-yellow-200'>
+                            <i @class([
+                                'fa-regular fa-heart px-2 py-1 rounded-lg mt-5 ml-2',
+                                'bg-red-500' => auth()->check() && auth()->user()->temaoscuro,
+                                'bg-red-200' => auth()->guest() || !auth()->user()->temaoscuro,
+                            ])>
+                                <span class="mx-1">
+                                    {{ $publicacion->likes->count() }}
+                                </span>
+                            </i>
+                        @endif
+                        @if ($publicacion->saves->where('user_id', auth()->id())->count())
+                            <i @class([
+                                'fa-solid fa-bookmark px-2 py-1 rounded-lg mt-5 ml-2',
+                                'bg-yellow-500' => auth()->check() && auth()->user()->temaoscuro,
+                                'bg-yellow-200' => auth()->guest() || !auth()->user()->temaoscuro,
+                            ])>
                                 <span class="mx-1">
                                     {{ $publicacion->saves->count() }}
                                 </span>
                             </i>
-                        @endauth
+                        @else
+                            <i @class([
+                                'fa-regular fa-bookmark px-2 py-1 rounded-lg mt-5 ml-2',
+                                'bg-yellow-500' => auth()->check() && auth()->user()->temaoscuro,
+                                'bg-yellow-200' => auth()->guest() || !auth()->user()->temaoscuro,
+                            ])>
+                                <span class="mx-1">
+                                    {{ $publicacion->saves->count() }}
+                                </span>
+                            </i>
+                        @endif
                         @if ($publicacion->comments->count())
                             <i @class([
                                 'fa-solid fa-message px-2 py-1 rounded-lg mt-5 ml-2',

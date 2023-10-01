@@ -6,8 +6,8 @@
         No se han encontrado resultados
     </p>
     @if (auth()->guest() || !auth()->user()->temaoscuro)
-        <img src="{{ Storage::url('fantasmaclaro.jpg') }}" class="h-96 mx-auto">
+        <img src="{{ Storage::url('fantasmagrisclaro.jpg') }}" class="h-96 mx-auto">
     @else
-        <img src="{{ Storage::url('fantasmaoscuro.jpg') }}" class="h-96 mx-auto">
+        <img src="{{ Storage::url('fantasmagrisoscuro.jpg') }}" class="h-96 mx-auto">
     @endif
 </div>

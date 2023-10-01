@@ -20,6 +20,26 @@ class ShowUsers extends Component
 
     public function render()
     {
+        $friends = Friend::where('aceptado', 'SI')
+            ->where(function ($query) {
+                $query->where('frienduno_id', auth()->user()->id)
+                    ->orWhere('frienddos_id', auth()->user()->id);
+            })
+            ->get();
+        foreach ($friends as $friend) {
+            if ($friend->user_id == auth()->user()->id) {
+                if ($friend->frienduno_id == auth()->user()->id) {
+                    $friend->update([
+                        "user_id" => $friend->frienddos_id,
+                    ]);
+                } else {
+                    $friend->update([
+                        "user_id" => $friend->frienduno_id,
+                    ]);
+                }
+            }
+        }
+
         // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
         // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
         switch ($this->campo) {
@@ -51,9 +71,9 @@ class ShowUsers extends Component
                     ->paginate(15);
                 break;
         }
-        $amigos=Friend::where("frienduno_id",auth()->user()->id)
-        ->orwhere("frienddos_id",auth()->user()->id)
-        ->get();
+        $amigos = Friend::where("frienduno_id", auth()->user()->id)
+            ->orwhere("frienddos_id", auth()->user()->id)
+            ->get();
         return view('livewire.show-users', compact('users', 'amigos'));
     }
 
@@ -82,10 +102,10 @@ class ShowUsers extends Component
     public function solicitudamigo($id)
     {
         // me aseguro de que no modifiquen desde la consola para repetir amigos
-        $amigos=Friend::where("frienduno_id",auth()->user()->id)
-        ->orwhere("frienddos_id",auth()->user()->id)
-        ->get();
-        if(auth()->user()->id == $id || ($amigos->contains('frienduno_id', $id) || $amigos->contains('frienddos_id', $id)))return;
+        $amigos = Friend::where("frienduno_id", auth()->user()->id)
+            ->orwhere("frienddos_id", auth()->user()->id)
+            ->get();
+        if (auth()->user()->id == $id || ($amigos->contains('frienduno_id', $id) || $amigos->contains('frienddos_id', $id))) return;
         // pongo primero el usuario con id menor.
         // asi evito amigos duplicados
         if ($id > auth()->user()->id) {
@@ -93,14 +113,14 @@ class ShowUsers extends Component
                 'user_id' => auth()->user()->id,
                 'frienduno_id' => auth()->user()->id,
                 'frienddos_id' => $id,
-                'aceptado'=>"NO"
+                'aceptado' => "NO"
             ]);
-        }else{
+        } else {
             Friend::create([
                 'user_id' => auth()->user()->id,
                 'frienduno_id' => $id,
                 'frienddos_id' => auth()->user()->id,
-                'aceptado'=>"NO"
+                'aceptado' => "NO"
             ]);
         }
         $this->emit('info', "Solicitud de amistad enviada");
@@ -109,19 +129,19 @@ class ShowUsers extends Component
     public function borraramigo($id)
     {
         // me aseguro de que no modifiquen desde la consola para repetir amigos
-        $amigo=Friend::where(function ($query) use ($id) {
+        $amigo = Friend::where(function ($query) use ($id) {
             $query->where('frienduno_id', $id)
                 ->orWhere('frienddos_id', $id);
         })
-        ->where(function ($query) {
-            $query->where('frienduno_id', auth()->user()->id)
-                ->orWhere('frienddos_id', auth()->user()->id);
-        })
-        ->first();
-        if($amigo && $amigo->aceptado=="SI"){
+            ->where(function ($query) {
+                $query->where('frienduno_id', auth()->user()->id)
+                    ->orWhere('frienddos_id', auth()->user()->id);
+            })
+            ->first();
+        if ($amigo && $amigo->aceptado == "SI") {
             $amigo->delete();
             $this->emit('info', "Amistad borrada");
-        }elseif($amigo && $amigo->aceptado=="NO"){
+        } elseif ($amigo && $amigo->aceptado == "NO") {
             $amigo->delete();
             $this->emit('info', "Solicitud de amistad borrada");
         }

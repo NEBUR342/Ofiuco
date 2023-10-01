@@ -7,8 +7,7 @@ use App\Models\Publication;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ShowPublicationscommunities extends Component
-{
+class ShowPublicationscommunities extends Component {
     use WithPagination;
 
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";

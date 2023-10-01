@@ -193,31 +193,31 @@ class ShowPublication extends Component
         // Agregar borrar likes, comentarios y guardados al cambiar la comunidad.
         // Compruebo si elijes una comunidad diferente a la que ya tenias.
         if ($this->selectedComunidades && $this->selectedComunidades != $this->publicacion->community_id) {
-            $comunidadseleccionada = Community::where('id',$this->selectedComunidades)->first();
+            $comunidadseleccionada = Community::where('id', $this->selectedComunidades)->first();
 
             // Primero borro los comentarios de los usuarios que no pertenecen a la nueva comunidad.
-            $comentarios=$this->publicacion->comments;
+            $comentarios = $this->publicacion->comments;
             foreach ($comentarios as $comentario) {
-                $usuario=$comentario->user; 
-                if(!$usuario->is_admin && ($comunidadseleccionada->user_id!=$usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))){
+                $usuario = $comentario->user;
+                if (!$usuario->is_admin && ($comunidadseleccionada->user_id != $usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))) {
                     $comentario->delete();
                 }
             }
 
             // A continuacion borro los likes de los usuarios que no pertenecen a la nueva comunidad.
-            $likes=$this->publicacion->likes;
+            $likes = $this->publicacion->likes;
             foreach ($likes as $like) {
-                $usuario=$like->user;
-                if(!$usuario->is_admin && ($comunidadseleccionada->user_id!=$usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))){
+                $usuario = $like->user;
+                if (!$usuario->is_admin && ($comunidadseleccionada->user_id != $usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))) {
                     $like->delete();
                 }
             }
 
             // A continuacion borro los saves de los usuarios que no pertenecen a la nueva comunidad.
-            $saves=$this->publicacion->saves;
+            $saves = $this->publicacion->saves;
             foreach ($saves as $save) {
-                $usuario=$save->user;
-                if(!$usuario->is_admin && ($comunidadseleccionada->user_id!=$usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))){
+                $usuario = $save->user;
+                if (!$usuario->is_admin && ($comunidadseleccionada->user_id != $usuario->id && !$usuario->communities->contains('id', $comunidadseleccionada->id))) {
                     $save->delete();
                 }
             }
@@ -313,13 +313,15 @@ class ShowPublication extends Component
         abort(404);
     }
 
-    // Compruebo que eres administrador o si es tuya.
+    // Compruebo que eres administrador, dueño de la comunidad a la que pertenece la publicación o si es tuya.
     public function comprobarPermisosPublicacion(Publication $publicacion)
     {
         if (auth()->user()->is_admin) return;
         if ($publicacion->user_id == auth()->user()->id) return;
+        if ($publicacion->comunidad == 'SI' && $publicacion->community->user_id == auth()->user()->id) return;
         abort(404);
     }
+
 
     // Compruebo si eres administrador, dueño de la publicacion o dueño del comentario.
     public function comprobarPermisosPublicacion2(Comment $comentario)

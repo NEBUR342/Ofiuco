@@ -98,4 +98,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Friend::class);
     }
+    public function messages(): HasMany {
+        return $this->hasMany(Message::class);
+    }
 }

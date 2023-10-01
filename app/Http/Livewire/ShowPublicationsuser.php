@@ -15,9 +15,8 @@ class ShowPublicationsuser extends Component
 
     public string $campo = 'id', $orden = 'desc', $buscar = "";
     public User $usuario;
-
-    public function updating()
-    {
+    
+    public function updatingBuscar() {
         $this->resetPage();
     }
 

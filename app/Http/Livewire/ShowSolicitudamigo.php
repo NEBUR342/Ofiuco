@@ -12,6 +12,11 @@ class ShowSolicitudamigo extends Component
 
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
 
+    public function updatingBuscar()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
         switch ($this->campo) {
@@ -31,7 +36,7 @@ class ShowSolicitudamigo extends Component
                 break;
             case "nombre":
                 $solicitudes = Friend::leftJoin('users', 'friends.user_id', '=', 'users.id')
-                ->where('aceptado', 'NO')
+                    ->where('aceptado', 'NO')
                     ->where(function ($query) {
                         $query->where('frienduno_id', auth()->user()->id)
                             ->orWhere('frienddos_id', auth()->user()->id);

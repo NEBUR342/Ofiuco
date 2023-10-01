@@ -1,4 +1,21 @@
 <div class="min-[480px]:px-12 my-4 cursor-default">
+    <div class="flex mb-3">
+        <div class="flex-1">
+            <x-input class="w-full text-gray-800" type='search' placeholder="Buscar usuario..."
+                wire:model="buscar"></x-input>
+        </div>
+    </div>
+    <div @class([
+        'font-bold text-xl text-center my-4',
+        'text-white' => auth()->user()->temaoscuro,
+    ])>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR COMUNIDAD">
+            <i class="fa-solid fa-arrow-down-a-z"></i>
+        </span>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD">
+            <i class="fa-regular fa-clock"></i>
+        </span>
+    </div>
     @if ($solicitudes->count())
         @foreach ($solicitudes as $solicitud)
             <div @class([

@@ -6,11 +6,16 @@ use App\Models\Friend;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ShowFriends extends Component {
+class ShowFriends extends Component
+{
     use WithPagination;
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
-
-    public function render() {
+    public function updatingBuscar()
+    {
+        $this->resetPage();
+    }
+    public function render()
+    {
         $friends = Friend::where('aceptado', 'SI')
             ->where(function ($query) {
                 $query->where('frienduno_id', auth()->user()->id)
@@ -76,26 +81,31 @@ class ShowFriends extends Component {
         return view('livewire.show-friends', compact('solicitudes'));
     }
 
-    public function ordenar(string $campo) {
+    public function ordenar(string $campo)
+    {
         $this->orden = ($this->orden == 'asc') ? 'desc' : 'asc';
         $this->campo = $campo;
     }
 
-    public function buscarUsuario($id) {
+    public function buscarUsuario($id)
+    {
         return redirect()->route('publicationsuser.show', compact('id'));
     }
 
-    public function buscarLikesUsuario($id) {
+    public function buscarLikesUsuario($id)
+    {
         return redirect()->route('publicationslikes.show', compact('id'));
     }
 
-    public function buscarSavesUsuario($id) {
+    public function buscarSavesUsuario($id)
+    {
         // Compruebo que el usuario autenticado sea un administrador.
         if (!auth()->user()->is_admin) abort(404);
         return redirect()->route('publicationssaves.show', compact('id'));
     }
 
-    public function borrarsolicitudamigo($id) {
+    public function borrarsolicitudamigo($id)
+    {
         // me aseguro de que no modifiquen desde la consola para repetir amigos
         $amigos = Friend::where(function ($query) use ($id) {
             $query->where('frienduno_id', $id)

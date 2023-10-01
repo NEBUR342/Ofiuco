@@ -5,18 +5,18 @@
                 wire:model="buscar"></x-input>
         </div>
     </div>
+    <div @class([
+        'font-bold text-xl text-center my-4',
+        'text-white' => auth()->user()->temaoscuro,
+    ])>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR NOMBRE">
+            <i class="fa-solid fa-arrow-down-a-z"></i>
+        </span>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD">
+            <i class="fa-regular fa-clock"></i>
+        </span>
+    </div>
     @if ($solicitudes->count())
-        <div @class([
-            'font-bold text-xl text-center my-4',
-            'text-white' => auth()->user()->temaoscuro,
-        ])>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR NOMBRE">
-                <i class="fa-solid fa-arrow-down-a-z"></i>
-            </span>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD">
-                <i class="fa-regular fa-clock"></i>
-            </span>
-        </div>
         @foreach ($solicitudes as $solicitud)
             <div @class([
                 'relative overflow-x-auto shadow-md rounded-lg my-3 mx-5',

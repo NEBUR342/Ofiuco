@@ -5,20 +5,20 @@
                 wire:model="buscar"></x-input>
         </div>
     </div>
+    <div @class([
+        'font-bold text-xl text-center my-4',
+        'text-white' => auth()->user()->temaoscuro,
+    ])>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR USUARIOS"><i
+                class="fa-solid fa-arrow-down-a-z"></i></span>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('comunidades')" title="ORDENAR POR COMUNIDAD"><i
+                class="fa-solid fa-users"></i></span>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('likes')" title="ORDENAR POR LIKES"><i
+                class="fa-solid fa-fire"></i></span>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD"><i
+                class="fa-regular fa-clock"></i></span>
+    </div>
     @if ($publicaciones->count())
-        <div @class([
-            'font-bold text-xl text-center my-4',
-            'text-white' => auth()->user()->temaoscuro,
-        ])>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR USUARIOS"><i
-                    class="fa-solid fa-arrow-down-a-z"></i></span>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('comunidades')" title="ORDENAR POR COMUNIDAD"><i
-                    class="fa-solid fa-users"></i></span>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('likes')" title="ORDENAR POR LIKES"><i
-                    class="fa-solid fa-fire"></i></span>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD"><i
-                    class="fa-regular fa-clock"></i></span>
-        </div>
         @foreach ($publicaciones as $publicacion)
             <div @class([
                 'mb-5 rounded-lg text-center',

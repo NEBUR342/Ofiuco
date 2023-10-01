@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Publication;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\File;
 
 class ShowPublicationswelcome extends Component {
     use WithPagination;
@@ -14,6 +15,8 @@ class ShowPublicationswelcome extends Component {
     }
     // Muestro las publicaciones que no pertenecen a ninguna comunidad
     public function render() {
+        // Borro la carpeta livewire-tmp ya que se genera al editar la foto de un usuario. Lo hago aqui ya que es la vista mas uasada.
+        File::deleteDirectory(storage_path('app/public/livewire-tmp'));
         switch ($this->campo) {
             case "nombre":
                 // Obtengo las publicaciones con el estado en PUBLICADO.

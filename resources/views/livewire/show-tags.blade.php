@@ -1,26 +1,28 @@
 <div class="min-[480px]:px-12 my-4 cursor-default">
     <div class="flex mb-3">
         <div class="flex-1">
-            <x-input class="w-full text-gray-800" type='search' placeholder="Buscar etiquetas..." wire:model="buscar"></x-input>
+            <x-input class="w-full text-gray-800" type='search' placeholder="Buscar etiquetas..."
+                wire:model="buscar"></x-input>
         </div>
         <div>
             @livewire('create-tags')
         </div>
     </div>
+    <div @class([
+        'font-bold text-xl text-center my-4',
+        'text-white' => auth()->user()->temaoscuro,
+    ])>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR TITULO">
+            <i class="fa-solid fa-arrow-down-a-z"></i>
+        </span>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD">
+            <i class="fa-regular fa-clock"></i>
+        </span>
+    </div>
     @if ($tags->count())
-        <div @class([
-            'font-bold text-xl text-center my-4',
-            'text-white' => auth()->user()->temaoscuro,
-        ])>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR TITULO">
-                <i class="fa-solid fa-arrow-down-a-z"></i>
-            </span>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD">
-                <i class="fa-regular fa-clock"></i>
-            </span>
-        </div>
         @foreach ($tags as $tag)
-            <div class='relative overflow-x-auto shadow-md rounded-lg my-3 mx-5 text-gray-900' style="background:{{ $tag->color }}">
+            <div class='relative overflow-x-auto shadow-md rounded-lg my-3 mx-5 text-gray-900'
+                style="background:{{ $tag->color }}">
                 <div class="my-3">
                     <span class="mx-3 px-2 text-xl rounded-xl bg-gray-100">
                         {{ $tag->nombre }}

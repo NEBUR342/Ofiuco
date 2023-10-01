@@ -10,18 +10,35 @@
             </div>
         @endauth
     </div>
-    @if ($publicaciones->count())
-        <div @class([
-            'font-bold text-xl text-center my-4',
-            'text-white' => auth()->check() && auth()->user()->temaoscuro,
-        ])>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR TITULO"><i
-                    class="fa-solid fa-arrow-down-a-z"></i></span>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('likes')" title="ORDENAR POR LIKES"><i
-                    class="fa-solid fa-fire"></i></span>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD"><i
-                    class="fa-regular fa-clock"></i></span>
+    <!------------------------------------------------------------------------------------------------------------------------------------------------------>
+    <div class="flex">
+        <input type="checkbox" id="drawer-toggle" class="relative sr-only peer" checked>
+        <label for="drawer-toggle"
+            class="absolute top-20 left-0 inline-block p-4 transition-all duration-500 bg-indigo-500 rounded-lg peer-checked:rotate-180 peer-checked:left-64">
+            <div class="w-6 h-1 mb-3 -rotate-45 bg-white rounded-lg"></div>
+            <div class="w-6 h-1 rotate-45 bg-white rounded-lg"></div>
+        </label>
+        <div
+            class="fixed top-0 left-0 z-20 w-64 h-full transition-all duration-500 transform -translate-x-full bg-white shadow-lg peer-checked:translate-x-0">
+            <div class="px-6 py-4">
+                <h2 class="text-lg font-semibold">CONTACTOS</h2>
+                <p class="text-gray-500">contacto</p>
+            </div>
         </div>
+    </div>
+    <!------------------------------------------------------------------------------------------------------------------------------------------------------>
+    <div @class([
+        'font-bold text-xl text-center my-4',
+        'text-white' => auth()->check() && auth()->user()->temaoscuro,
+    ])>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR TITULO"><i
+                class="fa-solid fa-arrow-down-a-z"></i></span>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('likes')" title="ORDENAR POR LIKES"><i
+                class="fa-solid fa-fire"></i></span>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD"><i
+                class="fa-regular fa-clock"></i></span>
+    </div>
+    @if ($publicaciones->count())
         @foreach ($publicaciones as $publicacion)
             <div @class([
                 'mb-5 rounded-lg text-center',
@@ -52,8 +69,7 @@
                             {{ $publicacion->titulo }}
                         </p>
                         <img src="{{ Storage::url($publicacion->imagen) }}"
-                            alt="imagen del autor {{ $publicacion->user->nombre }}"
-                            class="rounded-lg mx-auto">
+                            alt="imagen del autor {{ $publicacion->user->nombre }}" class="rounded-lg mx-auto">
                         <p class="text-xl my-5 text-left">
                             Creador: {{ $publicacion->user->name }}
                         </p>

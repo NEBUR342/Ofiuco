@@ -8,27 +8,27 @@
             @livewire('create-community')
         </div>
     </div>
+    <div @class([
+        'font-bold text-xl text-center my-4',
+        'text-white' => auth()->check() && auth()->user()->temaoscuro,
+    ])>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR TITULO">
+            <i class="fa-solid fa-arrow-down-a-z"></i>
+        </span>
+        <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD">
+            <i class="fa-regular fa-clock"></i>
+        </span>
+        <span class="mx-3 cursor-pointer ml-6 text-blue-500" wire:click="diferenciar(1)" title="MOSTRAR TODAS">
+            <i class="fa-solid fa-users-between-lines"></i>
+        </span>
+        <span class="mx-3 cursor-pointer text-blue-500" wire:click="diferenciar(2)" title="MOSTRAR CREADAS">
+            <i class="fa-solid fa-users-viewfinder"></i>
+        </span>
+        <span class="mx-3 cursor-pointer text-blue-500" wire:click="diferenciar(3)" title="MOSTRAR PARTICIPADAS">
+            <i class="fa-solid fa-users-rays"></i>
+        </span>
+    </div>
     @if ($comunidades->count())
-        <div @class([
-            'font-bold text-xl text-center my-4',
-            'text-white' => auth()->check() && auth()->user()->temaoscuro,
-        ])>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('nombre')" title="ORDENAR POR TITULO">
-                <i class="fa-solid fa-arrow-down-a-z"></i>
-            </span>
-            <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD">
-                <i class="fa-regular fa-clock"></i>
-            </span>
-            <span class="mx-3 cursor-pointer ml-6 text-blue-500" wire:click="diferenciar(1)" title="MOSTRAR TODAS">
-                <i class="fa-regular fa-clock"></i>
-            </span>
-            <span class="mx-3 cursor-pointer text-green-500" wire:click="diferenciar(2)" title="MOSTRAR CREADAS">
-                <i class="fa-regular fa-clock"></i>
-            </span>
-            <span class="mx-3 cursor-pointer text-yellow-500" wire:click="diferenciar(3)" title="MOSTRAR PARTICIPADAS">
-                <i class="fa-regular fa-clock"></i>
-            </span>
-        </div>
         @foreach ($comunidades as $comunidad)
             <div @class([
                 'mb-5 rounded-lg text-center',

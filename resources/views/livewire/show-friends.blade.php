@@ -5,8 +5,7 @@
                 wire:model="buscar"></x-input>
         </div>
     </div>
-    @if ($solicitudes->count())
-        <div @class([
+    <div @class([
             'font-bold text-xl text-center my-4',
             'text-white' => auth()->user()->temaoscuro,
         ])>
@@ -17,6 +16,7 @@
                 <i class="fa-regular fa-clock"></i>
             </span>
         </div>
+    @if ($solicitudes->count())
         @foreach ($solicitudes as $solicitud)
             <div @class([
                 'relative overflow-x-auto shadow-md rounded-lg my-3 mx-5',

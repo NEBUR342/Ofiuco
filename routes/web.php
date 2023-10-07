@@ -4,6 +4,7 @@ use App\Http\Controllers\TemaoscuroController;
 use App\Http\Livewire\ShowCommunities;
 use App\Http\Livewire\ShowCommunity;
 use App\Http\Livewire\ShowFriends;
+use App\Http\Livewire\ShowMessages;
 use App\Http\Livewire\ShowNotificaciones;
 use App\Http\Livewire\ShowPublication;
 use App\Http\Livewire\ShowPublicationscommunities;
@@ -45,6 +46,7 @@ Route::middleware([
     Route::get('solicitudes', ShowSolicitudparticipante::class)->name('solicitudes.show');
     Route::get('solicitudesamigos', ShowSolicitudamigo::class)->name('solicitudesamigos.show');
     Route::get('friends', ShowFriends::class)->name('friends.show');
+    Route::get('messages', ShowMessages::class)->name('messages.show');
     Route::get('temaoscuro',[TemaoscuroController::class, "cambiartema"])->name('temaoscuro.cambiartema');
 });
 Route::get('contactanos',[MailController::class, "pintarFormulario"])->name('contactanos.pintar');

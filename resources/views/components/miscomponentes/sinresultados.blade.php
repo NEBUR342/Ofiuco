@@ -1,4 +1,5 @@
 <div @class([
+    'mt-6',
     'text-white' => auth()->check() && auth()->user()->temaoscuro,
     'text-gray-700' => auth()->guest() || !auth()->user()->temaoscuro,
 ])>

@@ -1,4 +1,5 @@
 <div>
+    <div class="h-16"></div>
     @if ($friends->count() || $myCommunities->count() || $communitiesParticipante->count())
         <div class="flex">
             <input style="visibility: hidden" type="checkbox" id="drawer-toggle" class="relative sr-only peer" checked>
@@ -14,12 +15,12 @@
                 'bg-gray-700 text-white' => auth()->check() && auth()->user()->temaoscuro,
                 'bg-gray-200' => auth()->guest() || !auth()->user()->temaoscuro,
             ])>
-                <div class="px-6 py-4">
+                <div class="px-6 py-4 text-center justify-center">
                     @if ($friends->count())
                         <h2 class="text-lg font-semibold">CONTACTOS</h2>
                         @foreach ($friends as $friend)
-                            <span class="flex flex-col mt-2">
-                                <img class="h-8 w-8 rounded-full ml-4 cursor-pointer"
+                            <span class="flex flex-col items-center my-2">
+                                <img class="flex h-8 w-8 rounded-full ml-4 cursor-pointer"
                                     src="{{ $friend->user->profile_photo_url }}"
                                     wire:click="abrirChat({{ $friend->user->id }})" title="{{ $friend->user->name }}"
                                     alt="{{ $friend->user->name }}" />
@@ -30,8 +31,8 @@
                     @if ($myCommunities->count())
                         <h2 class="text-lg font-semibold">MIS COMUNIDADES</h2>
                         @foreach ($myCommunities as $myCommunity)
-                            <span class="flex flex-col mt-2">
-                                <img class="h-8 w-8 rounded-full ml-4 cursor-pointer"
+                            <span class="flex flex-col items-center my-2">
+                                <img class="flex h-8 w-8 rounded-full ml-4 cursor-pointer"
                                     src="{{ Storage::url($myCommunity->imagen) }}"
                                     wire:click="abrirChat({{ $myCommunity->id }})" title="{{ $myCommunity->nombre }}"
                                     alt="{{ $myCommunity->nombre }}" />
@@ -42,8 +43,8 @@
                     @if ($communitiesParticipante->count())
                         <h2 class="text-lg font-semibold">COMUNIDADES</h2>
                         @foreach ($communitiesParticipante as $communityParticipante)
-                            <span class="flex flex-col mt-2">
-                                <img class="h-8 w-8 rounded-full ml-4 cursor-pointer"
+                            <span class="flex flex-col items-center my-2">
+                                <img class="flex h-8 w-8 rounded-full ml-4 cursor-pointer"
                                     src="{{ Storage::url($communityParticipante->imagen) }}"
                                     wire:click="abrirChat({{ $communityParticipante->id }})"
                                     title="{{ $communityParticipante->nombre }}"

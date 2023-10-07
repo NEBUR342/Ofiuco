@@ -32,9 +32,9 @@ class ShowMessages extends Component {
                 $query->where('frienduno_id', auth()->user()->id)
                     ->orWhere('frienddos_id', auth()->user()->id);
             })
-            ->paginate(5);
-        $myCommunities = Community::where('user_id',auth()->user()->id)->paginate(5);
-        $communitiesParticipante = auth()->user()->communities()->paginate(5);
+            ->simplePaginate (5);
+        $myCommunities = Community::where('user_id',auth()->user()->id)->simplePaginate (5);
+        $communitiesParticipante = auth()->user()->communities()->simplePaginate (5);
         return view('livewire.show-messages',compact('friends','myCommunities','communitiesParticipante'));
     }
 }

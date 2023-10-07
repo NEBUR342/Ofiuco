@@ -1,4 +1,5 @@
 <div class="cursor-default">
+    <div class="h-16"></div>
     @if ($publicacion)
         <div class="mt-3 flex flex-wrap justify-center">
             <div class="flex min-[700px]:w-1/2 max-[700px]:mx-2 max-[700px]:mb-3">

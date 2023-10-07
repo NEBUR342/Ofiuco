@@ -1,4 +1,5 @@
 <div class="min-[480px]:px-12 my-4 cursor-default">
+    <div class="h-16"></div>
     @if ($notificaciones->count())
         @foreach ($notificaciones as $notificacion)
             <div @class([

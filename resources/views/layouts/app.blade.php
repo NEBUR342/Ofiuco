@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/jpg" href="{{ Storage::url('fantasmaclaro.jpg') }}" />
     <title>OFIUCO</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -62,26 +63,28 @@
                     <i class="fa-brands fa-tiktok"></i>
                 </a>
             </div>
-            
-                <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/" class="flex flex-wrap justify-center items-center mt-5 mx-2">
-                    <a property="dct:title" rel="cc:attributionURL" href="https://github.com/NEBUR342/Ofiuco" class="flex">
-                        Ofiuco
-                    </a>
-                    by
-                    <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/NEBUR342" class="flex">
-                        Rubén Álvarez Fernández
-                    </a>
-                    is licensed under
-                    <a class="flex" href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank"
-                        rel="license noopener noreferrer">
-                        Attribution 4.0 International
-                        <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
-                            src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1">
-                        <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
-                            src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1">
-                    </a>
-                </p>
-            
+            <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"
+                class="flex flex-wrap justify-center items-center mt-5 mx-2">
+                <a property="dct:title" rel="cc:attributionURL" href="https://github.com/NEBUR342/Ofiuco"
+                    class="flex">
+                    Ofiuco
+                </a>
+                by
+                <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/NEBUR342"
+                    class="flex">
+                    Rubén Álvarez Fernández
+                </a>
+                is licensed under
+                <a class="flex" href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank"
+                    rel="license noopener noreferrer">
+                    Attribution 4.0 International
+                    <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+                        src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1">
+                    <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+                        src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1">
+                </a>
+            </p>
+
             <div class="h-4"></div>
         </footer>
     </div>

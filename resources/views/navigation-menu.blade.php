@@ -1,5 +1,5 @@
 <nav x-data="{ open: false }" @class([
-    'border-b border-gray-100',
+    'border-b border-gray-100 fixed w-full z-20 top-0 left-0',
     'bg-white' => auth()->guest() || !auth()->user()->temaoscuro,
 ]) @style(['background-color: #041124' => auth()->check() && auth()->user()->temaoscuro])>
     <!-- Primary Navigation Menu -->

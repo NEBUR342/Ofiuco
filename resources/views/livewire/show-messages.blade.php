@@ -56,9 +56,8 @@
                 </div>
             </div>
         </div>
-    @else
-        <x-miscomponentes.sinresultados></x-miscomponentes.sinresultados>
     @endif
+    <img src="{{ Storage::url('logochat.png') }}" class="h-96 mx-auto" alt="logo Ofiuco">
 </div>
 
 <script>

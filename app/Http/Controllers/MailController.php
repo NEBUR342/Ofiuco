@@ -19,7 +19,7 @@ class MailController extends Controller
         ]);
         //Hemos pasado las validaciones, enviamos el email
         try{
-            Mail::to('ofiucoemail@gmail.com')->send(new ContactoMailable($request->nombre,$request->email , $request->contenido));
+            Mail::to('ofiucoemail@gmail.com')->send(new ContactoMailable($request->nombre, $request->email, $request->contenido));
             return redirect()->route('inicio')->with('info', 'Se ha enviado el correo');
         }catch(\Exception $ex){
             return redirect()->route('inicio')->with('info', 'No se pudo enviar el correo, inténtelo más tarde');

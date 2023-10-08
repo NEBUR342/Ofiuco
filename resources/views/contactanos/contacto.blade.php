@@ -1,4 +1,5 @@
 <x-app-layout>
+    <div class="h-16"></div>
     <div class="max-[640px]:mx-5 min-[640px]:px-12 my-4 text-gray-800">
         <form action="{{ route('contactanos.procesar') }}" method="POST">
             @csrf

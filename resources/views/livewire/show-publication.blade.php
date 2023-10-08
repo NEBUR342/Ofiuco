@@ -22,7 +22,7 @@
                         @endforeach
                     </div>
                     <div class="flex flex-wrap justify-center text-center mt-5">
-                        @auth
+                        @if(auth()->user() && auth()->user()->email_verified_at)
                             @if ($publicacion->likes->where('user_id', auth()->id())->count())
                                 <i @class([
                                     'fa-solid fa-heart cursor-pointer px-2 py-1 rounded-lg mx-auto',
@@ -75,8 +75,8 @@
                                     {{ $publicacion->likes->count() }}
                                 </span>
                             </i>
-                        @endauth
-                        @auth
+                        @endif
+                        @if(auth()->user() && auth()->user()->email_verified_at)
                             @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin)
                                 @if ($publicacion->estado == 'PUBLICADO')
                                     <div wire:click="cambiarEstado" @class([
@@ -92,7 +92,7 @@
                                     ])>BORRADOR</div>
                                 @endif
                             @endif
-                        @endauth
+                        @endif
 
                     </div>
                     <div class="my-5 mx-5">Autor:
@@ -108,7 +108,7 @@
                         <div class="mb-5 mx-5">Comunidad: {{ $publicacion->community->nombre }}</div>
                     @endif
                 </div>
-                @auth
+                @if(auth()->user() && auth()->user()->email_verified_at)
                     @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin || $aux)
                         <div class="flex flex-wrap text-xl">
                             <div title="EDITAR PUBLICACION" wire:click="editar({{ $publicacion->id }})"
@@ -121,7 +121,7 @@
                             </div>
                         </div>
                     @endif
-                @endauth
+                @endif
                 <div class="flex flex-wrap text-xl">
                     <a title="COMPARTIR PUBLICACION"
                         href="https://api.whatsapp.com/send?text=http://127.0.0.1:8000/publication/{{ $publicacion->id }}"
@@ -198,7 +198,7 @@
         </div>
         {{-- Comentarios --}}
         <div class="mt-4 mx-2">
-            @auth
+            @if(auth()->user() && auth()->user()->email_verified_at)
                 <div class="flex flex-wrap">
                     <div class="relative mb-3 w-5/6 min-[700px]:w-1/2 text-gray-800">
                         @wire('defer')
@@ -212,7 +212,7 @@
                         </div>
                     </div>
                 </div>
-            @endauth
+            @endif
             @foreach ($publicacion->comments->reverse() as $comment)
                 <div @class([
                     'relative overflow-x-auto shadow-md rounded-lg my-3',
@@ -234,15 +234,14 @@
                     <div class="flex flex-col text-l ml-2 mt-2">
                         {{ $comment->contenido }}
                     </div>
-                    @auth
+                    @if(auth()->user() && auth()->user()->email_verified_at)
                         @if (auth()->user()->id == $publicacion->user->id || auth()->user()->id == $comment->user_id || auth()->user()->is_admin)
                             <div class="flex flex-row-reverse mx-6 my-4 ">
                                 <i class="fa-regular fa-trash-can cursor-pointer text-red-500"
                                     wire:click="quitarComentario({{ $comment }})"></i>
                             </div>
                         @endif
-
-                    @endauth
+                    @endif
                 </div>
             @endforeach
         </div>

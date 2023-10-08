@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\File;
 
 class ShowPublicationswelcome extends Component {
     use WithPagination;
+    
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
+
     public function updatingBuscar() {
         $this->resetPage();
     }
     // Muestro las publicaciones que no pertenecen a ninguna comunidad
     public function render() {
-        // Borro la carpeta livewire-tmp ya que se genera al editar la foto de un usuario. Lo hago aqui ya que es la vista mas uasada.
-        File::deleteDirectory(storage_path('app/public/livewire-tmp'));
         switch ($this->campo) {
             case "nombre":
                 // Obtengo las publicaciones con el estado en PUBLICADO.
@@ -64,6 +64,7 @@ class ShowPublicationswelcome extends Component {
                     ->groupBy('publications.id')
                     ->orderBy('likes_count', $this->orden)
                     ->paginate(15);
+                    
                 break;
             default:
                 // Obtengo las publicaciones con el estado en PUBLICADO.
@@ -79,8 +80,8 @@ class ShowPublicationswelcome extends Component {
                     ->orderBy('id', $this->orden)
                     ->paginate(15);
         }
-        
-        return view('livewire.show-publicationswelcome', compact('publicaciones'));
+        $comunidades=false;
+        return view('livewire.show-publications', compact('publicaciones','comunidades'));
     }
 
     public function ordenar(string $campo) {

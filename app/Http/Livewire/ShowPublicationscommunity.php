@@ -147,7 +147,8 @@ class ShowPublicationscommunity extends Component
                         ->paginate(15);
             }
         }
-        return view('livewire.show-publicationscommunity', compact('publicaciones'));
+        $comunidades=false;
+        return view('livewire.show-publications', compact('publicaciones', 'comunidades'));
     }
 
     public function ordenar(string $campo)

@@ -181,7 +181,8 @@ class ShowPublicationssaves extends Component
                         ->paginate(15);
             }
         }
-        return view('livewire.show-publicationssaves', compact('publicaciones'));
+        $comunidades=true;
+        return view('livewire.show-publications', compact('publicaciones', 'comunidades'));
     }
 
     public function ordenar(string $campo)

@@ -115,7 +115,8 @@ class ShowPublicationscommunities extends Component {
                     ->orderBy('id', $this->orden)
                     ->paginate(15);
         }
-        return view('livewire.show-publicationscommunities', compact('publicaciones'));
+        $comunidades=true;
+        return view('livewire.show-publications', compact('publicaciones', 'comunidades'));
     }
 
     public function ordenar(string $campo)

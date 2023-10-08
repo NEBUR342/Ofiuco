@@ -18,6 +18,8 @@ use App\Http\Livewire\ShowSolicitudparticipante;
 use App\Http\Livewire\ShowTags;
 use App\Http\Livewire\ShowUsers;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,7 +34,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
-])->group(function () {
+], ['auth', 'verified'])->group(function () {
     Route::get('/dashboard', ShowPublicationscommunities::class)->name('dashboard');
     Route::get('publicationscommunity/{id}', ShowPublicationscommunity::class)->name('publicationscommunity.show');
     Route::get('communities', ShowCommunities::class)->name('communities.show');
@@ -51,3 +53,15 @@ Route::middleware([
 });
 Route::get('contactanos',[MailController::class, "pintarFormulario"])->name('contactanos.pintar');
 Route::post('contactanos',[MailController::class, "procesarFormulario"])->name('contactanos.procesar');
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('dashboard');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+ 
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');

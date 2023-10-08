@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
+use Illuminate\Support\Facades\File;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
@@ -24,7 +25,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
+            $user->deleteProfilePhoto();
             $user->updateProfilePhoto($input['photo']);
+            File::deleteDirectory(storage_path('app/public/livewire-tmp'));
         }
 
         if ($input['email'] !== $user->email &&

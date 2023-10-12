@@ -43,7 +43,13 @@ class ShowPublicationslikes extends Component
                     $publicaciones = Publication::query()
                         ->whereIn('id', Like::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              })
+                              ->orWhereHas('community', function ($q) {
+                                  $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                              });
                         })
                         ->orderBy('titulo', $this->orden)
                         ->paginate(15);
@@ -56,7 +62,13 @@ class ShowPublicationslikes extends Component
                     $publicaciones = Publication::query()
                         ->whereIn('id', Like::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              })
+                              ->orWhereHas('community', function ($q) {
+                                  $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                              });
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
@@ -69,7 +81,13 @@ class ShowPublicationslikes extends Component
                     $publicaciones = Publication::query()
                         ->whereIn('id', Like::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              })
+                              ->orWhereHas('community', function ($q) {
+                                  $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                              });
                         })
                         ->orderBy('community_id', $this->orden)
                         ->paginate(15);
@@ -84,7 +102,13 @@ class ShowPublicationslikes extends Component
                     $publicaciones = Publication::query()
                         ->whereIn('publications.id', Like::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              })
+                              ->orWhereHas('community', function ($q) {
+                                  $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                              });
                         })
                         ->leftJoin('likes', 'publications.id', 'likes.publication_id')
                         ->selectRaw('publications.*, COUNT(likes.id) as likes_count')
@@ -100,7 +124,13 @@ class ShowPublicationslikes extends Component
                     $publicaciones = Publication::query()
                         ->whereIn('id', Like::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              })
+                              ->orWhereHas('community', function ($q) {
+                                  $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                              });
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
@@ -120,7 +150,13 @@ class ShowPublicationslikes extends Component
                         })
                         ->whereIn('id', Like::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              })
+                              ->orWhereHas('community', function ($q) {
+                                  $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                              });
                         })
                         ->orderBy('titulo', $this->orden)
                         ->paginate(15);
@@ -138,7 +174,13 @@ class ShowPublicationslikes extends Component
                         })
                         ->whereIn('id', Like::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              })
+                              ->orWhereHas('community', function ($q) {
+                                  $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                              });
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
@@ -156,7 +198,13 @@ class ShowPublicationslikes extends Component
                         })
                         ->whereIn('id', Like::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              })
+                              ->orWhereHas('community', function ($q) {
+                                  $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                              });
                         })
                         ->orderBy('community_id', $this->orden)
                         ->paginate(15);
@@ -176,7 +224,13 @@ class ShowPublicationslikes extends Component
                         })
                         ->whereIn('publications.id', Like::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              })
+                              ->orWhereHas('community', function ($q) {
+                                  $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                              });
                         })
                         ->leftJoin('likes', 'publications.id', 'likes.publication_id')
                         ->selectRaw('publications.*, COUNT(likes.id) as likes_count')
@@ -197,7 +251,13 @@ class ShowPublicationslikes extends Component
                         })
                         ->whereIn('id', Like::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              })
+                              ->orWhereHas('community', function ($q) {
+                                  $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                              });
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);

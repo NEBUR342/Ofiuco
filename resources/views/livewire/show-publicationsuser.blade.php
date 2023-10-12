@@ -10,16 +10,20 @@
         <div class="flex-1 justify-center items-center min-[700px]:w-2/3">
             <div class="flex justify-around">
                 @if (auth()->user()->id != $usuario->id)
-                    <div wire:click="" class="bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer">SEGUIR</div>
+                    @if(!$follow)
+                        <div wire:click="follow()" class="bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer">SEGUIR</div>
+                    @else
+                        <div wire:click="followdestroy()" class="bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer">DEJAR DE SEGUIR</div>
+                    @endif
                     @if (!(auth()->user()->friends->contains('frienduno_id', $usuario->id) || auth()->user()->friends->contains('frienddos_id', $usuario->id)))
                         <span class="min-[480px]:ml-12 cursor-pointer bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 rounded">
                             <i class="fa-solid fa-user-plus"
-                                wire:click="solicitudamigo({{ $usuario->id }})"></i>
+                                wire:click="solicitudamigo()"></i>
                         </span>
                     @elseif(auth()->user()->id != $usuario->id)
                         <span class="min-[480px]:ml-12 cursor-pointer bg-transparent hover:bg-red-500 text-red-500 font-semibold hover:text-white py-2 px-4 rounded">
                             <i class="fa-solid fa-user-minus"
-                                wire:click="borraramigo({{ $usuario->id }})"></i>
+                                wire:click="borraramigo()"></i>
                         </span>
                     @endif
                     <span title="VER LIKES DEL USUARIO" wire:click="buscarLikesUsuario()"

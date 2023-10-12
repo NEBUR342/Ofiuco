@@ -30,7 +30,7 @@
             <i class="fa-regular fa-clock"></i>
         </span>
     </div>
-    @if ($publicaciones->count())
+    @if ($publicaciones != null && $publicaciones->count())
     <?php $cont = 0; ?>
         @foreach ($publicaciones as $publicacion)
         <?php $cont++; ?>

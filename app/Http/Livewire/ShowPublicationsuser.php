@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Community;
+use App\Models\Follow;
 use App\Models\Friend;
 use App\Models\Publication;
 use App\Models\Tag;
@@ -16,8 +17,9 @@ class ShowPublicationsuser extends Component
 
     public string $campo = 'id', $orden = 'desc', $buscar = "";
     public User $usuario;
-    
-    public function updatingBuscar() {
+
+    public function updatingBuscar()
+    {
         $this->resetPage();
     }
 
@@ -49,8 +51,7 @@ class ShowPublicationsuser extends Component
                                 ->orWhereNull('community_id');
                         })
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
-                                ->orWhere('contenido', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
                         })
                         ->orderBy('titulo', $this->orden)
                         ->paginate(15);
@@ -217,13 +218,18 @@ class ShowPublicationsuser extends Component
             }
         }
         $tags = Tag::pluck('nombre', 'id')->toArray();
-        $usuario=$this->usuario;
+        $usuario = $this->usuario;
         // Obtengo las comunidades en las que es participante.
         $comunidadesParticipado = $usuario->communities()->get();
 
         // Obtengo las comunidades en las que es el creador.
         $comunidadesCreador = Community::where('user_id', $usuario->id)->get();
-        return view('livewire.show-publicationsuser', compact('publicaciones', 'tags','usuario', 'comunidadesParticipado', 'comunidadesCreador'));
+
+        // obtengo si le sigue
+        $follow = Follow::where('user_id', $usuario->id)
+        ->where('seguidor_id', auth()->user()->id)
+        ->count();
+        return view('livewire.show-publicationsuser', compact('publicaciones', 'tags', 'usuario', 'comunidadesParticipado', 'comunidadesCreador', 'follow'));
     }
 
     public function ordenar(string $campo)
@@ -237,18 +243,20 @@ class ShowPublicationsuser extends Component
         return redirect()->route('publication.show', compact('id'));
     }
 
-    public function verComunidad($id) {
+    public function verComunidad($id)
+    {
         return redirect()->route('community.show', compact('id'));
     }
 
     public function buscarLikesUsuario()
     {
-        $id=$this->usuario->id;
+        $id = $this->usuario->id;
         return redirect()->route('publicationslikes.show', compact('id'));
     }
 
-    public function solicitudamigo($id)
+    public function solicitudamigo()
     {
+        $id=$this->usuario->id;
         // me aseguro de que no modifiquen desde la consola para repetir amigos
         $amigos = Friend::where("frienduno_id", auth()->user()->id)
             ->orwhere("frienddos_id", auth()->user()->id)
@@ -274,8 +282,9 @@ class ShowPublicationsuser extends Component
         $this->emit('info', "Solicitud de amistad enviada");
     }
 
-    public function borraramigo($id)
+    public function borraramigo()
     {
+        $id=$this->usuario->id;
         // me aseguro de que no modifiquen desde la consola para repetir amigos
         $amigo = Friend::where(function ($query) use ($id) {
             $query->where('frienduno_id', $id)
@@ -293,5 +302,26 @@ class ShowPublicationsuser extends Component
             $amigo->delete();
             $this->emit('info', "Solicitud de amistad borrada");
         }
+    }
+
+    public function follow()
+    {
+        if ($this->usuario->privado) {
+            Follow::create([
+                'user_id' => $this->usuario->id,
+                'seguidor_id' => auth()->user()->id,
+                'aceptado' => 'NO'
+            ]);
+        } else {
+            Follow::create([
+                'user_id' => $this->usuario->id,
+                'seguidor_id' => auth()->user()->id,
+                'aceptado' => 'NO'
+            ]);
+        }
+    }
+    public function followdestroy(){
+        $follow=Follow::where('user_id',$this->usuario->id)->where('seguidor_id',auth()->user()->id)->first();
+        $follow->delete();
     }
 }

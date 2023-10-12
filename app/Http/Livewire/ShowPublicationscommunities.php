@@ -7,7 +7,8 @@ use App\Models\Publication;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ShowPublicationscommunities extends Component {
+class ShowPublicationscommunities extends Component
+{
     use WithPagination;
 
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
@@ -37,7 +38,13 @@ class ShowPublicationscommunities extends Component {
                             ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
                     })
                     ->where(function ($q) {
-                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                            ->orWhereHas('user', function ($q) {
+                                $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                            })
+                            ->orWhereHas('community', function ($q) {
+                                $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                            });
                     })
                     ->orderBy('titulo', $this->orden)
                     ->paginate(15);
@@ -54,7 +61,13 @@ class ShowPublicationscommunities extends Component {
                             ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
                     })
                     ->where(function ($q) {
-                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                            ->orWhereHas('user', function ($q) {
+                                $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                            })
+                            ->orWhereHas('community', function ($q) {
+                                $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                            });
                     })
                     ->orderBy('id', $this->orden)
                     ->paginate(15);
@@ -71,7 +84,13 @@ class ShowPublicationscommunities extends Component {
                             ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
                     })
                     ->where(function ($q) {
-                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                            ->orWhereHas('user', function ($q) {
+                                $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                            })
+                            ->orWhereHas('community', function ($q) {
+                                $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                            });
                     })
                     ->orderBy('community_id', $this->orden)
                     ->paginate(15);
@@ -90,7 +109,13 @@ class ShowPublicationscommunities extends Component {
                             ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
                     })
                     ->where(function ($q) {
-                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                            ->orWhereHas('user', function ($q) {
+                                $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                            })
+                            ->orWhereHas('community', function ($q) {
+                                $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                            });
                     })
                     ->leftJoin('likes', 'publications.id', 'likes.publication_id')
                     ->selectRaw('publications.*, COUNT(likes.id) as likes_count')
@@ -110,12 +135,18 @@ class ShowPublicationscommunities extends Component {
                             ->orWhereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'));
                     })
                     ->where(function ($q) {
-                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                        $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                            ->orWhereHas('user', function ($q) {
+                                $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                            })
+                            ->orWhereHas('community', function ($q) {
+                                $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                            });
                     })
                     ->orderBy('id', $this->orden)
                     ->paginate(15);
         }
-        $comunidades=true;
+        $comunidades = true;
         return view('livewire.show-publications', compact('publicaciones', 'comunidades'));
     }
 

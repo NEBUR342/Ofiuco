@@ -31,7 +31,7 @@ class ShowPublicationssaves extends Component
         if (!auth()->user()->is_admin && $user->id != auth()->user()->id) abort(404);
         // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
         // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
-        if(auth()->user()->is_admin){
+        if (auth()->user()->is_admin) {
             switch ($this->campo) {
                 case "nombre":
                     // Obtengo las publicaciones independientemente esten publicadas o no.
@@ -41,7 +41,13 @@ class ShowPublicationssaves extends Component
                     $publicaciones = Publication::query()
                         ->whereIn('id', Save::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhereHas('user', function ($q) {
+                                    $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                                })
+                                ->orWhereHas('community', function ($q) {
+                                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                                });
                         })
                         ->orderBy('titulo', $this->orden)
                         ->paginate(15);
@@ -54,7 +60,13 @@ class ShowPublicationssaves extends Component
                     $publicaciones = Publication::query()
                         ->whereIn('id', Save::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhereHas('user', function ($q) {
+                                    $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                                })
+                                ->orWhereHas('community', function ($q) {
+                                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                                });
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
@@ -82,7 +94,13 @@ class ShowPublicationssaves extends Component
                     $publicaciones = Publication::query()
                         ->whereIn('publications.id', Save::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhereHas('user', function ($q) {
+                                    $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                                })
+                                ->orWhereHas('community', function ($q) {
+                                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                                });
                         })
                         ->leftJoin('likes', 'publications.id', 'likes.publication_id')
                         ->selectRaw('publications.*, COUNT(likes.id) as likes_count')
@@ -96,14 +114,20 @@ class ShowPublicationssaves extends Component
                     // y de los que no pertenecen a comunidades.
                     // Lo ordeno por id, ya que no se ha encontrado otra.
                     $publicaciones = Publication::query()
-                    ->whereIn('publications.id', Save::where('user_id', $user->id)->pluck('publication_id'))
+                        ->whereIn('publications.id', Save::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhereHas('user', function ($q) {
+                                    $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                                })
+                                ->orWhereHas('community', function ($q) {
+                                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                                });
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
             }
-        }else{
+        } else {
             switch ($this->campo) {
                 case "nombre":
                     // Obtengo las publicaciones independientemente esten publicadas o no.
@@ -111,10 +135,16 @@ class ShowPublicationssaves extends Component
                     // y de los que no pertenecen a comunidades.
                     // Lo ordeno por el nombre de los usuarios.
                     $publicaciones = Publication::query()
-                        ->where('estado',"PUBLICADO")
+                        ->where('estado', "PUBLICADO")
                         ->whereIn('id', Save::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhereHas('user', function ($q) {
+                                    $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                                })
+                                ->orWhereHas('community', function ($q) {
+                                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                                });
                         })
                         ->orderBy('titulo', $this->orden)
                         ->paginate(15);
@@ -125,10 +155,16 @@ class ShowPublicationssaves extends Component
                     // y de los que no pertenecen a comunidades.
                     // Lo ordeno por el id de las publicaciones.
                     $publicaciones = Publication::query()
-                    ->where('estado',"PUBLICADO")
+                        ->where('estado', "PUBLICADO")
                         ->whereIn('publications.id', Save::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhereHas('user', function ($q) {
+                                    $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                                })
+                                ->orWhereHas('community', function ($q) {
+                                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                                });
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
@@ -139,10 +175,16 @@ class ShowPublicationssaves extends Component
                     // y de los que no pertenecen a comunidades.
                     // Lo ordeno por el id de las comunidades.
                     $publicaciones = Publication::query()
-                    ->where('estado',"PUBLICADO")
+                        ->where('estado', "PUBLICADO")
                         ->whereIn('id', Save::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhereHas('user', function ($q) {
+                                    $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                                })
+                                ->orWhereHas('community', function ($q) {
+                                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                                });
                         })
                         ->orderBy('community_id', $this->orden)
                         ->paginate(15);
@@ -155,10 +197,16 @@ class ShowPublicationssaves extends Component
                     // Agrego la agrupación para evitar resultados duplicados.
                     // Ordeno por la cantidad de likes.
                     $publicaciones = Publication::query()
-                    ->where('estado',"PUBLICADO")
+                        ->where('estado', "PUBLICADO")
                         ->whereIn('publications.id', Save::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhereHas('user', function ($q) {
+                                    $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                                })
+                                ->orWhereHas('community', function ($q) {
+                                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                                });
                         })
                         ->leftJoin('likes', 'publications.id', 'likes.publication_id')
                         ->selectRaw('publications.*, COUNT(likes.id) as likes_count')
@@ -172,16 +220,22 @@ class ShowPublicationssaves extends Component
                     // y de los que no pertenecen a comunidades.
                     // Lo ordeno por id, ya que no se ha encontrado otra.
                     $publicaciones = Publication::query()
-                    ->where('estado',"PUBLICADO")
-                    ->whereIn('publications.id', Save::where('user_id', $user->id)->pluck('publication_id'))
+                        ->where('estado', "PUBLICADO")
+                        ->whereIn('publications.id', Save::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhereHas('user', function ($q) {
+                                    $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                                })
+                                ->orWhereHas('community', function ($q) {
+                                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                                });
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
             }
         }
-        $comunidades=true;
+        $comunidades = true;
         return view('livewire.show-publications', compact('publicaciones', 'comunidades'));
     }
 

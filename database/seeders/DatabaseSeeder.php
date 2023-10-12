@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CommunitySeeder::class);
         $this->call(PublicationSeeder::class);
         Comment::factory(500)->create();
+        $this->call(FollowSeeder::class);
         $this->call(LikeSeeder::class);
         $this->call(SaveSeeder::class);
     }

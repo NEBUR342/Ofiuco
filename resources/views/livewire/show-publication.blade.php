@@ -22,7 +22,7 @@
                         @endforeach
                     </div>
                     <div class="flex flex-wrap justify-center text-center mt-5">
-                        @if(auth()->user() && auth()->user()->email_verified_at)
+                        @if (auth()->user() && auth()->user()->email_verified_at)
                             @if ($publicacion->likes->where('user_id', auth()->id())->count())
                                 <i @class([
                                     'fa-solid fa-heart cursor-pointer px-2 py-1 rounded-lg mx-auto',
@@ -39,13 +39,14 @@
                                     'fa-regular fa-heart cursor-pointer px-2 py-1 rounded-lg mx-auto',
                                     'bg-red-500' => auth()->user()->temaoscuro,
                                     'bg-red-200' => !auth()->user()->temaoscuro,
-                                ]) title="Dar like" wire:click="darlike({{ $publicacion }})">
+                                ]) title="Dar like"
+                                    wire:click="darlike({{ $publicacion }})">
                                     <span class="mx-1">
                                         {{ $publicacion->likes->count() }}
                                     </span>
                                 </i>
                             @endif
-                            {{-- Aqui agrego el guardar la publicacion --}}
+                            {{-- Aqui agrego el guardar la publicacion porque quiero que solo lo veas si estas logueado y autenticado --}}
                             @if ($publicacion->saves->where('user_id', auth()->id())->count())
                                 <i @class([
                                     'fa-solid fa-bookmark cursor-pointer px-2 py-1 rounded-lg mx-auto',
@@ -62,7 +63,8 @@
                                     'fa-regular fa-bookmark cursor-pointer px-2 py-1 rounded-lg mx-auto',
                                     'bg-yellow-500' => auth()->user()->temaoscuro,
                                     'bg-yellow-200' => !auth()->user()->temaoscuro,
-                                ]) title="Dar like" wire:click="darsave({{ $publicacion }})">
+                                ]) title="Dar like"
+                                    wire:click="darsave({{ $publicacion }})">
                                     <span class="mx-1">
                                         {{ $publicacion->saves->count() }}
                                     </span>
@@ -76,7 +78,7 @@
                                 </span>
                             </i>
                         @endif
-                        @if(auth()->user() && auth()->user()->email_verified_at)
+                        @if (auth()->user() && auth()->user()->email_verified_at)
                             @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin)
                                 @if ($publicacion->estado == 'PUBLICADO')
                                     <div wire:click="cambiarEstado" @class([
@@ -108,7 +110,7 @@
                         <div class="mb-5 mx-5">Comunidad: {{ $publicacion->community->nombre }}</div>
                     @endif
                 </div>
-                @if(auth()->user() && auth()->user()->email_verified_at)
+                @if (auth()->user() && auth()->user()->email_verified_at)
                     @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin || $aux)
                         <div class="flex flex-wrap text-xl">
                             <div title="EDITAR PUBLICACION" wire:click="editar({{ $publicacion->id }})"
@@ -146,7 +148,7 @@
                         </svg>
                     </a>
                     <a title="COMPARTIR PUBLICACION"
-                        href="http://www.facebook.com/sharer.php?u=http://127.0.0.1:8000/publication/{{ $publicacion->id }}&t=Mira la publicacion de {{$publicacion->user->name}} en Ofiuco"
+                        href="http://www.facebook.com/sharer.php?u=http://127.0.0.1:8000/publication/{{ $publicacion->id }}&t=Mira la publicacion de {{ $publicacion->user->name }} en Ofiuco"
                         target="_blank" class="cursor-pointer mx-auto my-5">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50"
                             height="50" viewBox="0 0 64 64">
@@ -177,7 +179,7 @@
                         </svg>
                     </a>
                     <a title="COMPARTIR PUBLICACION"
-                        href="https://twitter.com/intent/tweet?text=Mira la publicacion de {{$publicacion->user->name}} de Ofiuco en:&url=http://127.0.0.1:8000/publication/{{ $publicacion->id }}"
+                        href="https://twitter.com/intent/tweet?text=Mira la publicacion de {{ $publicacion->user->name }} de Ofiuco en:&url=http://127.0.0.1:8000/publication/{{ $publicacion->id }}"
                         target="_blank" class="cursor-pointer mx-auto my-5">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50"
                             height="50" viewBox="0 0 48 48">
@@ -189,8 +191,56 @@
                     <a title="COMPARTIR PUBLICACION"
                         href="https://www.reddit.com/submit?url=http://127.0.0.1:8000/publication/{{ $publicacion->id }}"
                         target="_blank" class="cursor-pointer mx-auto my-5">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 48 48">
-                            <path fill="#64717c" d="M24,18c-0.552,0-1-0.448-1-1c0-2.815,0.36-12,5-12c1.173,0,2.037,0.676,2.872,1.331    C31.919,7.151,33.002,8,35,8h4c0.552,0,1,0.448,1,1s-0.448,1-1,1h-4c-2.688,0-4.233-1.211-5.362-2.095C28.922,7.344,28.46,7,28,7    c-1.738,0-3,4.206-3,10C25,17.552,24.552,18,24,18z"></path><radialGradient id="PTH08zocUYAZh7xvCE~aha_h3FOPWMfgNnV_gr1" cx="36.257" cy="27.553" r="11.69" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#bbc1c4"></stop><stop offset=".652" stop-color="#bbc1c4"></stop><stop offset=".74" stop-color="#c1c7c9"></stop><stop offset=".861" stop-color="#d3d6d8"></stop><stop offset="1" stop-color="#f0f0f0"></stop></radialGradient><circle cx="40" cy="22" r="5" fill="url(#PTH08zocUYAZh7xvCE~aha_h3FOPWMfgNnV_gr1)"></circle><radialGradient id="PTH08zocUYAZh7xvCE~ahb_h3FOPWMfgNnV_gr2" cx="36.257" cy="27.553" r="11.69" gradientTransform="matrix(-1 0 0 1 48 0)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#bbc1c4"></stop><stop offset=".652" stop-color="#bbc1c4"></stop><stop offset=".74" stop-color="#c1c7c9"></stop><stop offset=".861" stop-color="#d3d6d8"></stop><stop offset="1" stop-color="#f0f0f0"></stop></radialGradient><circle cx="8" cy="22" r="5" fill="url(#PTH08zocUYAZh7xvCE~ahb_h3FOPWMfgNnV_gr2)"></circle><linearGradient id="PTH08zocUYAZh7xvCE~ahc_h3FOPWMfgNnV_gr3" x1="24" x2="24" y1="14.955" y2="42.955" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f0f0f0"></stop><stop offset="1" stop-color="#bbc1c4"></stop></linearGradient><ellipse cx="24" cy="29" fill="url(#PTH08zocUYAZh7xvCE~ahc_h3FOPWMfgNnV_gr3)" rx="19" ry="14"></ellipse><path fill="#d43a02" d="M30,23c-1.656-0.001-2.999,1.341-3,2.998c-0.001,1.656,1.341,2.999,2.998,3c0.001,0,0.002,0,0.002,0  c1.656,0.001,2.999-1.341,3-2.998c0.001-1.656-1.341-2.999-2.998-3C30.002,23,30.001,23,30,23z"></path><path fill="#d43a02" d="M18,23c-1.656-0.001-2.999,1.341-3,2.998c-0.001,1.656,1.341,2.999,2.998,3c0.001,0,0.002,0,0.002,0    c1.656,0.001,2.999-1.341,3-2.998c0.001-1.656-1.341-2.999-2.998-3C18.002,23,18.001,23,18,23z"></path><path fill="#64717c" d="M24.002,34.902c-3.252,0-6.14-0.745-8.002-1.902c1.024,2.044,4.196,4,8.002,4  c3.802,0,6.976-1.956,7.998-4C30.143,34.157,27.254,34.902,24.002,34.902z"></path><linearGradient id="PTH08zocUYAZh7xvCE~ahd_h3FOPWMfgNnV_gr4" x1="36.995" x2="41.392" y1="6.995" y2="11.392" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f0f0f0"></stop><stop offset="1" stop-color="#bbc1c4"></stop></linearGradient><circle cx="39" cy="9" r="3" fill="url(#PTH08zocUYAZh7xvCE~ahd_h3FOPWMfgNnV_gr4)"></circle>
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50"
+                            height="50" viewBox="0 0 48 48">
+                            <path fill="#64717c"
+                                d="M24,18c-0.552,0-1-0.448-1-1c0-2.815,0.36-12,5-12c1.173,0,2.037,0.676,2.872,1.331    C31.919,7.151,33.002,8,35,8h4c0.552,0,1,0.448,1,1s-0.448,1-1,1h-4c-2.688,0-4.233-1.211-5.362-2.095C28.922,7.344,28.46,7,28,7    c-1.738,0-3,4.206-3,10C25,17.552,24.552,18,24,18z">
+                            </path>
+                            <radialGradient id="PTH08zocUYAZh7xvCE~aha_h3FOPWMfgNnV_gr1" cx="36.257"
+                                cy="27.553" r="11.69" gradientUnits="userSpaceOnUse">
+                                <stop offset="0" stop-color="#bbc1c4"></stop>
+                                <stop offset=".652" stop-color="#bbc1c4"></stop>
+                                <stop offset=".74" stop-color="#c1c7c9"></stop>
+                                <stop offset=".861" stop-color="#d3d6d8"></stop>
+                                <stop offset="1" stop-color="#f0f0f0"></stop>
+                            </radialGradient>
+                            <circle cx="40" cy="22" r="5"
+                                fill="url(#PTH08zocUYAZh7xvCE~aha_h3FOPWMfgNnV_gr1)"></circle>
+                            <radialGradient id="PTH08zocUYAZh7xvCE~ahb_h3FOPWMfgNnV_gr2" cx="36.257"
+                                cy="27.553" r="11.69" gradientTransform="matrix(-1 0 0 1 48 0)"
+                                gradientUnits="userSpaceOnUse">
+                                <stop offset="0" stop-color="#bbc1c4"></stop>
+                                <stop offset=".652" stop-color="#bbc1c4"></stop>
+                                <stop offset=".74" stop-color="#c1c7c9"></stop>
+                                <stop offset=".861" stop-color="#d3d6d8"></stop>
+                                <stop offset="1" stop-color="#f0f0f0"></stop>
+                            </radialGradient>
+                            <circle cx="8" cy="22" r="5"
+                                fill="url(#PTH08zocUYAZh7xvCE~ahb_h3FOPWMfgNnV_gr2)"></circle>
+                            <linearGradient id="PTH08zocUYAZh7xvCE~ahc_h3FOPWMfgNnV_gr3" x1="24"
+                                x2="24" y1="14.955" y2="42.955" gradientUnits="userSpaceOnUse">
+                                <stop offset="0" stop-color="#f0f0f0"></stop>
+                                <stop offset="1" stop-color="#bbc1c4"></stop>
+                            </linearGradient>
+                            <ellipse cx="24" cy="29"
+                                fill="url(#PTH08zocUYAZh7xvCE~ahc_h3FOPWMfgNnV_gr3)" rx="19" ry="14">
+                            </ellipse>
+                            <path fill="#d43a02"
+                                d="M30,23c-1.656-0.001-2.999,1.341-3,2.998c-0.001,1.656,1.341,2.999,2.998,3c0.001,0,0.002,0,0.002,0  c1.656,0.001,2.999-1.341,3-2.998c0.001-1.656-1.341-2.999-2.998-3C30.002,23,30.001,23,30,23z">
+                            </path>
+                            <path fill="#d43a02"
+                                d="M18,23c-1.656-0.001-2.999,1.341-3,2.998c-0.001,1.656,1.341,2.999,2.998,3c0.001,0,0.002,0,0.002,0    c1.656,0.001,2.999-1.341,3-2.998c0.001-1.656-1.341-2.999-2.998-3C18.002,23,18.001,23,18,23z">
+                            </path>
+                            <path fill="#64717c"
+                                d="M24.002,34.902c-3.252,0-6.14-0.745-8.002-1.902c1.024,2.044,4.196,4,8.002,4  c3.802,0,6.976-1.956,7.998-4C30.143,34.157,27.254,34.902,24.002,34.902z">
+                            </path>
+                            <linearGradient id="PTH08zocUYAZh7xvCE~ahd_h3FOPWMfgNnV_gr4" x1="36.995"
+                                x2="41.392" y1="6.995" y2="11.392" gradientUnits="userSpaceOnUse">
+                                <stop offset="0" stop-color="#f0f0f0"></stop>
+                                <stop offset="1" stop-color="#bbc1c4"></stop>
+                            </linearGradient>
+                            <circle cx="39" cy="9" r="3"
+                                fill="url(#PTH08zocUYAZh7xvCE~ahd_h3FOPWMfgNnV_gr4)"></circle>
                         </svg>
                     </a>
                 </div>
@@ -198,7 +248,7 @@
         </div>
         {{-- Comentarios --}}
         <div class="mt-4 mx-2">
-            @if(auth()->user() && auth()->user()->email_verified_at)
+            @if (auth()->user() && auth()->user()->email_verified_at)
                 <div class="flex flex-wrap">
                     <div class="relative mb-3 w-5/6 min-[700px]:w-1/2 text-gray-800">
                         @wire('defer')
@@ -234,7 +284,7 @@
                     <div class="flex flex-col text-l ml-2 mt-2">
                         {{ $comment->contenido }}
                     </div>
-                    @if(auth()->user() && auth()->user()->email_verified_at)
+                    @if (auth()->user() && auth()->user()->email_verified_at)
                         @if (auth()->user()->id == $publicacion->user->id || auth()->user()->id == $comment->user_id || auth()->user()->is_admin)
                             <div class="flex flex-row-reverse mx-6 my-4 ">
                                 <i class="fa-regular fa-trash-can cursor-pointer text-red-500"

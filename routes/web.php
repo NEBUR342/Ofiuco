@@ -1,25 +1,12 @@
 <?php
-use App\Http\Controllers\MailController;
-use App\Http\Controllers\TemaoscuroController;
-use App\Http\Livewire\ShowCommunities;
-use App\Http\Livewire\ShowCommunity;
-use App\Http\Livewire\ShowFriends;
-use App\Http\Livewire\ShowMessages;
-use App\Http\Livewire\ShowNotificaciones;
-use App\Http\Livewire\ShowPublication;
-use App\Http\Livewire\ShowPublicationscommunities;
-use App\Http\Livewire\ShowPublicationscommunity;
-use App\Http\Livewire\ShowPublicationslikes;
-use App\Http\Livewire\ShowPublicationssaves;
-use App\Http\Livewire\ShowPublicationsuser;
-use App\Http\Livewire\ShowPublicationswelcome;
-use App\Http\Livewire\ShowSolicitudamigo;
-use App\Http\Livewire\ShowSolicitudparticipante;
-use App\Http\Livewire\ShowTags;
-use App\Http\Livewire\ShowUsers;
+use App\Http\Controllers\{MailController, TemaoscuroController};
+use App\Http\Livewire\{ShowCommunities, ShowCommunity, ShowFriends, ShowMessages, ShowNotificaciones, ShowPublication,
+    ShowPublicationscommunities, ShowPublicationscommunity, ShowPublicationslikes, ShowPublicationssaves,
+    ShowPublicationsuser, ShowPublicationswelcome, ShowSolicitudamigo, ShowSolicitudparticipante, ShowTags, ShowUsers};
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +16,9 @@ use Illuminate\Http\Request;
 | be assigned to the "web" middleware group. Make something great!
 */
 Route::get('/', ShowPublicationswelcome::class)->name('inicio');
+Route::get('instrucciones', function(){
+    return view("livewire.show-instrucciones");
+})->name('instrucciones');
 Route::get('publication/{id}', ShowPublication::class)->name('publication.show');
 Route::middleware([
     'auth:sanctum',
@@ -39,7 +29,7 @@ Route::middleware([
     Route::get('publicationscommunity/{id}', ShowPublicationscommunity::class)->name('publicationscommunity.show');
     Route::get('communities', ShowCommunities::class)->name('communities.show');
     Route::get('community/{id}', ShowCommunity::class)->name('community.show');
-    Route::get('publications/{id}', ShowPublicationsuser::class)->name('publicationsuser.show');
+    Route::get('perfil/{id}', ShowPublicationsuser::class)->name('publicationsuser.show');
     Route::get('tags', ShowTags::class)->name('tags.show');
     Route::get('users', ShowUsers::class)->name('users.show');
     Route::get('likes/{id}', ShowPublicationslikes::class)->name('publicationslikes.show');

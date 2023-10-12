@@ -32,6 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_admin',
         'temaoscuro',
         'community_id',
+        'privado'
     ];
 
     /**
@@ -98,6 +99,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Friend::class);
     }
+
+    public function follows(): HasMany
+    {
+        return $this->hasMany(Friend::class);
+    }
+
     public function messages(): HasMany {
         return $this->hasMany(Message::class);
     }

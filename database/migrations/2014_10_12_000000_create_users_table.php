@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('is_admin')->default(0); // por defecto es 0 ya que es lo que indica que es un usuario normal.
             $table->boolean('temaoscuro')->default(0); // por defecto es 0, sin modo oscuro.
+            $table->boolean('privado')->default(0); // por defecto es 0, no es privado.
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();

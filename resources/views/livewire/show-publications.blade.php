@@ -31,15 +31,19 @@
         </span>
     </div>
     @if ($publicaciones->count())
+    <?php $cont = 0; ?>
         @foreach ($publicaciones as $publicacion)
+        <?php $cont++; ?>
             <div @class([
                 'mb-5 rounded-lg text-center',
-                'bg-gray-700' => auth()->check() && auth()->user()->temaoscuro,
-                'bg-gray-200' => auth()->guest() || !auth()->user()->temaoscuro,
+                'bg-gray-700' => (auth()->check() && auth()->user()->temaoscuro) && $cont % 2 == 0,
+                'bg-gray-800' => (auth()->check() && auth()->user()->temaoscuro) && $cont % 2 == 1,
+                'bg-gray-200' => (auth()->guest() || !auth()->user()->temaoscuro) && $cont % 2 == 0,
+                'bg-gray-300' => (auth()->guest() || !auth()->user()->temaoscuro) && $cont % 2 == 1,
             ])>
                 <div wire:click="verPublicacion({{ $publicacion->id }})" @class([
                     'cursor-pointer group relative px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10',
-                    'bg-gray-600' => auth()->check() && auth()->user()->temaoscuro,
+                    'bg-gray-500' => auth()->check() && auth()->user()->temaoscuro,
                     'bg-white' => auth()->guest() || !auth()->user()->temaoscuro,
                 ])>
                     <div

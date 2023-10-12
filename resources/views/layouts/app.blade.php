@@ -24,8 +24,8 @@
 
 <body @class([
     'font-sans antialiased',
-    'bg-gray-800 text-white' => auth()->check() && auth()->user()->temaoscuro,
-    'bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
+    'bg-gray-600 text-white' => auth()->check() && auth()->user()->temaoscuro,
+    'bg-gray-100' => auth()->guest() || !auth()->user()->temaoscuro,
 ])>
     <x-banner />
 
@@ -84,7 +84,7 @@
                         src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1">
                 </a>
             </p>
-
+            <p class="text-center">Para saber cómo funciona la página pincha <a href="{{route('instrucciones')}}" class="text-blue-500 hover:text-blue-700">aquí</a></p>
             <div class="h-4"></div>
         </footer>
     </div>

@@ -19,39 +19,43 @@
         <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD">
             <i class="fa-regular fa-clock"></i>
         </span>
-        <span class="mx-3 cursor-pointer ml-6 text-blue-500" wire:click="diferenciar(1)" title="MOSTRAR TODAS">
+        <span class="mx-3 cursor-pointer ml-6 text-blue-500" wire:click="diferenciar(1)" title="TODAS LAS COMUNIDADES">
             <i class="fa-solid fa-users-between-lines"></i>
         </span>
-        <span class="mx-3 cursor-pointer text-blue-500" wire:click="diferenciar(2)" title="MOSTRAR CREADAS">
+        <span class="mx-3 cursor-pointer text-blue-500" wire:click="diferenciar(2)" title="COMUNIDADES CREADAS">
             <i class="fa-solid fa-users-viewfinder"></i>
         </span>
-        <span class="mx-3 cursor-pointer text-blue-500" wire:click="diferenciar(3)" title="MOSTRAR PARTICIPADAS">
+        <span class="mx-3 cursor-pointer text-blue-500" wire:click="diferenciar(3)" title="COMUNIDADES PARTICIPANDO">
             <i class="fa-solid fa-users-rays"></i>
         </span>
     </div>
     @if ($comunidades->count())
+        <?php $cont = 0; ?>
         @foreach ($comunidades as $comunidad)
+            <?php $cont++; ?>
             <div @class([
                 'mb-5 rounded-lg text-center',
-                'bg-gray-700' => auth()->user()->temaoscuro,
-                'bg-gray-200' => !auth()->user()->temaoscuro,
+                'bg-gray-700' => auth()->user()->temaoscuro && $cont % 2 == 0,
+                'bg-gray-800' => auth()->user()->temaoscuro && $cont % 2 == 1,
+                'bg-gray-200' => !auth()->user()->temaoscuro && $cont % 2 == 0,
+                'bg-gray-300' => !auth()->user()->temaoscuro && $cont % 2 == 1,
             ])>
                 <div wire:click="verComunidad({{ $comunidad->id }})" @class([
                     'cursor-pointer group relative px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10',
-                    'bg-gray-600' => auth()->user()->temaoscuro,
+                    'bg-gray-500' => auth()->user()->temaoscuro,
                     'bg-white' => !auth()->user()->temaoscuro,
                 ])>
                     <div
                         class="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 transform bg-sky-400 duration-300 group-hover:scale-x-100">
                     </div>
                     <div
-                        class="absolute bottom-0 left-0 h-full w-1 origin-bottom scale-y-0 transform bg-sky-400 duration-300 group-hover:scale-y-100">
+                        class="absolute bottom-0 left-0 h-full w-1 origin-top scale-y-0 transform bg-sky-400 duration-300 group-hover:scale-y-100">
                     </div>
                     <div
                         class="absolute top-0 left-0 h-1 w-full origin-right scale-x-0 transform bg-sky-400 duration-300 group-hover:scale-x-100">
                     </div>
                     <div
-                        class="absolute bottom-0 right-0 h-full w-1 origin-top scale-y-0 transform bg-sky-400 duration-300 group-hover:scale-y-100">
+                        class="absolute bottom-0 right-0 h-full w-1 origin-bottom scale-y-0 transform bg-sky-400 duration-300 group-hover:scale-y-100">
                     </div>
                     <div @class([
                         'text-white' => auth()->user()->temaoscuro,

@@ -1,11 +1,12 @@
 <div class='min-[480px]:px-12 mt-4 cursor-default'>
     <div class="h-16"></div>
     <div class="min-[700px]:flex min-[700px]:flex-wrap items-center">
-        <div class="min-[700px]:flex mb-6 min-[700px]:w-1/3 items-center justify-center">
+        <div class="mb-6 min-[700px]:w-1/3 items-center justify-center text-center">
             <span class="flex flex-col items-center">
                 <img class="h-32 w-32 min-[700px]:h-48 min-[700px]:w-48 rounded-full ml-4" src="{{ $usuario->profile_photo_url }}"
                     title="Publicaciones de {{ $usuario->name }}" alt="{{ $usuario->name }}" />
             </span>
+            <div class="text-3xl mt-2">{{$usuario->name}}</div>
         </div>
         <div class="flex-1 justify-center items-center min-[700px]:w-2/3">
             <div class="flex justify-around">
@@ -154,6 +155,7 @@
             </div>
         </div>
     </div>
+    @if ((!$usuario->privado) || ($usuario->privado && ($follow && $follow->aceptado=="SI")))
     <div class="flex mb-3">
         <div class="flex-1">
             <x-input class="w-full text-gray-800" type='search' placeholder="Buscar publicaciones..."
@@ -226,4 +228,7 @@
             @endif
         </div>
     </div>
+    @else
+        
+    @endif
 </div>

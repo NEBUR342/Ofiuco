@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Follow extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'seguidor_id'];
+    protected $fillable = ['user_id', 'seguidor_id', 'aceptado'];
 
     public function user(): BelongsTo
     {

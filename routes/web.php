@@ -39,8 +39,8 @@ Route::middleware([
     Route::get('solicitudesamigos', ShowSolicitudamigo::class)->name('solicitudesamigos.show');
     Route::get('friends', ShowFriends::class)->name('friends.show');
     Route::get('messages', ShowMessages::class)->name('messages.show');
-    Route::get('temaoscuro',[TemaoscuroController::class, "cambiartema"])->name('temaoscuro.cambiartema');
 });
+Route::get('temaoscuro',[TemaoscuroController::class, "cambiartema"])->name('temaoscuro.cambiartema');
 Route::get('contactanos',[MailController::class, "pintarFormulario"])->name('contactanos.pintar');
 Route::post('contactanos',[MailController::class, "procesarFormulario"])->name('contactanos.procesar');
 Route::get('/email/verify', function () {

@@ -21,7 +21,7 @@
                         <x-nav-link :href="route('communities.show')" :active="request()->routeIs('communities.show')" title="COMUNIDADES">
                             <i class="fa-solid fa-people-roof"></i>
                         </x-nav-link>
-                        <x-nav-link :href="route('publicationsuser.show', ['id' => auth()->user()->id])" :active="request()->routeIs('publicationsuser.show', ['id' => auth()->user()->id])" title="MIS PUBLICACIONES">
+                        <x-nav-link :href="route('perfiluser.show', ['id' => auth()->user()->id])" :active="request()->routeIs('perfiluser.show', ['id' => auth()->user()->id])" title="MIS PUBLICACIONES">
                             <i class="fa-solid fa-person-shelter"></i>
                         </x-nav-link>
                         @if (auth()->user()->is_admin)
@@ -208,7 +208,7 @@
                 <x-responsive-nav-link :href="route('communities.show')" :active="request()->routeIs('communities.show')">
                     <i class="fa-solid fa-people-roof"></i> COMUNIDADES
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('publicationsuser.show', ['id' => auth()->user()->id])" :active="request()->routeIs('publicationsuser.show', ['id' => auth()->user()->id])">
+                <x-responsive-nav-link :href="route('perfiluser.show', ['id' => auth()->user()->id])" :active="request()->routeIs('perfiluser.show', ['id' => auth()->user()->id])">
                     <i class="fa-solid fa-person-shelter"></i> MIS PUBLICACIONES
                 </x-responsive-nav-link>
                 @if (auth()->user()->is_admin)

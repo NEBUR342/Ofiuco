@@ -1,8 +1,8 @@
 <?php
 use App\Http\Controllers\{MailController, TemaoscuroController};
-use App\Http\Livewire\{ShowCommunities, ShowCommunity, ShowFriends, ShowMessages, ShowNotificaciones, ShowPublication,
-    ShowPublicationscommunities, ShowPublicationscommunity, ShowPublicationslikes, ShowPublicationssaves,
-    ShowPublicationsuser, ShowPublicationswelcome, ShowSolicitudamigo, ShowSolicitudparticipante, ShowTags, ShowUsers};
+use App\Http\Livewire\{ShowCommunities, ShowCommunity, ShowFriends, ShowMessages, ShowNotificaciones, ShowPerfiluser,
+    ShowPublication, ShowPublicationscommunities, ShowPublicationscommunity, ShowPublicationslikes, ShowPublicationssaves,
+    ShowPublicationswelcome, ShowSolicitudamigo, ShowSolicitudparticipante, ShowTags, ShowUsers};
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -29,7 +29,7 @@ Route::middleware([
     Route::get('publicationscommunity/{id}', ShowPublicationscommunity::class)->name('publicationscommunity.show');
     Route::get('communities', ShowCommunities::class)->name('communities.show');
     Route::get('community/{id}', ShowCommunity::class)->name('community.show');
-    Route::get('perfil/{id}', ShowPublicationsuser::class)->name('publicationsuser.show');
+    Route::get('perfil/{id}', ShowPerfiluser::class)->name('perfiluser.show');
     Route::get('tags', ShowTags::class)->name('tags.show');
     Route::get('users', ShowUsers::class)->name('users.show');
     Route::get('likes/{id}', ShowPublicationslikes::class)->name('publicationslikes.show');

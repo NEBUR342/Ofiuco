@@ -277,7 +277,7 @@ class ShowPublication extends Component
 
     public function buscarUsuario($id)
     {
-        return redirect()->route('publicationsuser.show', compact('id'));
+        return redirect()->route('perfiluser.show', compact('id'));
     }
 
     // Si no debo mostrar la publicacion, voy a forzar el error 404 (pagina no encontrada).

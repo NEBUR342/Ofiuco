@@ -89,7 +89,7 @@ class ShowFriends extends Component
 
     public function buscarUsuario($id)
     {
-        return redirect()->route('publicationsuser.show', compact('id'));
+        return redirect()->route('perfiluser.show', compact('id'));
     }
 
     public function buscarLikesUsuario($id)

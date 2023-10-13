@@ -11,7 +11,7 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ShowPublicationsuser extends Component
+class ShowPerfiluser extends Component
 {
     use WithPagination;
 
@@ -248,7 +248,7 @@ class ShowPublicationsuser extends Component
 
         // obtengo si le sigue
         $follow = Follow::where('user_id', $usuario->id)->where('seguidor_id', auth()->user()->id)->first();
-        return view('livewire.show-publicationsuser', compact('publicaciones', 'tags', 'usuario', 'comunidadesParticipado', 'comunidadesCreador', 'follow'));
+        return view('livewire.show-perfiluser', compact('publicaciones', 'tags', 'usuario', 'comunidadesParticipado', 'comunidadesCreador', 'follow'));
     }
 
     public function ordenar(string $campo)

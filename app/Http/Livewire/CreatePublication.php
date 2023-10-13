@@ -109,7 +109,7 @@ class CreatePublication extends Component
         // Devuelvo a la persona a su vista.
         // Si creas la publicacion viendo las publicaciones de otro usuario, te devuelvo a tu vista, no a la del otro usuario
         $id=auth()->user()->id;
-        return redirect()->route('publicationsuser.show',compact('id'));
+        return redirect()->route('perfiluser.show',compact('id'));
     }
 
     public function cerrar()

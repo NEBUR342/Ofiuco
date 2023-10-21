@@ -29,7 +29,7 @@
                                 <i class="fa-solid fa-tags"></i>
                             </x-nav-link>
                         @endif
-                        <x-nav-link :href="route('users.show')" :active="request()->routeIs('users.show')" title="USUARIOS">
+                        <x-nav-link :href="route('users.show', ['tipo' => 1, 'id' => auth()->user()->id])" :active="request()->routeIs('users.show', ['tipo' => 1, 'id' => auth()->user()->id])" title="USUARIOS">
                             <i class="fa-solid fa-users"></i>
                         </x-nav-link>
                         {{-- Notificaciones --}}
@@ -216,7 +216,7 @@
                         <i class="fa-solid fa-tags"></i> TAGS
                     </x-responsive-nav-link>
                 @endif
-                <x-responsive-nav-link :href="route('users.show')" :active="request()->routeIs('users.show')">
+                <x-responsive-nav-link :href="route('users.show', ['tipo' => 1, 'id' => auth()->user()->id])" :active="request()->routeIs('users.show', ['tipo' => 1, 'id' => auth()->user()->id])">
                     <i class="fa-solid fa-users"></i> USUARIOS
                 </x-responsive-nav-link>
                 {{-- Notificaciones --}}

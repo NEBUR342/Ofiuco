@@ -248,7 +248,10 @@ class ShowPerfiluser extends Component
 
         // obtengo si le sigue
         $follow = Follow::where('user_id', $usuario->id)->where('seguidor_id', auth()->user()->id)->first();
-        return view('livewire.show-perfiluser', compact('publicaciones', 'tags', 'usuario', 'comunidadesParticipado', 'comunidadesCreador', 'follow'));
+        $cantidadFollow = $users = User::whereHas('follows', function ($q) {
+            $q->where('seguidor_id', $this->usuario->id)->where('aceptado', 'SI');
+        })->count();
+        return view('livewire.show-perfiluser', compact('publicaciones', 'tags', 'usuario', 'comunidadesParticipado', 'comunidadesCreador', 'follow', 'cantidadFollow'));
     }
 
     public function ordenar(string $campo)
@@ -275,7 +278,7 @@ class ShowPerfiluser extends Component
 
     public function solicitudamigo()
     {
-        $id=$this->usuario->id;
+        $id = $this->usuario->id;
         // me aseguro de que no modifiquen desde la consola para repetir amigos
         $amigos = Friend::where("frienduno_id", auth()->user()->id)
             ->orwhere("frienddos_id", auth()->user()->id)
@@ -303,7 +306,7 @@ class ShowPerfiluser extends Component
 
     public function borraramigo()
     {
-        $id=$this->usuario->id;
+        $id = $this->usuario->id;
         // me aseguro de que no modifiquen desde la consola para repetir amigos
         $amigo = Friend::where(function ($query) use ($id) {
             $query->where('frienduno_id', $id)
@@ -339,8 +342,32 @@ class ShowPerfiluser extends Component
             ]);
         }
     }
-    public function followdestroy(){
-        $follow=Follow::where('user_id',$this->usuario->id)->where('seguidor_id',auth()->user()->id)->first();
+    public function followdestroy()
+    {
+        $follow = Follow::where('user_id', $this->usuario->id)->where('seguidor_id', auth()->user()->id)->first();
         $follow->delete();
+    }
+
+    public function verseguidores()
+    {
+        return redirect()->route('users.show', ['tipo' => 2, 'id' => $this->usuario->id]);
+    }
+
+    public function verseguidos()
+    {
+        return redirect()->route('users.show', ['tipo' => 3, 'id' => $this->usuario->id]);
+    }
+
+    public function cambiarPrivacidad()
+    {
+        if (auth()->user()->privado) {
+            auth()->user()->update([
+                'privado' => 0
+            ]);
+        } else {
+            auth()->user()->update([
+                'privado' => 1
+            ]);
+        }
     }
 }

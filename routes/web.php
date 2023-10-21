@@ -31,7 +31,7 @@ Route::middleware([
     Route::get('community/{id}', ShowCommunity::class)->name('community.show');
     Route::get('perfil/{id}', ShowPerfiluser::class)->name('perfiluser.show');
     Route::get('tags', ShowTags::class)->name('tags.show');
-    Route::get('users', ShowUsers::class)->name('users.show');
+    Route::get('users/{tipo}/{id}', ShowUsers::class)->name('users.show');
     Route::get('likes/{id}', ShowPublicationslikes::class)->name('publicationslikes.show');
     Route::get('saves/{id}', ShowPublicationssaves::class)->name('publicationssaves.show');
     Route::get('notificaciones/{id}', ShowNotificaciones::class)->name('notificaciones.show');

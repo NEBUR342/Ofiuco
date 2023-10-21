@@ -12,7 +12,14 @@ class ShowUsers extends Component
     use WithPagination;
 
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
+    public $tipousuarios;
+    public $iduser;
 
+    public function mount($tipo, $id)
+    {
+        $this->tipousuarios = $tipo;
+        $this->iduser = $id;
+    }
     public function updatingBuscar()
     {
         $this->resetPage();
@@ -20,6 +27,158 @@ class ShowUsers extends Component
 
     public function render()
     {
+        switch ($this->tipousuarios) {
+            case 1:
+                // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
+                // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
+                switch ($this->campo) {
+                        // Ordeno los usuarios por id.
+                    case "creacion":
+                        $users = User::where(function ($q) {
+                            $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                        })
+                            ->orderBy("id", $this->orden)
+                            ->paginate(15);
+                        break;
+                        // ordeno los usuarios por nombre.
+                    case "nombre":
+                        $users = User::where(function ($q) {
+                            $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                        })
+                            ->orderBy("name", $this->orden)
+                            ->paginate(15);
+                        break;
+                        // En el default, para evitar que de error, he puesto que me los ordene por id.
+                    default:
+                        $users = User::where(function ($q) {
+                            $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                        })
+                            ->orderBy("id", $this->orden)
+                            ->paginate(15);
+                        break;
+                }
+                break;
+            case 2:
+                $usuario = User::where('id', $this->iduser)->first();
+                $usersAceptados = $usuario->follows()
+                    ->where('aceptado', 'SI')
+                    ->pluck('seguidor_id');
+                // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
+                // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
+                switch ($this->campo) {
+                        // Ordeno los usuarios por id.
+                    case "creacion":
+                        $users = User::where(function ($q) {
+                            $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                        })
+                            ->whereIn('id', $usersAceptados)
+                            ->orderBy("id", $this->orden)
+                            ->paginate(15);
+                        break;
+                        // ordeno los usuarios por nombre.
+                    case "nombre":
+                        $users = User::where(function ($q) {
+                            $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                        })
+                            ->whereIn('id', $usersAceptados)
+                            ->orderBy("name", $this->orden)
+                            ->paginate(15);
+                        break;
+                    default:
+                        $users = User::where(function ($q) {
+                            $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                        })
+                            ->whereIn('id', $usersAceptados)
+                            ->orderBy("id", $this->orden)
+                            ->paginate(15);
+                        break;
+                }
+                break;
+            case 3:
+
+                // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
+                // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
+                switch ($this->campo) {
+                        // Ordeno los usuarios por id.
+                    case "creacion":
+                        $users = User::where(function ($q) {
+                            $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                        })
+                            ->whereHas('follows', function ($q) {
+                                $q->where('seguidor_id', $this->iduser)
+                                    ->where('aceptado', 'SI');
+                            })
+                            ->orderBy("id", $this->orden)
+                            ->paginate(15);
+                        break;
+                        // ordeno los usuarios por nombre.
+                    case "nombre":
+                        $users = User::where(function ($q) {
+                            $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                        })
+                            ->whereHas('follows', function ($q) {
+                                $q->where('seguidor_id', $this->iduser)
+                                    ->where('aceptado', 'SI');
+                            })
+                            ->orderBy("name", $this->orden)
+                            ->paginate(15);
+                        break;
+                        // En el default, para evitar que de error, he puesto que me los ordene por id.
+                    default:
+                        $users = User::where(function ($q) {
+                            $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                        })
+                            ->whereHas('follows', function ($q) {
+                                $q->where('seguidor_id', $this->iduser)
+                                    ->where('aceptado', 'SI');
+                            })
+                            ->orderBy("id", $this->orden)
+                            ->paginate(15);
+                        break;
+                }
+                break;
+            default:
+                // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
+                // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
+                switch ($this->campo) {
+                        // Ordeno los usuarios por id.
+                    case "creacion":
+                        $users = User::where(function ($q) {
+                            $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                        })
+                            ->orderBy("id", $this->orden)
+                            ->paginate(15);
+                        break;
+                        // ordeno los usuarios por nombre.
+                    case "nombre":
+                        $users = User::where(function ($q) {
+                            $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                        })
+                            ->orderBy("name", $this->orden)
+                            ->paginate(15);
+                        break;
+                        // En el default, para evitar que de error, he puesto que me los ordene por id.
+                    default:
+                        $users = User::where(function ($q) {
+                            $q->where('name', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
+                        })
+                            ->orderBy("id", $this->orden)
+                            ->paginate(15);
+                        break;
+                }
+        }
         $friends = Friend::where('aceptado', 'SI')
             ->where(function ($query) {
                 $query->where('frienduno_id', auth()->user()->id)
@@ -38,38 +197,6 @@ class ShowUsers extends Component
                     ]);
                 }
             }
-        }
-
-        // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
-        // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
-        switch ($this->campo) {
-                // Ordeno los usuarios por id.
-            case "creacion":
-                $users = User::where(function ($q) {
-                    $q->where('name', 'like', '%' . trim($this->buscar) . '%')
-                        ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
-                })
-                    ->orderBy("id", $this->orden)
-                    ->paginate(15);
-                break;
-                // ordeno los usuarios por nombre.
-            case "nombre":
-                $users = User::where(function ($q) {
-                    $q->where('name', 'like', '%' . trim($this->buscar) . '%')
-                        ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
-                })
-                    ->orderBy("name", $this->orden)
-                    ->paginate(15);
-                break;
-                // En el default, para evitar que de error, he puesto que me los ordene por id.
-            default:
-                $users = User::where(function ($q) {
-                    $q->where('name', 'like', '%' . trim($this->buscar) . '%')
-                        ->orWhere('email', 'like', '%' . trim($this->buscar) . '%');
-                })
-                    ->orderBy("id", $this->orden)
-                    ->paginate(15);
-                break;
         }
         $amigos = Friend::where("frienduno_id", auth()->user()->id)
             ->orwhere("frienddos_id", auth()->user()->id)

@@ -1,38 +1,81 @@
 <div class='min-[480px]:px-12 mt-4 cursor-default'>
     <div class="h-16"></div>
     <div class="min-[700px]:flex min-[700px]:flex-wrap items-center">
-        <div class="mb-6 min-[700px]:w-1/3 items-center justify-center text-center">
-            <span class="flex flex-col items-center">
-                <img class="h-32 w-32 min-[700px]:h-48 min-[700px]:w-48 rounded-full ml-4" src="{{ $usuario->profile_photo_url }}"
-                    title="Publicaciones de {{ $usuario->name }}" alt="{{ $usuario->name }}" />
-            </span>
-            <div class="text-3xl mt-2">{{$usuario->name}}</div>
+        <div class="min-[700px]:flex mb-6 min-[700px]:w-1/3 items-center justify-center text-center">
+            <div>
+                <span class="flex flex-col items-center">
+                    <img class="h-32 w-32 min-[700px]:h-48 min-[700px]:w-48 rounded-full ml-4"
+                        src="{{ $usuario->profile_photo_url }}" title="Publicaciones de {{ $usuario->name }}"
+                        alt="{{ $usuario->name }}" />
+                </span>
+                <div class="text-3xl mt-2">{{ $usuario->name }}</div>
+            </div>
+            @if (
+                !$usuario->privado ||
+                    ($usuario->privado && ($follow && $follow->aceptado == 'SI')) ||
+                    auth()->user()->is_admin ||
+                    $usuario->id == auth()->user()->id)
+                <div class="max-[700px]:flex min-[700px]:ml-3">
+                    <div class="mx-auto bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer mb-1 w-32"
+                        wire:click="verseguidores">
+                        <p>SEGUIDORES</p>
+                        <p>({{ $usuario->follows()->where('aceptado', 'SI')->count() }})</p>
+                    </div>
+                    <div class="mx-auto bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer mt-1 w-32"
+                        wire:click="verseguidos">
+                        <p>SIGUIENDO</p>
+                        <p>({{ $cantidadFollow }})</p>
+                    </div>
+                </div>
+            @else
+                <div class="max-[700px]:flex min-[700px]:ml-3">
+                    <div class="mx-auto bg-red-600 p-2 rounded-lg min-[700px]:mb-1 w-32">
+                        <p>SEGUIDORES</p>
+                        <p>({{ $usuario->follows()->where('aceptado', 'SI')->count() }})</p>
+                    </div>
+                    <div class="mx-auto bg-red-600 p-2 rounded-lg min-[700px]:mt-1 w-32">
+                        <p>SIGUIENDO</p>
+                        <p>({{ $cantidadFollow }})</p>
+                    </div>
+                </div>
+            @endif
         </div>
         <div class="flex-1 justify-center items-center min-[700px]:w-2/3">
             <div class="flex justify-around">
                 @if (auth()->user()->id != $usuario->id)
-                    @if(!$follow)
-                        <div wire:click="follow()" class="bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer">SEGUIR</div>
+                    @if (!$follow)
+                        <div wire:click="follow()" class="bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer">
+                            FOLLOW
+                        </div>
                     @else
-                        <div wire:click="followdestroy()" class="bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer">DEJAR DE SEGUIR</div>
+                        <div wire:click="followdestroy()"
+                            class="bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer">UNFOLLOW</div>
                     @endif
-                    @if (!(auth()->user()->friends->contains('frienduno_id', $usuario->id) || auth()->user()->friends->contains('frienddos_id', $usuario->id)))
-                        <span class="min-[480px]:ml-12 cursor-pointer bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 rounded">
-                            <i class="fa-solid fa-user-plus"
-                                wire:click="solicitudamigo()"></i>
-                        </span>
-                    @elseif(auth()->user()->id != $usuario->id)
-                        <span class="min-[480px]:ml-12 cursor-pointer bg-transparent hover:bg-red-500 text-red-500 font-semibold hover:text-white py-2 px-4 rounded">
-                            <i class="fa-solid fa-user-minus"
-                                wire:click="borraramigo()"></i>
-                        </span>
-                    @endif
-                    <span title="VER LIKES DEL USUARIO" wire:click="buscarLikesUsuario()"
-                        class="min-[480px]:ml-12 cursor-pointer bg-transparent hover:bg-yellow-500 text-yellow-500 font-semibold hover:text-white py-2 px-4 rounded">
-                        <i class="fa-regular fa-face-grin-hearts"></i>
-                    </span>
                 @else
                     <a href="{{ route('profile.show') }}" class="bg-red-600 hover:bg-red-700 p-2 rounded-lg">PROFILE</a>
+                    @if (auth()->user()->privado)
+                        <span class="bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer"
+                            wire:click="cambiarPrivacidad">PRIVADO</span>
+                    @else
+                        <span class="bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer"
+                            wire:click="cambiarPrivacidad">PUBLICO</span>
+                    @endif
+                @endif
+                @if (auth()->user()->id != $usuario->id)
+                    @if (
+                        !(auth()->user()->friends->contains('frienduno_id', $usuario->id) ||
+                            auth()->user()->friends->contains('frienddos_id', $usuario->id)
+                        ))
+                        <span
+                            class="min-[480px]:ml-12 cursor-pointer bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 rounded">
+                            <i class="fa-solid fa-user-plus" wire:click="solicitudamigo()"></i>
+                        </span>
+                    @elseif(auth()->user()->id != $usuario->id)
+                        <span
+                            class="min-[480px]:ml-12 cursor-pointer bg-transparent hover:bg-red-500 text-red-500 font-semibold hover:text-white py-2 px-4 rounded">
+                            <i class="fa-solid fa-user-minus" wire:click="borraramigo()"></i>
+                        </span>
+                    @endif
                 @endif
             </div>
             <div class="flex flex-wrap text-xl">
@@ -63,8 +106,8 @@
                     target="_blank" class="cursor-pointer mx-auto my-5">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
                         viewBox="0 0 64 64">
-                        <radialGradient id="7jnoslngIja1InKyh66Ura_118960_gr1" cx="32" cy="31.5"
-                            r="31.259" gradientUnits="userSpaceOnUse" spreadMethod="reflect">
+                        <radialGradient id="7jnoslngIja1InKyh66Ura_118960_gr1" cx="32" cy="31.5" r="31.259"
+                            gradientUnits="userSpaceOnUse" spreadMethod="reflect">
                             <stop offset="0" stop-color="#c5f1ff"></stop>
                             <stop offset=".35" stop-color="#cdf3ff"></stop>
                             <stop offset=".907" stop-color="#e4faff"></stop>
@@ -92,8 +135,8 @@
                 <a title="COMPARTIR PERFIL"
                     href="https://twitter.com/intent/tweet?text=Mira el perfil de {{ $usuario->name }} de Ofiuco en:&url=http://127.0.0.1:8000/community/{{ $usuario->id }}"
                     target="_blank" class="cursor-pointer mx-auto my-5">
-                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50"
-                        height="50" viewBox="0 0 48 48">
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
+                        viewBox="0 0 48 48">
                         <path fill="#03A9F4"
                             d="M42,12.429c-1.323,0.586-2.746,0.977-4.247,1.162c1.526-0.906,2.7-2.351,3.251-4.058c-1.428,0.837-3.01,1.452-4.693,1.776C34.967,9.884,33.05,9,30.926,9c-4.08,0-7.387,3.278-7.387,7.32c0,0.572,0.067,1.129,0.193,1.67c-6.138-0.308-11.582-3.226-15.224-7.654c-0.64,1.082-1,2.349-1,3.686c0,2.541,1.301,4.778,3.285,6.096c-1.211-0.037-2.351-0.374-3.349-0.914c0,0.022,0,0.055,0,0.086c0,3.551,2.547,6.508,5.923,7.181c-0.617,0.169-1.269,0.263-1.941,0.263c-0.477,0-0.942-0.054-1.392-0.135c0.94,2.902,3.667,5.023,6.898,5.086c-2.528,1.96-5.712,3.134-9.174,3.134c-0.598,0-1.183-0.034-1.761-0.104C9.268,36.786,13.152,38,17.321,38c13.585,0,21.017-11.156,21.017-20.834c0-0.317-0.01-0.633-0.025-0.945C39.763,15.197,41.013,13.905,42,12.429">
                         </path>
@@ -102,8 +145,8 @@
                 <a title="COMPARTIR PERFIL"
                     href="https://www.reddit.com/submit?url=http://127.0.0.1:8000/community/{{ $usuario->id }}"
                     target="_blank" class="cursor-pointer mx-auto my-5">
-                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50"
-                        height="50" viewBox="0 0 48 48">
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
+                        viewBox="0 0 48 48">
                         <path fill="#64717c"
                             d="M24,18c-0.552,0-1-0.448-1-1c0-2.815,0.36-12,5-12c1.173,0,2.037,0.676,2.872,1.331    C31.919,7.151,33.002,8,35,8h4c0.552,0,1,0.448,1,1s-0.448,1-1,1h-4c-2.688,0-4.233-1.211-5.362-2.095C28.922,7.344,28.46,7,28,7    c-1.738,0-3,4.206-3,10C25,17.552,24.552,18,24,18z">
                         </path>
@@ -155,80 +198,93 @@
             </div>
         </div>
     </div>
-    @if ((!$usuario->privado) || ($usuario->privado && ($follow && $follow->aceptado=="SI")))
-    <div class="flex mb-3">
-        <div class="flex-1">
-            <x-input class="w-full text-gray-800" type='search' placeholder="Buscar publicaciones..."
-                wire:model="buscar"></x-input>
-        </div>
-        @if (auth()->user()->id == $usuario->id)
-            <div>
-                @livewire('create-publication')
+    @if (
+        !$usuario->privado ||
+            ($usuario->privado && ($follow && $follow->aceptado == 'SI')) ||
+            auth()->user()->is_admin ||
+            $usuario->id == auth()->user()->id)
+        <div class="flex mb-3">
+            <div class="flex-1">
+                <x-input class="w-full text-gray-800" type='search' placeholder="Buscar publicaciones..."
+                    wire:model="buscar"></x-input>
             </div>
+            @if (auth()->user()->id == $usuario->id)
+                <div>
+                    @livewire('create-publication')
+                </div>
+            @endif
+        </div>
+        <div @class([
+            'font-bold text-xl text-center mt-4',
+            'text-white' => auth()->user()->temaoscuro,
+        ])>
+            <span class="mx-3 cursor-pointer" wire:click="ordenar('titulo')" title="ORDENAR POR TITULO"><i
+                    class="fa-solid fa-arrow-down-a-z"></i></span>
+            <span class="mx-3 cursor-pointer" wire:click="ordenar('comunidades')" title="ORDENAR POR COMUNIDAD"><i
+                    class="fa-solid fa-users"></i></span>
+            <span class="mx-3 cursor-pointer" wire:click="ordenar('likes')" title="ORDENAR POR LIKES"><i
+                    class="fa-solid fa-fire"></i></span>
+            <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD"><i
+                    class="fa-regular fa-clock"></i></span>
+            @if (
+                !$usuario->privado ||
+                    ($usuario->privado && ($follow && $follow->aceptado == 'SI')) ||
+                    auth()->user()->is_admin ||
+                    $usuario->id == auth()->user()->id)
+                <span title="VER LIKES DEL USUARIO" wire:click="buscarLikesUsuario()"
+                    class="min-[480px]:ml-12 cursor-pointer bg-transparent hover:bg-yellow-500 text-yellow-500 font-semibold hover:text-white py-2 px-4 rounded">
+                    <i class="fa-regular fa-face-grin-hearts"></i>
+                </span>
+            @endif
+        </div>
+        @if ($publicaciones->count())
+            <div class="mt-3 flex flex-wrap justify-center text-center">
+                @foreach ($publicaciones as $publicacion)
+                    <div wire:click="verPublicacion({{ $publicacion->id }})"
+                        class="min-[480px]:rounded-lg flex flex-col w-1/3 h-1/3 min-[480px]:w-1/4 min-[480px]:m-3 border border-gray-800 cursor-pointer">
+                        <img src="{{ Storage::url($publicacion->imagen) }}" alt="{{ $publicacion->titulo }}"
+                            class="min-[480px]:rounded-lg">
+                    </div>
+                @endforeach
+            </div>
+            {{ $publicaciones->links() }}
+        @else
+            <x-miscomponentes.sinresultados></x-miscomponentes.sinresultados>
         @endif
-    </div>
-    <div @class([
-        'font-bold text-xl text-center mt-4',
-        'text-white' => auth()->user()->temaoscuro,
-    ])>
-        <span class="mx-3 cursor-pointer" wire:click="ordenar('titulo')" title="ORDENAR POR TITULO"><i
-                class="fa-solid fa-arrow-down-a-z"></i></span>
-        <span class="mx-3 cursor-pointer" wire:click="ordenar('comunidades')" title="ORDENAR POR COMUNIDAD"><i
-                class="fa-solid fa-users"></i></span>
-        <span class="mx-3 cursor-pointer" wire:click="ordenar('likes')" title="ORDENAR POR LIKES"><i
-                class="fa-solid fa-fire"></i></span>
-        <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD"><i
-                class="fa-regular fa-clock"></i></span>
-    </div>
-    @if ($publicaciones->count())
-        <div class="mt-3 flex flex-wrap justify-center text-center">
-            @foreach ($publicaciones as $publicacion)
-                <div wire:click="verPublicacion({{ $publicacion->id }})"
-                    class="min-[480px]:rounded-lg flex flex-col w-1/3 h-1/3 min-[480px]:w-1/4 min-[480px]:m-3 border border-gray-800 cursor-pointer">
-                    <img src="{{ Storage::url($publicacion->imagen) }}" alt="{{ $publicacion->titulo }}"
-                        class="min-[480px]:rounded-lg">
-                </div>
-            @endforeach
+        <div class="min-[700px]:flex min-[700px]:flex-wrap text-center">
+            <div class="min-[700px]:flex-1 mt-6">
+                <h1 class="text-2xl">COMUNIDADES CREADAS</h1>
+                @if ($comunidadesCreador->count())
+                    <div class="mt-3 flex flex-wrap justify-center text-center">
+                        @foreach ($comunidadesCreador as $comunidad)
+                            <div wire:click="verComunidad({{ $comunidad->id }})"
+                                class="min-[480px]:rounded-lg flex flex-col w-1/3 h-1/3 min-[480px]:w-1/4 min-[480px]:m-3 border border-gray-800 cursor-pointer">
+                                <img src="{{ Storage::url($comunidad->imagen) }}" alt="{{ $comunidad->nombre }}"
+                                    class="min-[480px]:rounded-lg">
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <x-miscomponentes.sinresultados></x-miscomponentes.sinresultados>
+                @endif
+            </div>
+            <div class="min-[700px]:flex-1 mt-6">
+                <h1 class="text-2xl">PARTICIPANTE EN LAS COMUNIDADES</h1>
+                @if ($comunidadesParticipado->count())
+                    <div class="mt-3 flex flex-wrap justify-center text-center">
+                        @foreach ($comunidadesParticipado as $comunidad)
+                            <div wire:click="verComunidad({{ $comunidad->id }})"
+                                class="min-[480px]:rounded-lg flex flex-col w-1/3 h-1/3 min-[480px]:w-1/4 min-[480px]:m-3 border border-gray-800 cursor-pointer">
+                                <img src="{{ Storage::url($comunidad->imagen) }}" alt="{{ $comunidad->nombre }}"
+                                    class="min-[480px]:rounded-lg">
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <x-miscomponentes.sinresultados></x-miscomponentes.sinresultados>
+                @endif
+            </div>
         </div>
-        {{ $publicaciones->links() }}
     @else
-        <x-miscomponentes.sinresultados></x-miscomponentes.sinresultados>
-    @endif
-    <div class="min-[700px]:flex min-[700px]:flex-wrap text-center">
-        <div class="min-[700px]:flex-1 mt-6">
-            <h1 class="text-2xl">COMUNIDADES CREADAS</h1>
-            @if ($comunidadesCreador->count())
-                <div class="mt-3 flex flex-wrap justify-center text-center">
-                    @foreach ($comunidadesCreador as $comunidad)
-                        <div wire:click="verComunidad({{ $comunidad->id }})"
-                            class="min-[480px]:rounded-lg flex flex-col w-1/3 h-1/3 min-[480px]:w-1/4 min-[480px]:m-3 border border-gray-800 cursor-pointer">
-                            <img src="{{ Storage::url($comunidad->imagen) }}" alt="{{ $comunidad->nombre }}"
-                                class="min-[480px]:rounded-lg">
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <x-miscomponentes.sinresultados></x-miscomponentes.sinresultados>
-            @endif
-        </div>
-        <div class="min-[700px]:flex-1 mt-6">
-            <h1 class="text-2xl">PARTICIPANTE EN LAS COMUNIDADES</h1>
-            @if ($comunidadesParticipado->count())
-                <div class="mt-3 flex flex-wrap justify-center text-center">
-                    @foreach ($comunidadesParticipado as $comunidad)
-                        <div wire:click="verComunidad({{ $comunidad->id }})"
-                            class="min-[480px]:rounded-lg flex flex-col w-1/3 h-1/3 min-[480px]:w-1/4 min-[480px]:m-3 border border-gray-800 cursor-pointer">
-                            <img src="{{ Storage::url($comunidad->imagen) }}" alt="{{ $comunidad->nombre }}"
-                                class="min-[480px]:rounded-lg">
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <x-miscomponentes.sinresultados></x-miscomponentes.sinresultados>
-            @endif
-        </div>
-    </div>
-    @else
-        
     @endif
 </div>

@@ -24,8 +24,8 @@
 
 <body @class([
     'font-sans antialiased',
-    'bg-gray-800 text-white' => auth()->check() && auth()->user()->temaoscuro,
-    'bg-gray-300' => auth()->guest() || !auth()->user()->temaoscuro,
+    'bg-gray-600 text-white' => auth()->check() && auth()->user()->temaoscuro,
+    'bg-gray-100' => auth()->guest() || !auth()->user()->temaoscuro,
 ])>
     <x-banner />
 
@@ -89,7 +89,24 @@
     </div>
     @stack('modals')
     @livewireScripts
+    <script>
+        Livewire.on('info', mensaje => {
+            Swal.fire({
+                icon: 'success',
+                title: mensaje,
+                showConfirmButton: false,
+                timer: 1500
+            })
+        })
+        @if (session('info'))
+            Swal.fire({
+                icon: 'success',
+                title: '{{ session('info') }}',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        @endif
+    </script>
 </body>
 
 </html>
-

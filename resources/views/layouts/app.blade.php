@@ -45,7 +45,7 @@
                 {{ $slot }}
             </main>
         </div>
-        <footer id="footer">
+        <footer>
             <div class="flex flex-wrap w-5/6 min-[640px]:w-4/6 min-[760px]:w-2/6 mt-4 mx-auto text-xl">
                 <a href="https://www.facebook.com/ofiuco.facebook/" class="flex flex-col mx-auto cursor-pointer">
                     <i class="fa-brands fa-facebook"></i>
@@ -84,7 +84,9 @@
                         src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1">
                 </a>
             </p>
-            <p class="text-center">Para saber cómo funciona la página pincha <a href="{{route('instrucciones')}}" class="text-blue-500 hover:text-blue-700">aquí</a></p>
+            <p class="text-center">Para saber cómo funciona la página pincha
+                <a href="{{ route('instrucciones') }}" class="text-blue-500 hover:text-blue-700">aquí</a>
+            </p>
             <div class="h-4"></div>
         </footer>
     </div>

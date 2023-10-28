@@ -1,23 +1,10 @@
 <?php
-
 namespace Database\Factories;
-
 use App\Models\Publication;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Comment>
- */
-class CommentFactory extends Factory
-{
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
-    {
+class CommentFactory extends Factory {
+    public function definition(): array {
         $aux = random_int(1, count(Publication::all()));
         $randompublication = Publication::find($aux);
         if ($randompublication->comunidad == 'SI') {

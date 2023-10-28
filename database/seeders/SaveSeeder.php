@@ -1,20 +1,11 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\Publication;
 use App\Models\Save;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
-class SaveSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
+class SaveSeeder extends Seeder {
+    public function run(): void {
         $publicaciones = Publication::all();
         foreach ($publicaciones as $publicacion) {
             if ($publicacion->comunidad == 'SI') {

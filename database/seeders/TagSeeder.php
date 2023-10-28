@@ -1,18 +1,9 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\Tag;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
-class TagSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
+class TagSeeder extends Seeder {
+    public function run(): void {
         $tags=[
             'Informatica'=>"#c0392b",
             'VideoJuegos'=>"#52be80",

@@ -1,19 +1,10 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\Community;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
-class CommunitySeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
+class CommunitySeeder extends Seeder {
+    public function run(): void {
         Community::factory(5)->create();
         $comunidades = Community::all();
         $users = User::all();

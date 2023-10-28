@@ -72,7 +72,7 @@
                             </div>
                         @endauth
                         {{-- Chat parte de investigacion --}}
-                        <x-nav-link :href="route('messages.show')" :active="request()->routeIs('messages.show')" title="CHAT">
+                        <x-nav-link :href="route('chat.index', ['tipo'=>'0', 'tipoid' => '0'])" :active="request()->routeIs('chat.index')" title="CHAT">
                             <i class="fa-regular fa-comment-dots"></i>
                         </x-nav-link>
                     @endauth
@@ -259,7 +259,7 @@
                     </x-dropdown>
                 </div>
                 {{-- Chat parte de investigacion --}}
-                <x-responsive-nav-link :href="route('messages.show')" :active="request()->routeIs('messages.show')">
+                <x-responsive-nav-link :href="route('chat.index', ['tipo'=>'0', 'tipoid' => '0'])" :active="request()->routeIs('chat.index')">
                     <i class="fa-regular fa-comment-dots"></i> CHAT
                 </x-responsive-nav-link>
             @endauth

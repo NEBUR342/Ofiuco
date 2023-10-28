@@ -1,20 +1,9 @@
 <?php
-use App\Http\Controllers\{MailController, TemaoscuroController};
-use App\Http\Livewire\{ShowCommunities, ShowCommunity, ShowFriends, ShowMessages, ShowNotificaciones, ShowPerfiluser,
-    ShowPublication, ShowPublicationscommunities, ShowPublicationscommunity, ShowPublicationslikes, ShowPublicationssaves,
-    ShowPublicationswelcome, ShowSolicitudamigo, ShowSolicitudparticipante, ShowTags, ShowUsers};
+use App\Http\Controllers\{ChatController, MailController, TemaoscuroController};
+use App\Http\Livewire\{ShowCommunities, ShowCommunity, ShowFriends, ShowNotificaciones, ShowPerfiluser, ShowPublication, ShowPublicationscommunities, ShowPublicationscommunity, ShowPublicationslikes, ShowPublicationssaves, ShowPublicationswelcome, ShowSolicitudamigo, ShowSolicitudparticipante, ShowTags, ShowUsers};
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-*/
 Route::get('/', ShowPublicationswelcome::class)->name('inicio');
 Route::get('instrucciones', function(){
     return view("livewire.show-instrucciones");
@@ -38,7 +27,8 @@ Route::middleware([
     Route::get('solicitudes', ShowSolicitudparticipante::class)->name('solicitudes.show');
     Route::get('solicitudesamigos', ShowSolicitudamigo::class)->name('solicitudesamigos.show');
     Route::get('friends', ShowFriends::class)->name('friends.show');
-    Route::get('messages', ShowMessages::class)->name('messages.show');
+    Route::get('chat/{tipo}/{tipoid}', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('refrescarChat/{tipo}/{tipoid}',[ChatController::class, "abrirChat"])->name('chat.abrirChat');
 });
 Route::get('temaoscuro',[TemaoscuroController::class, "cambiartema"])->name('temaoscuro.cambiartema');
 Route::get('contactanos',[MailController::class, "pintarFormulario"])->name('contactanos.pintar');

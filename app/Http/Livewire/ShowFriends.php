@@ -35,7 +35,6 @@ class ShowFriends extends Component
                 }
             }
         }
-
         switch ($this->campo) {
             case "creacion":
                 $solicitudes = Friend::where('aceptado', 'SI')

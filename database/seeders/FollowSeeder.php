@@ -10,13 +10,15 @@ class FollowSeeder extends Seeder {
             foreach ($usuarios as $user) {
                 if ($seguidor->id != $user->id && random_int(0, 1)) {
                     if ($user->privado) Follow::create([
-                        'user_id' => $user->id,
+                        'user_id' => $seguidor->id,
                         'seguidor_id' => $seguidor->id,
+                        'seguido_id' => $user->id,
                         'aceptado' => 'NO'
                     ]);
                     else Follow::create([
-                        'user_id' => $user->id,
+                        'user_id' => $seguidor->id,
                         'seguidor_id' => $seguidor->id,
+                        'seguido_id' => $user->id,
                         'aceptado' => 'SI'
                     ]);
                 }

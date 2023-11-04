@@ -89,7 +89,7 @@ class ShowSolicitudamigo extends Component
         return redirect()->route('publicationssaves.show', compact('id'));
     }
 
-    public function solicitudamigo($id)
+    public function aceptarsolicitud($id)
     {
         // me aseguro de que no modifiquen desde la consola para repetir amigos
         $amigos = Friend::where("id", $id)->first();
@@ -99,7 +99,7 @@ class ShowSolicitudamigo extends Component
         $this->emit('info', "Solicitud de amistad aceptada");
     }
 
-    public function borrarsolicitudamigo($id)
+    public function borrarsolicitud($id)
     {
         // me aseguro de que no modifiquen desde la consola para repetir amigos
         $amigos = Friend::where(function ($query) use ($id) {

@@ -1,6 +1,6 @@
 <?php
 use App\Http\Controllers\{ChatController, MailController, TemaoscuroController};
-use App\Http\Livewire\{ShowCommunities, ShowCommunity, ShowFriends, ShowNotificaciones, ShowPerfiluser, ShowPublication, ShowPublicationscommunities, ShowPublicationscommunity, ShowPublicationslikes, ShowPublicationssaves, ShowPublicationswelcome, ShowSolicitudamigo, ShowSolicitudparticipante, ShowTags, ShowUsers};
+use App\Http\Livewire\{ShowCommunities, ShowCommunity, ShowFriends, ShowNotificaciones, ShowPerfiluser, ShowPublication, ShowPublicationscommunities, ShowPublicationscommunity, ShowPublicationslikes, ShowPublicationssaves, ShowPublicationswelcome, ShowSolicitudamigo, ShowSolicitudfollow, ShowSolicitudparticipante, ShowTags, ShowUsers};
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -27,8 +27,10 @@ Route::middleware([
     Route::get('solicitudes', ShowSolicitudparticipante::class)->name('solicitudes.show');
     Route::get('solicitudesamigos', ShowSolicitudamigo::class)->name('solicitudesamigos.show');
     Route::get('friends', ShowFriends::class)->name('friends.show');
+    Route::get('solicitudesfollows', ShowSolicitudfollow::class)->name('solicitudesfollows.show');
     Route::get('chat/{tipo}/{tipoid}', [ChatController::class, 'index'])->name('chat.index');
     Route::get('refrescarChat/{tipo}/{tipoid}',[ChatController::class, "abrirChat"])->name('chat.abrirChat');
+    Route::post('enviarChat/{tipo}/{tipoid}',[ChatController::class, "store"])->name('chat.store');
 });
 Route::get('temaoscuro',[TemaoscuroController::class, "cambiartema"])->name('temaoscuro.cambiartema');
 Route::get('contactanos',[MailController::class, "pintarFormulario"])->name('contactanos.pintar');

@@ -76,16 +76,16 @@
                     <div @class([
                         'text-white' => auth()->check() && auth()->user()->temaoscuro,
                     ])>
-                        <p class="text-xl mb-5">
+                        <p class="text-xl mb-5 truncate">
                             {{ $publicacion->titulo }}
                         </p>
                         <img src="{{ Storage::url($publicacion->imagen) }}"
                             alt="imagen del autor {{ $publicacion->user->nombre }}" class="rounded-lg mx-auto">
-                        <p class="text-xl my-5 text-left">
+                        <p class="text-xl my-5 text-left truncate">
                             Creador: {{ $publicacion->user->name }}
                         </p>
                         @if ($publicacion->comunidad == 'SI')
-                            <p class="text-xl my-5 text-left">
+                            <p class="text-xl my-5 text-left truncate">
                                 Comunidad: {{ $publicacion->community->nombre }}
                             </p>
                         @endif

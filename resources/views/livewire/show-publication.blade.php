@@ -128,8 +128,8 @@
                     <a title="COMPARTIR PUBLICACION"
                         href="https://api.whatsapp.com/send?text=http://127.0.0.1:8000/publication/{{ $publicacion->id }}"
                         class="cursor-pointer mx-auto my-5">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50"
-                            height="50" viewBox="0 0 48 48">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
+                            viewBox="0 0 48 48">
                             <path fill="#fff"
                                 d="M4.868,43.303l2.694-9.835C5.9,30.59,5.026,27.324,5.027,23.979C5.032,13.514,13.548,5,24.014,5c5.079,0.002,9.845,1.979,13.43,5.566c3.584,3.588,5.558,8.356,5.556,13.428c-0.004,10.465-8.522,18.98-18.986,18.98c-0.001,0,0,0,0,0h-0.008c-3.177-0.001-6.3-0.798-9.073-2.311L4.868,43.303z">
                             </path>
@@ -150,8 +150,8 @@
                     <a title="COMPARTIR PUBLICACION"
                         href="http://www.facebook.com/sharer.php?u=http://127.0.0.1:8000/publication/{{ $publicacion->id }}&t=Mira la publicacion de {{ $publicacion->user->name }} en Ofiuco"
                         target="_blank" class="cursor-pointer mx-auto my-5">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50"
-                            height="50" viewBox="0 0 64 64">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
+                            viewBox="0 0 64 64">
                             <radialGradient id="7jnoslngIja1InKyh66Ura_118960_gr1" cx="32" cy="31.5"
                                 r="31.259" gradientUnits="userSpaceOnUse" spreadMethod="reflect">
                                 <stop offset="0" stop-color="#c5f1ff"></stop>
@@ -181,8 +181,8 @@
                     <a title="COMPARTIR PUBLICACION"
                         href="https://twitter.com/intent/tweet?text=Mira la publicacion de {{ $publicacion->user->name }} de Ofiuco en:&url=http://127.0.0.1:8000/publication/{{ $publicacion->id }}"
                         target="_blank" class="cursor-pointer mx-auto my-5">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50"
-                            height="50" viewBox="0 0 48 48">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
+                            viewBox="0 0 48 48">
                             <path fill="#03A9F4"
                                 d="M42,12.429c-1.323,0.586-2.746,0.977-4.247,1.162c1.526-0.906,2.7-2.351,3.251-4.058c-1.428,0.837-3.01,1.452-4.693,1.776C34.967,9.884,33.05,9,30.926,9c-4.08,0-7.387,3.278-7.387,7.32c0,0.572,0.067,1.129,0.193,1.67c-6.138-0.308-11.582-3.226-15.224-7.654c-0.64,1.082-1,2.349-1,3.686c0,2.541,1.301,4.778,3.285,6.096c-1.211-0.037-2.351-0.374-3.349-0.914c0,0.022,0,0.055,0,0.086c0,3.551,2.547,6.508,5.923,7.181c-0.617,0.169-1.269,0.263-1.941,0.263c-0.477,0-0.942-0.054-1.392-0.135c0.94,2.902,3.667,5.023,6.898,5.086c-2.528,1.96-5.712,3.134-9.174,3.134c-0.598,0-1.183-0.034-1.761-0.104C9.268,36.786,13.152,38,17.321,38c13.585,0,21.017-11.156,21.017-20.834c0-0.317-0.01-0.633-0.025-0.945C39.763,15.197,41.013,13.905,42,12.429">
                             </path>
@@ -191,8 +191,8 @@
                     <a title="COMPARTIR PUBLICACION"
                         href="https://www.reddit.com/submit?url=http://127.0.0.1:8000/publication/{{ $publicacion->id }}"
                         target="_blank" class="cursor-pointer mx-auto my-5">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50"
-                            height="50" viewBox="0 0 48 48">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
+                            viewBox="0 0 48 48">
                             <path fill="#64717c"
                                 d="M24,18c-0.552,0-1-0.448-1-1c0-2.815,0.36-12,5-12c1.173,0,2.037,0.676,2.872,1.331    C31.919,7.151,33.002,8,35,8h4c0.552,0,1,0.448,1,1s-0.448,1-1,1h-4c-2.688,0-4.233-1.211-5.362-2.095C28.922,7.344,28.46,7,28,7    c-1.738,0-3,4.206-3,10C25,17.552,24.552,18,24,18z">
                             </path>
@@ -301,45 +301,47 @@
                 <x-slot name="title">
                     <p class="text-white">EDITAR UNA PUBLICACION</p>
                 </x-slot>
-                <x-slot name="content">
-                    @wire($miPublicacion, 'defer')
-                        <x-form-input name="miPublicacion.titulo" label="Título de la publicacion"
-                            placeholder="Título ..." />
-                        <x-form-textarea name="miPublicacion.contenido" placeholder="Contenido..."
-                            label="Contenido de la publicacion" rows="8" />
-                        <x-form-select name="selectedComunidades" :options="$comunidades" label="Comunidad de la publicacion"
-                            wire:model="selectedComunidades" />
-                        <x-form-group name="selectedTags[]" label="Etiquetas" inline>
-                            @foreach ($etiquetas as $id => $nombre)
-                                <x-form-checkbox name="tags" label="{{ $nombre }}" value="{{ $id }}"
-                                    :wire=false :show-errors="false" wire:model='selectedTags' />
-                            @endforeach
-                        </x-form-group>
-                        <x-form-group name="miPublicacion.estado" label="Estado de la publicacion" inline>
-                            <x-form-radio name="miPublicacion.estado" value="PUBLICADO" label="Publicado" />
-                            <x-form-radio name="miPublicacion.estado" value="BORRADOR" label="Borrador" />
-                        </x-form-group>
-                    @endwire
-                    <div class="mt-4">
-                        <span class="text-gray-700">Imagen de la publicacion</span>
-                    </div>
-                    <div class="relative mt-4 w-full bg-gray-100">
-                        @isset($imagen)
-                            <img src="{{ $imagen->temporaryUrl() }}" class="rounded-xl w-full h-full">
-                        @else
-                            <img src="{{ Storage::url($publicacion->imagen) }}" class="rounded-xl w-full h-full">
-                        @endisset
-                        <label for="img"
-                            class="absolute bottom-2 end-2 cursor-pointer
+                    <x-slot name="content">
+
+                        @wire($miPublicacion, 'defer')
+                            <x-form-input name="miPublicacion.titulo" label="Título de la publicacion"
+                                placeholder="Título ..." />
+                            <x-form-textarea name="miPublicacion.contenido" placeholder="Contenido..."
+                                label="Contenido de la publicacion" rows="8" />
+                            <x-form-select name="selectedComunidades" :options="$comunidades"
+                                label="Comunidad de la publicacion" wire:model="selectedComunidades" />
+                            <x-form-group name="selectedTags[]" label="Etiquetas" inline>
+                                @foreach ($etiquetas as $id => $nombre)
+                                    <x-form-checkbox name="tags" label="{{ $nombre }}"
+                                        value="{{ $id }}" :wire=false :show-errors="false"
+                                        wire:model='selectedTags' />
+                                @endforeach
+                            </x-form-group>
+                            <x-form-group name="miPublicacion.estado" label="Estado de la publicacion" inline>
+                                <x-form-radio name="miPublicacion.estado" value="PUBLICADO" label="Publicado" />
+                                <x-form-radio name="miPublicacion.estado" value="BORRADOR" label="Borrador" />
+                            </x-form-group>
+                        @endwire
+                        <div class="mt-4">
+                            <span class="text-gray-700">Imagen de la publicacion</span>
+                        </div>
+                        <div class="relative mt-4 w-full bg-gray-100">
+                            @isset($imagen)
+                                <img src="{{ $imagen->temporaryUrl() }}" class="rounded-xl w-full h-full">
+                            @else
+                                <img src="{{ Storage::url($publicacion->imagen) }}" class="rounded-xl w-full h-full">
+                            @endisset
+                            <label for="img"
+                                class="absolute bottom-2 end-2 cursor-pointer
                     bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> Subir Imagen</label>
-                        <input type="file" name="imagen" accept="image/*" class="hidden" id="img"
-                            wire:model="imagen" />
-                    </div>
-                    @error('imagen')
-                        <p class="text-red-500 italic text-xs">{{ $message }}</p>
-                    @enderror
-                </x-slot>
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Subir Imagen</label>
+                            <input type="file" name="imagen" accept="image/*" class="hidden" id="img"
+                                wire:model="imagen" />
+                        </div>
+                        @error('imagen')
+                            <p class="text-red-500 italic text-xs">{{ $message }}</p>
+                        @enderror
+                    </x-slot>
                 <x-slot name="footer">
                     <div class="flex flex-row-reverse text-center">
                         <button

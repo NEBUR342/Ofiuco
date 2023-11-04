@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Livewire;
-
 use App\Models\Community;
 use App\Models\Follow;
 use App\Models\Friend;
@@ -18,18 +16,15 @@ class ShowPerfiluser extends Component
     public string $campo = 'id', $orden = 'desc', $buscar = "";
     public User $usuario;
 
-    public function updatingBuscar()
-    {
+    public function updatingBuscar() {
         $this->resetPage();
     }
 
-    public function mount($id)
-    {
+    public function mount($id) {
         $this->usuario = User::findOrFail($id);
     }
 
-    public function render()
-    {
+    public function render() {
         // Voy a diferenciar dos:
         // Vista como usuario normal (Publicaciones que puede ver el usuario autenticado, relacion con estado=>['PUBLICADO','BORRADOR'] y comunidades comunes).
         // Vista como usuario administrador y ver tus propias publicaciones (Todas las publicaciones del usuario).
@@ -247,10 +242,28 @@ class ShowPerfiluser extends Component
         $comunidadesCreador = Community::where('user_id', $usuario->id)->get();
 
         // obtengo si le sigue
-        $follow = Follow::where('user_id', $usuario->id)->where('seguidor_id', auth()->user()->id)->first();
-        $cantidadFollow = $users = User::whereHas('follows', function ($q) {
+        $follow = Follow::where('seguido_id', $usuario->id)->where('seguidor_id', auth()->user()->id)->first();
+        $follows = Follow::where('aceptado', 'SI')->where('seguidor_id', $usuario->id)->get();
+        foreach ($follows as $item) {
+            if ($item->user_id == $usuario->id) {
+                $item->update([
+                    'user_id'=>$item->seguido_id
+                ]);
+            }
+        }
+        $cantidadFollow = User::whereHas('follows', function ($q) {
             $q->where('seguidor_id', $this->usuario->id)->where('aceptado', 'SI');
         })->count();
+        $follows = Follow::where('aceptado', 'SI')
+                    ->where('seguido_id', $usuario->id)
+                    ->get();
+        foreach ($follows as $item) {
+            if ($item->user_id != $usuario->id) {
+                $item->update([
+                    'user_id'=>$item->seguido_id
+                ]);
+            }
+        }
         return view('livewire.show-perfiluser', compact('publicaciones', 'tags', 'usuario', 'comunidadesParticipado', 'comunidadesCreador', 'follow', 'cantidadFollow'));
     }
 
@@ -332,19 +345,21 @@ class ShowPerfiluser extends Component
             Follow::create([
                 'user_id' => $this->usuario->id,
                 'seguidor_id' => auth()->user()->id,
+                'seguido_id' => $this->usuario->id,
                 'aceptado' => 'NO'
             ]);
         } else {
             Follow::create([
                 'user_id' => $this->usuario->id,
                 'seguidor_id' => auth()->user()->id,
+                'seguido_id' => $this->usuario->id,
                 'aceptado' => 'SI'
             ]);
         }
     }
     public function followdestroy()
     {
-        $follow = Follow::where('user_id', $this->usuario->id)->where('seguidor_id', auth()->user()->id)->first();
+        $follow = Follow::where('seguido_id', $this->usuario->id)->where('seguidor_id', auth()->user()->id)->first();
         $follow->delete();
     }
 

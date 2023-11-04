@@ -8,11 +8,10 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('seguidor_id');
-            $table->foreign('seguidor_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
-                $table->enum("aceptado", ["SI", "NO"]);
+            $table->unsignedBigInteger('seguido_id');
+            $table->foreign('seguidor_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('seguido_id')->references('id')->on('users')->onDelete('cascade');
+            $table->enum("aceptado", ["SI", "NO"]);
             $table->timestamps();
         });
     }

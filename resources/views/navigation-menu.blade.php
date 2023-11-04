@@ -67,6 +67,11 @@
                                         <x-dropdown-link href="{{ route('solicitudesamigos.show') }}">
                                             <i class="fa-solid fa-user-group"></i> Amigos
                                         </x-dropdown-link>
+                                        <div class="border-t border-gray-200"></div>
+                                        {{-- Foolows --}}
+                                        <x-dropdown-link href="{{ route('solicitudesfollows.show') }}">
+                                            <i class="fa-solid fa-user-group"></i> Follows
+                                        </x-dropdown-link>
                                     </x-slot>
                                 </x-dropdown>
                             </div>
@@ -254,6 +259,11 @@
                             {{-- amigos --}}
                             <x-dropdown-link href="{{ route('solicitudesamigos.show') }}">
                                 <i class="fa-solid fa-user-group"></i> Amigos
+                            </x-dropdown-link>
+                            <div class="border-t border-gray-200"></div>
+                            {{-- amigos --}}
+                            <x-dropdown-link href="{{ route('solicitudesfollows.show') }}">
+                                <i class="fa-solid fa-user-group"></i> Follows
                             </x-dropdown-link>
                         </x-slot>
                     </x-dropdown>

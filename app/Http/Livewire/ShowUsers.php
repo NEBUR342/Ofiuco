@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Follow;
 use App\Models\Friend;
 use App\Models\User;
 use Livewire\Component;
@@ -63,6 +64,16 @@ class ShowUsers extends Component
                 break;
             case 2:
                 $usuario = User::where('id', $this->iduser)->first();
+                $follows = Follow::where('aceptado', 'SI')
+                    ->where('seguido_id', $usuario->id)
+                    ->get();
+                foreach ($follows as $follow) {
+                    if ($follow->user_id != $usuario->id) {
+                        $follow->update([
+                            'user_id'=>$follow->seguido_id
+                        ]);
+                    }
+                }
                 $usersAceptados = $usuario->follows()
                     ->where('aceptado', 'SI')
                     ->pluck('seguidor_id');
@@ -101,9 +112,17 @@ class ShowUsers extends Component
                 }
                 break;
             case 3:
-
-                // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
-                // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
+                $usuario = User::where('id', $this->iduser)->first();
+                $follows = Follow::where('aceptado', 'SI')
+                    ->where('seguidor_id', $usuario->id)
+                    ->get();
+                foreach ($follows as $follow) {
+                    if ($follow->user_id == $usuario->id) {
+                        $follow->update([
+                            'user_id'=>$follow->seguido_id
+                        ]);
+                    }
+                }
                 switch ($this->campo) {
                         // Ordeno los usuarios por id.
                     case "creacion":

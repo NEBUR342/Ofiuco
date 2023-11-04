@@ -16,7 +16,7 @@ class CreateTags extends Component
     protected function rules(): array
     {
         return [
-            'nombre' => ['required', 'string', 'min:3', 'unique:tags,nombre'],
+            'nombre' => ['required', 'string', 'min:3', 'unique:tags,nombre', 'max:255'],
             'descripcion' => ['required', 'string', 'min:3'],
             'color' => ['required','regex:/#[A-Fa-f0-9]{6}/']
         ];

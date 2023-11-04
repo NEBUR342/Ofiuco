@@ -24,7 +24,7 @@ class ShowTags extends Component
     {
         // Compruebo los campos de la ventana modal para editar las etiquetas
         return [
-            'miTag.nombre' => ['required', 'string', 'min:3', 'unique:tags,nombre,' . $this->miTag->id],
+            'miTag.nombre' => ['required', 'string', 'min:3', 'unique:tags,nombre,' . $this->miTag->id, 'max:255'],
             'miTag.descripcion' => ['required', 'string', 'min:3'],
             'miTag.color' => ['nullable', 'regex:/#[A-Fa-f0-9]{6}/']
         ];

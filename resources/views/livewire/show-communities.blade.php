@@ -60,7 +60,7 @@
                     <div @class([
                         'text-white' => auth()->user()->temaoscuro,
                     ])>
-                        <p class="text-xl mb-5">
+                        <p class="text-xl mb-5 truncate">
                             {{ $comunidad->nombre }}
                         </p>
                         <img src="{{ Storage::url($comunidad->imagen) }}"
@@ -82,7 +82,6 @@
                                 'bg-blue-300' => !auth()->user()->temaoscuro,
                             ])></i>
                         @endif
-
                     </div>
                 </div>
             </div>

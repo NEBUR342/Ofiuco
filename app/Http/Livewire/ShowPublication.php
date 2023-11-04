@@ -79,11 +79,15 @@ class ShowPublication extends Component
         // obtengo al autor de la publicacion, las etiquetas y las comunidades a las que pertenece el autor, y las comunidades que ha creado.
         $autorPublicacion = $this->publicacion->user;
         $etiquetas = Tag::orderBy('nombre')->pluck('nombre', 'id')->toArray();
-        $comunidadesParticipado = $autorPublicacion->communities->pluck('nombre', 'id')->toArray();
-        $comunidadesCreador = Community::where('user_id', $publicacion->user->id)->pluck('nombre', 'id')->toArray();
-        $comunidades = $comunidadesParticipado + $comunidadesCreador;
-        $comunidades[0] = "Sin comunidad";
-        ksort($comunidades);
+        if ($this->publicacion->user_id == auth()->user()->id) {
+            $comunidadesParticipado = $autorPublicacion->communities->pluck('nombre', 'id')->toArray();
+            $comunidadesCreador = Community::where('user_id', $publicacion->user->id)->pluck('nombre', 'id')->toArray();
+            $comunidades = $comunidadesParticipado + $comunidadesCreador;
+            $comunidades[0] = "Sin comunidad";
+            ksort($comunidades);
+        } else {
+            $comunidades = Community::where('id', $publicacion->community_id)->pluck('nombre', 'id')->toArray();
+        }
         $aux = false;
         $comunidad = $publicacion->community;
         if (auth()->user() && $comunidad != null && $comunidad->user_id == auth()->user()->id) $aux = true;
@@ -184,10 +188,14 @@ class ShowPublication extends Component
         } else {
             $this->tipovalidacion = "publicacion sin comunidad";
         }
-
+        if($this->publicacion->user_id != auth()->user()->id){
+            if($this->publicacion->community_id != $this->selectedComunidades){
+                $this->selectedComunidades=$this->publicacion->community_id;
+            }
+        }
         // Valido los campos de la ventana modal de la publicacion que quiero editar.
         $this->validate([
-            'miPublicacion.titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo,' . $this->publicacion->id]
+            'miPublicacion.titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo,' . $this->publicacion->id, 'max:255']
         ]);
 
         // Agregar borrar likes, comentarios y guardados al cambiar la comunidad.

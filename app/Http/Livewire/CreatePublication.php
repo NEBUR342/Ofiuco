@@ -27,7 +27,7 @@ class CreatePublication extends Component
         if ($this->comunidad) {
             // Pertenece a una comunidad.
             return [
-                'titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo'],
+                'titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo', 'max:255'],
                 'contenido' => ['required', 'string', 'min:10'],
                 'estado' => ['required', 'in:PUBLICADO,BORRADOR'],
                 'comunidad' => ['required', 'exists:communities,id'],
@@ -37,7 +37,7 @@ class CreatePublication extends Component
         } else {
             // No pertenece a una comunidad.
             return [
-                'titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo'],
+                'titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo', 'max:255'],
                 'contenido' => ['required', 'string', 'min:10'],
                 'estado' => ['required', 'in:PUBLICADO,BORRADOR'],
                 'imagen' => ['required', 'image', 'max:2048', 'mimes:jpg,jpeg,png'],

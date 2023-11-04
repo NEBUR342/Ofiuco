@@ -156,7 +156,7 @@ class ShowCommunity extends Component
     {
         // valido los campos de la ventana modal de editar la comunidad.
         $this->validate([
-            'miComunidad.nombre' => ['required', 'string', 'min:3', 'unique:communities,nombre,' . $this->comunidad->id]
+            'miComunidad.nombre' => ['required', 'string', 'min:3', 'unique:communities,nombre,' . $this->comunidad->id, 'max:255']
         ]);
 
         // Si has cambiado la imagen, borro la antigua y la sustituyo por la nueva.

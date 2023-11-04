@@ -6,43 +6,15 @@ use App\Models\Chat;
 use App\Models\Community;
 use App\Models\Friend;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Livewire\WithPagination;
 
-class ChatController extends Controller
-{
+class ChatController extends Controller {
     use WithPagination;
-
-    protected $mensajes;
-    public $tipo;
-    public $tipoid;
-    protected $layout = 'layouts.app';
-
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, $tipo, $tipoid)
-    {
-        $this->tipo = $tipo;
-        $this->tipoid = $tipoid;
-        switch ($this->tipo) {
-            case 0:
-                $this->mensajes = Chat::where('id', '0')->paginate(15);
-                break;
-            case 1:
-                $this->mensajes = Chat::where('destinatario_id', auth()->user()->id)
-                    ->orderBy('id', 'desc')
-                    ->paginate(15);
-
-                break;
-            case 2:
-                $this->mensajes = Chat::where('community_id', $this->tipoid)
-                    ->orderBy('id', 'desc')
-                    ->paginate(15);
-
-                break;
-            default:
-                return redirect()->route('chat.index', ['tipo' => 0, 'tipoid' => 0]);
-        }
+    public function index(Request $request, $tipo, $tipoid) {
         $friends = Friend::where('aceptado', 'SI')
             ->where(function ($query) {
                 $query->where('frienduno_id', auth()->user()->id)
@@ -70,10 +42,7 @@ class ChatController extends Controller
             ->simplePaginate(5);
         $myCommunities = Community::where('user_id', auth()->user()->id)->simplePaginate(5);
         $communitiesParticipante = auth()->user()->communities()->simplePaginate(5);
-        $mensajes = $this->mensajes;
-        $tipo = $this->tipo;
-        $tipoid = $this->tipoid;
-        return view('chat.chat-messages', compact('friends', 'myCommunities', 'communitiesParticipante', 'mensajes', 'tipo', 'tipoid'));
+        return view('chat.chat-messages', compact('friends', 'myCommunities', 'communitiesParticipante', 'tipo', 'tipoid'));
     }
 
     /**
@@ -87,9 +56,24 @@ class ChatController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $tipo, $tipoid)
     {
-        //
+        if (!is_null($request->contenido)) {
+            if ($tipo == 1) {
+                Chat::create([
+                    'user_id' => auth()->user()->id,
+                    'destinatario_id' => $tipoid,
+                    'contenido' => $request->contenido
+                ]);
+            } else if ($tipo == 2) {
+                Chat::create([
+                    'user_id' => auth()->user()->id,
+                    'community_id' => $tipoid,
+                    'contenido' => $request->contenido
+                ]);
+            }
+        }
+        return redirect()->route('chat.index', compact('tipo', 'tipoid'));
     }
 
     /**
@@ -124,34 +108,91 @@ class ChatController extends Controller
         //
     }
 
-    public function abrirChat(Request $request, $tipo, $tipoid)
+    public function abrirChat($tipo, $tipoid)
     {
-        $this->tipo = $tipo;
-        $this->tipoid = $tipoid;
-        switch ($this->tipo) {
-            case 0:
-                $this->mensajes = Chat::where('id', '0')->paginate(15);
-                break;
+        $textoFormateado = "";
+        if(self::comprobarChat($tipo, $tipoid)){
+            $textoFormateado="<img src='". Storage::url('logochat.png') ."' class='h-96 mx-auto' alt='logo Ofiuco'>";
+            return $textoFormateado;
+        }
+        switch ($tipo) {
             case 1:
-                $this->mensajes = Chat::where('destinatario_id', auth()->user()->id)
+                $mensajes = Chat::where(function ($query) {
+                    $query->where('destinatario_id', auth()->user()->id)
+                        ->orWhere('user_id', auth()->user()->id);
+                    })
+                    ->where(function ($query) use ($tipoid) {
+                        $query->where('destinatario_id', $tipoid)
+                            ->orWhere('user_id', $tipoid);
+                    })
+                    ->where('community_id', null)
                     ->orderBy('id', 'desc')
-                    ->paginate(15);
-
+                    ->get();
                 break;
             case 2:
-                $this->mensajes = Chat::where('community_id', $this->tipoid)
+                $mensajes = Chat::where('community_id', $tipoid)
                     ->orderBy('id', 'desc')
-                    ->paginate(15);
-
+                    ->get();
                 break;
-            default:
-                return redirect()->route('messages.show', ['tipo' => 0, 'tipoid' => 0]);
         }
-        Chat::create([
-            'user_id' => auth()->user()->id,
-            'destinatario_id' => 1,
-            'contenido' => "prueba1"
-        ]);
-        return response()->json(['mensajes' => $this->mensajes]);
+        if ($mensajes->count()) {
+            foreach ($mensajes->reverse() as $mensaje) {
+                if ($mensaje->user_id == auth()->user()->id) {
+                    $textoFormateado.="<div class = 'flex flex-row-reverse'>";
+                    if ($mensaje->user->is_admin) {
+                        if (auth()->user()->temaoscuro) {
+                            $textoFormateado.="<p class='max-w-[80%] xl:max-w-2xl py-1 px-4 rounded-br-xl rounded-bl-xl mt-2 mx-2 rounded-tl-xl text-white bg-gradient-to-r from-red-600 from-10% via-indigo-600 via-80% to-blue-600 to-90%'><span class='flex flex-wrap my-3'><a class='flex flex-col' href='" . route('perfiluser.show', $mensaje->user->id) . "'><img class='h-8 w-8 rounded-full ml-4 cursor-pointer' src='" . $mensaje->user->profile_photo_url . "' title='mensaje de " . $mensaje->user->name . "'alt='" . $mensaje->user->name . "' /></a><span class = 'flex flex-col mx-3 px-2 text-xl rounded-xl'>" . $mensaje->user->name . "</span></span>".$mensaje->contenido."</p>";
+                        } else {
+                            $textoFormateado.="<p class='max-w-[80%] xl:max-w-2xl py-1 px-4 rounded-br-xl rounded-bl-xl mt-2 mx-2 rounded-tl-xl text-white bg-gradient-to-r from-red-500 from-10% via-indigo-500 via-80% to-blue-500 to-90%'><span class='flex flex-wrap my-3'><a class='flex flex-col' href='" . route('perfiluser.show', $mensaje->user->id) . "'><img class='h-8 w-8 rounded-full ml-4 cursor-pointer' src='" . $mensaje->user->profile_photo_url . "' title='mensaje de " . $mensaje->user->name . "'alt='" . $mensaje->user->name . "' /></a><span class = 'flex flex-col mx-3 px-2 text-xl rounded-xl'>" . $mensaje->user->name . "</span></span>".$mensaje->contenido."</p>";
+                        }
+                    } else if ($mensaje->community_id != null && $mensaje->community->user_id == $mensaje->user_id) {
+                        if (auth()->user()->temaoscuro) {
+                            $textoFormateado.="<p class='max-w-[80%] xl:max-w-2xl py-1 px-4 rounded-br-xl rounded-bl-xl mt-2 mx-2 rounded-tl-xl bg-blue-700 text-white'><span class='flex flex-wrap my-3'><a class='flex flex-col' href='" . route('perfiluser.show', $mensaje->user->id) . "'><img class='h-8 w-8 rounded-full ml-4 cursor-pointer' src='" . $mensaje->user->profile_photo_url . "' title='mensaje de " . $mensaje->user->name . "'alt='" . $mensaje->user->name . "' /></a><span class = 'flex flex-col mx-3 px-2 text-xl rounded-xl'>" . $mensaje->user->name . "</span></span>".$mensaje->contenido."</p>";
+                        } else {
+                            $textoFormateado.="<p class='max-w-[80%] xl:max-w-2xl py-1 px-4 rounded-br-xl rounded-bl-xl mt-2 mx-2 rounded-tl-xl bg-blue-400'><span class='flex flex-wrap my-3'><a class='flex flex-col' href='" . route('perfiluser.show', $mensaje->user->id) . "'><img class='h-8 w-8 rounded-full ml-4 cursor-pointer' src='" . $mensaje->user->profile_photo_url . "' title='mensaje de " . $mensaje->user->name . "'alt='" . $mensaje->user->name . "' /></a><span class = 'flex flex-col mx-3 px-2 text-xl rounded-xl'>" . $mensaje->user->name . "</span></span>".$mensaje->contenido."</p>";
+                        }
+                    } else {
+                        if (auth()->user()->temaoscuro) {
+                            $textoFormateado.="<p class='max-w-[80%] xl:max-w-2xl py-1 px-4 rounded-br-xl rounded-bl-xl mt-2 mx-2 rounded-tl-xl bg-gray-700 text-white'><span class='flex flex-wrap my-3'><a class='flex flex-col' href='" . route('perfiluser.show', $mensaje->user->id) . "'><img class='h-8 w-8 rounded-full ml-4 cursor-pointer' src='" . $mensaje->user->profile_photo_url . "' title='mensaje de " . $mensaje->user->name . "'alt='" . $mensaje->user->name . "' /></a><span class = 'flex flex-col mx-3 px-2 text-xl rounded-xl'>" . $mensaje->user->name . "</span></span>".$mensaje->contenido."</p>";
+                        } else {
+                            $textoFormateado.="<p class='max-w-[80%] xl:max-w-2xl py-1 px-4 rounded-br-xl rounded-bl-xl mt-2 mx-2 rounded-tl-xl bg-gray-300'><span class='flex flex-wrap my-3'><a class='flex flex-col' href='" . route('perfiluser.show', $mensaje->user->id) . "'><img class='h-8 w-8 rounded-full ml-4 cursor-pointer' src='" . $mensaje->user->profile_photo_url . "' title='mensaje de " . $mensaje->user->name . "'alt='" . $mensaje->user->name . "' /></a><span class = 'flex flex-col mx-3 px-2 text-xl rounded-xl'>" . $mensaje->user->name . "</span></span>".$mensaje->contenido."</p>";
+                        }
+                    }
+                    $textoFormateado.="</div>";
+                } else {
+                    $textoFormateado.="<div class = 'flex'>";
+                    if ($mensaje->user->is_admin) {
+                        if (auth()->user()->temaoscuro) {
+                            $textoFormateado.="<p class='max-w-[80%] xl:max-w-2xl py-1 px-4 rounded-br-xl rounded-bl-xl mt-2 mx-2 rounded-tr-xl text-white bg-gradient-to-r from-red-600 from-10% via-indigo-600 via-80% to-blue-600 to-90%'><span class='flex flex-wrap my-3'><a class='flex flex-col' href='" . route('perfiluser.show', $mensaje->user->id) . "'><img class='h-8 w-8 rounded-full ml-4 cursor-pointer' src='" . $mensaje->user->profile_photo_url . "' title='mensaje de " . $mensaje->user->name . "'alt='" . $mensaje->user->name . "' /></a><span class = 'flex flex-col mx-3 px-2 text-xl rounded-xl'>" . $mensaje->user->name . "</span></span>".$mensaje->contenido."</p>";
+                        } else {
+                            $textoFormateado.="<p class='max-w-[80%] xl:max-w-2xl py-1 px-4 rounded-br-xl rounded-bl-xl mt-2 mx-2 rounded-tr-xl text-white bg-gradient-to-r from-red-500 from-10% via-indigo-500 via-80% to-blue-500 to-90%'><span class='flex flex-wrap my-3'><a class='flex flex-col' href='" . route('perfiluser.show', $mensaje->user->id) . "'><img class='h-8 w-8 rounded-full ml-4 cursor-pointer' src='" . $mensaje->user->profile_photo_url . "' title='mensaje de " . $mensaje->user->name . "'alt='" . $mensaje->user->name . "' /></a><span class = 'flex flex-col mx-3 px-2 text-xl rounded-xl'>" . $mensaje->user->name . "</span></span>".$mensaje->contenido."</p>";
+                        }
+                    } else if ($mensaje->community_id != null && $mensaje->community->user_id == $mensaje->user_id) {
+                        if (auth()->user()->temaoscuro) {
+                            $textoFormateado.="<p class='max-w-[80%] xl:max-w-2xl py-1 px-4 rounded-br-xl rounded-bl-xl mt-2 mx-2 rounded-tr-xl bg-blue-700 text-white'><span class='flex flex-wrap my-3'><a class='flex flex-col' href='" . route('perfiluser.show', $mensaje->user->id) . "'><img class='h-8 w-8 rounded-full ml-4 cursor-pointer' src='" . $mensaje->user->profile_photo_url . "' title='mensaje de " . $mensaje->user->name . "'alt='" . $mensaje->user->name . "' /></a><span class = 'flex flex-col mx-3 px-2 text-xl rounded-xl'>" . $mensaje->user->name . "</span></span>".$mensaje->contenido."</p>";
+                        } else {
+                            $textoFormateado.="<p class='max-w-[80%] xl:max-w-2xl py-1 px-4 rounded-br-xl rounded-bl-xl mt-2 mx-2 rounded-tr-xl bg-blue-400'><span class='flex flex-wrap my-3'><a class='flex flex-col' href='" . route('perfiluser.show', $mensaje->user->id) . "'><img class='h-8 w-8 rounded-full ml-4 cursor-pointer' src='" . $mensaje->user->profile_photo_url . "' title='mensaje de " . $mensaje->user->name . "'alt='" . $mensaje->user->name . "' /></a><span class = 'flex flex-col mx-3 px-2 text-xl rounded-xl'>" . $mensaje->user->name . "</span></span>".$mensaje->contenido."</p>";
+                        }
+                    } else {
+                        if (auth()->user()->temaoscuro) {
+                            $textoFormateado.="<p class='max-w-[80%] xl:max-w-2xl py-1 px-4 rounded-br-xl rounded-bl-xl mt-2 mx-2 rounded-tr-xl bg-gray-700 text-white'><span class='flex flex-wrap my-3'><a class='flex flex-col' href='" . route('perfiluser.show', $mensaje->user->id) . "'><img class='h-8 w-8 rounded-full ml-4 cursor-pointer' src='" . $mensaje->user->profile_photo_url . "' title='mensaje de " . $mensaje->user->name . "'alt='" . $mensaje->user->name . "' /></a><span class = 'flex flex-col mx-3 px-2 text-xl rounded-xl'>" . $mensaje->user->name . "</span></span>".$mensaje->contenido."</p>";
+                        } else {
+                            $textoFormateado.="<p class='max-w-[80%] xl:max-w-2xl py-1 px-4 rounded-br-xl rounded-bl-xl mt-2 mx-2 rounded-tr-xl bg-gray-300'><span class='flex flex-wrap my-3'><a class='flex flex-col' href='" . route('perfiluser.show', $mensaje->user->id) . "'><img class='h-8 w-8 rounded-full ml-4 cursor-pointer' src='" . $mensaje->user->profile_photo_url . "' title='mensaje de " . $mensaje->user->name . "'alt='" . $mensaje->user->name . "' /></a><span class = 'flex flex-col mx-3 px-2 text-xl rounded-xl'>" . $mensaje->user->name . "</span></span>".$mensaje->contenido."</p>";
+                        }
+                    }
+                    $textoFormateado.="</div>";
+                }
+            }
+        } else {
+            $textoFormateado = "<p class='text-center'>SE EL PRIMERO EN MANDAR UN MENSAJE</p><img src='". Storage::url('logochat.png') ."' class='h-96 mx-auto' alt='logo Ofiuco'>";
+        }
+        return $textoFormateado;
+    }
+
+    private function comprobarChat($tipo, $tipoid){
+        if($tipo!=1 && $tipo!=2){
+            return true;
+        }
+        //comprobar que sean amigos o pertenezca a la comunidad
     }
 }

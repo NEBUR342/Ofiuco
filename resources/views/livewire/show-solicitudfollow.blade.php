@@ -56,7 +56,7 @@
                     </span>
                     <span class="mx-2">
                         <i class="fa-solid fa-user-minus cursor-pointer text-red-500"
-                            wire:click="borrarsolicitudamigo({{ $solicitud->user->id }})"></i>
+                            wire:click="borrarsolicitud({{ $solicitud->id }})"></i>
                     </span>
                     <span class="mx-2">
                         <i class="fa-solid fa-user-plus cursor-pointer text-blue-500"

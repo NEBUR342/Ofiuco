@@ -22,7 +22,7 @@ class CreateCommunity extends Component
     {
         // compruebo los campos de la ventana modal.
         return [
-            'nombre' => ['required', 'string', 'min:3', 'unique:communities,nombre'],
+            'nombre' => ['required', 'string', 'min:3', 'unique:communities,nombre', 'max:255'],
             'descripcion' => ['required', 'string', 'min:10'],
             'imagen' => ['required', 'image', 'max:2048', 'mimes:jpg,jpeg,png'],
             'privacidad' => ['required', 'in:PRIVADO,PUBLICO'],

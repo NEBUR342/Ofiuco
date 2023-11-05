@@ -19,89 +19,19 @@
                     <div class="px-6 py-4 justify-center">
                         <ul role="list" class="max-w-sm divide-y divide-gray-200">
                             @if ($friends->count())
-                                <h2 class="text-lg font-semibold text-center">CONTACTOS</h2>
-                                <li class="py-3 sm:py-4">
-                                    @foreach ($friends as $friend)
-                                        <a href="{{ route('chat.index', ['tipo' => '1', 'tipoid' => $friend->user_id]) }}"
-                                            class="flex items-center space-x-3 relative mb-5">
-                                            <div class="flex-shrink-0">
-                                                <img class="w-8 h-8 rounded-full"
-                                                    src="{{ $friend->user->profile_photo_url }}"
-                                                    title="{{ $friend->user->name }}" alt="{{ $friend->user->name }}">
-                                            </div>
-                                            <div class="min-w-0">
-                                                <p class="text-sm font-semibold truncate">
-                                                    {{ $friend->user->name }}
-                                                </p>
-                                                <p class="text-sm truncate">
-                                                    Mostrar último mensaje del chat
-                                                </p>
-                                            </div>
-                                            <div
-                                                class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-blue-300 rounded-full top-0 right-0">
-                                                99
-                                            </div>
-                                        </a>
-                                    @endforeach
-                                    {{ $friends->links() }}
+                                <li class="py-3 sm:py-4" id="contactos1">
                                 </li>
+                                {{ $friends->links() }}
                             @endif
                             @if ($myCommunities->count())
-                                <h2 class="text-lg font-semibold text-center">MIS COMUNIDADES</h2>
-                                <li class="py-3 sm:py-4">
-                                    @foreach ($myCommunities as $myCommunity)
-                                        <a href="{{ route('chat.index', ['tipo' => '2', 'tipoid' => $myCommunity->id]) }}"
-                                            class="flex items-center space-x-3 relative mb-5">
-                                            <div class="flex-shrink-0">
-                                                <img class="w-8 h-8 rounded-full"
-                                                    src="{{ Storage::url($myCommunity->imagen) }}"
-                                                    title="{{ $myCommunity->nombre }}" alt="{{ $myCommunity->nombre }}">
-                                            </div>
-                                            <div class="min-w-0">
-                                                <p class="text-sm font-semibold truncate">
-                                                    {{ $myCommunity->nombre }}
-                                                </p>
-                                                <p class="text-sm truncate">
-                                                    Mostrar último mensaje del chat
-                                                </p>
-                                            </div>
-                                            <div
-                                                class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-blue-300 rounded-full top-0 right-0">
-                                                99
-                                            </div>
-                                        </a>
-                                    @endforeach
-                                    {{ $myCommunities->links() }}
+                                <li class="py-3 sm:py-4" id="contactos2">
                                 </li>
+                                {{ $myCommunities->links() }}
                             @endif
                             @if ($communitiesParticipante->count())
-                                <h2 class="text-lg font-semibold text-center">COMUNIDADES</h2>
-                                <li class="py-3 sm:py-4">
-                                    @foreach ($communitiesParticipante as $communityParticipante)
-                                        <a href="{{ route('chat.index', ['tipo' => '2', 'tipoid' => $communityParticipante->id]) }}"
-                                            class="flex items-center space-x-3 relative mb-5">
-                                            <div class="flex-shrink-0">
-                                                <img class="w-8 h-8 rounded-full"
-                                                    src="{{ Storage::url($communityParticipante->imagen) }}"
-                                                    title="{{ $communityParticipante->nombre }}" alt="{{ $communityParticipante->nombre }}">
-                                            </div>
-                                            <div class="min-w-0">
-                                                <p class="text-sm font-semibold truncate">
-                                                    {{ $communityParticipante->nombre }}
-                                                </p>
-                                                <p class="text-sm truncate">
-                                                    Mostrar último mensaje del chat
-                                                </p>
-                                            </div>
-                                            <div
-                                                class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-blue-300 rounded-full top-0 right-0">
-                                                99
-                                            </div>
-                                        </a>
-                                        
-                                    @endforeach
-                                    {{ $communitiesParticipante->links() }}
+                                <li class="py-3 sm:py-4" id="contactos3">
                                 </li>
+                                {{ $communitiesParticipante->links() }}
                             @endif
                         </ul>
                     </div>
@@ -141,7 +71,19 @@
                 type: 'GET',
                 success: function(mensajes) {
                     var refrescarChat = document.getElementById("mensajes");
-                    refrescarChat.innerHTML = mensajes;
+                    refrescarChat.innerHTML = mensajes[0];
+                    if ("{{ $friends->count() }}") {
+                        var refrescarContactos1 = document.getElementById("contactos1");
+                        refrescarContactos1.innerHTML = mensajes[1];
+                    }
+                    if ("{{ $myCommunities->count() }}") {
+                        var refrescarContactos2 = document.getElementById("contactos2");
+                        refrescarContactos2.innerHTML = mensajes[2];
+                    }
+                    if ("{{ $communitiesParticipante->count() }}") {
+                        var refrescarContactos3 = document.getElementById("contactos3");
+                        refrescarContactos3.innerHTML = mensajes[3];
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error('Error en la solicitud AJAX:', status, error);

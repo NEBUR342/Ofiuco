@@ -1,15 +1,14 @@
 @extends('components.miscomponentes.baseChat')
 @section('contenido')
     <div>
-        <div class="flex">
-            <input style="visibility: hidden" type="checkbox" id="drawer-toggle" class="relative sr-only peer">
-            <div
-                class="fixed top-20 left-0 inline-block px-2 py-3 transition-all duration-500 bg-indigo-500 rounded-lg peer-checked:rotate-180 peer-checked:left-64">
-                <label for="drawer-toggle" class="cursor-pointer">
-                    <div class="w-6 h-1 mb-3 -rotate-45 bg-white rounded-lg"></div>
-                    <div class="w-6 h-1 rotate-45 bg-white rounded-lg"></div>
-                </label>
-            </div>
+        <!-- component -->
+        <div class="flex ">
+            <input type="checkbox" id="drawer-toggle" class="relative sr-only peer" checked>
+            <label for="drawer-toggle"
+                class="fixed top-20 left-0 cursor-pointer inline-block p-4 transition-all duration-500 bg-indigo-500 rounded-lg peer-checked:rotate-180 peer-checked:left-64">
+                <div class="w-6 h-1 mb-3 -rotate-45 bg-white rounded-lg"></div>
+                <div class="w-6 h-1 rotate-45 bg-white rounded-lg"></div>
+            </label>
             <div @class([
                 'fixed top-0 left-0 z-20 w-64 h-full transition-all duration-500 transform -translate-x-full shadow-lg peer-checked:translate-x-0',
                 'bg-gray-700 text-white' => auth()->check() && auth()->user()->temaoscuro,
@@ -19,6 +18,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="h-screen flex flex-col">
             <div class="flex-grow">
                 <div class="h-16"></div>

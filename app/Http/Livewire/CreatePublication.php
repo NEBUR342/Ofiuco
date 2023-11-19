@@ -41,7 +41,7 @@ class CreatePublication extends Component
                 'contenido' => ['required', 'string', 'min:10'],
                 'estado' => ['required', 'in:PUBLICADO,BORRADOR'],
                 'imagen' => ['required', 'image', 'max:2048', 'mimes:jpg,jpeg,png'],
-                'arraytags' => ['nullable', 'exists:tags,id'],
+                'arraytags' => ['nullable', 'exists:tags,id'], 
             ];
         }
     }

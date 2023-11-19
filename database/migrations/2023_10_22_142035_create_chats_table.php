@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->foreign('destinatario_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('community_id')->nullable();
             $table->text('contenido');
-            $table->string('leido')->default(0);
+            $table->string('leido')->default(',');
             $table->timestamps();
         });
     }

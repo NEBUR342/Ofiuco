@@ -101,6 +101,52 @@ class ChatController extends Controller
             ->groupBy('communities.id', 'community_user.user_id', 'community_user.created_at', 'community_user.updated_at')
             ->orderBy('created_order', 'desc')
             ->simplePaginate(5);
+            switch ($tipo) {
+                case 1:
+                    $mensajes = Chat::where(function ($query) {
+                        $query->where('destinatario_id', auth()->user()->id)
+                            ->orWhere('user_id', auth()->user()->id);
+                    })
+                        ->where(function ($query) use ($tipoid) {
+                            $query->where('destinatario_id', $tipoid)
+                                ->orWhere('user_id', $tipoid);
+                        })
+                        ->where('community_id', null)
+                        ->orderBy('id', 'desc')
+                        ->get();
+                    $mensajesnoleidos = Chat::where(function ($query) {
+                        $query->where('destinatario_id', auth()->user()->id)
+                            ->orWhere('user_id', auth()->user()->id);
+                    })
+                        ->where(function ($query) use ($tipoid) {
+                            $query->where('destinatario_id', $tipoid)
+                                ->orWhere('user_id', $tipoid);
+                        })
+                        ->where('community_id', null)
+                        ->where('leido', 'not like', '%,' . auth()->user()->id . ',%')
+                        ->orderBy('id', 'desc')
+                        ->get();
+                    foreach ($mensajesnoleidos as $mensajenoleido) {
+                        $mensajenoleido->update([
+                            'leido' => $mensajenoleido->leido . auth()->user()->id . ","
+                        ]);
+                    }
+                    break;
+                case 2:
+                    $mensajes = Chat::where('community_id', $tipoid)
+                        ->orderBy('id', 'desc')
+                        ->get();
+                    $mensajesnoleidos = Chat::where('community_id', $tipoid)
+                        ->where('leido', 'not like', '%,' . auth()->user()->id . ',%')
+                        ->orderBy('id', 'desc')
+                        ->get();
+                    foreach ($mensajesnoleidos as $mensajenoleido) {
+                        $mensajenoleido->update([
+                            'leido' => $mensajenoleido->leido . auth()->user()->id . ","
+                        ]);
+                    }
+                    break;
+            }
         $ultimomensajefriends = [];
         foreach ($friends as $item) {
             if (Chat::where(function ($query) {
@@ -120,9 +166,6 @@ class ChatController extends Controller
                     ->where('community_id', null)
                     ->orderBy('id', 'desc')
                     ->get();
-                foreach ($ultimomensajefriends[$item->user_id] as $ultimomensajefriend) {
-                    $arraymensajes = explode(",", $ultimomensajefriend->leido);
-                }
             } else $ultimomensajefriends[$item->user_id] = "No hay mensajes";
         }
         $ultimomensajecomunidadesparticipante = [];
@@ -135,52 +178,7 @@ class ChatController extends Controller
             if (Chat::where('community_id', $item->id)->count()) $ultimomensajemiscomunidades[$item->id] = Chat::where('community_id', $item->id)->orderBy('id', 'desc')->get();
             else $ultimomensajemiscomunidades[$item->id] = "No hay mensajes";
         }
-        switch ($tipo) {
-            case 1:
-                $mensajes = Chat::where(function ($query) {
-                    $query->where('destinatario_id', auth()->user()->id)
-                        ->orWhere('user_id', auth()->user()->id);
-                })
-                    ->where(function ($query) use ($tipoid) {
-                        $query->where('destinatario_id', $tipoid)
-                            ->orWhere('user_id', $tipoid);
-                    })
-                    ->where('community_id', null)
-                    ->orderBy('id', 'desc')
-                    ->get();
-                $mensajesnoleidos = Chat::where(function ($query) {
-                    $query->where('destinatario_id', auth()->user()->id)
-                        ->orWhere('user_id', auth()->user()->id);
-                })
-                    ->where(function ($query) use ($tipoid) {
-                        $query->where('destinatario_id', $tipoid)
-                            ->orWhere('user_id', $tipoid);
-                    })
-                    ->where('community_id', null)
-                    ->where('leido', '0')
-                    ->orderBy('id', 'desc')
-                    ->get();
-                foreach ($mensajesnoleidos as $mensajenoleido) {
-                    $mensajenoleido->update([
-                        'leido' => auth()->user()->id . ","
-                    ]);
-                }
-                break;
-            case 2:
-                $mensajes = Chat::where('community_id', $tipoid)
-                    ->orderBy('id', 'desc')
-                    ->get();
-                $mensajesnoleidos = Chat::where('community_id', $tipoid)
-                    ->where('leido', '0')
-                    ->orderBy('id', 'desc')
-                    ->get();
-                foreach ($mensajesnoleidos as $mensajenoleido) {
-                    $mensajenoleido->update([
-                        'leido' => auth()->user()->id . ","
-                    ]);
-                }
-                break;
-        }
+        
         if ($friends->count() || $myCommunities->count() || $communitiesParticipante->count()) {
             $textoFormateado[1] .= "<ul role='list' class='divide-y divide-gray-200'>";
             if ($friends->count()) {
@@ -193,8 +191,8 @@ class ChatController extends Controller
                         $textoFormateado[1] .= $ultimomensajefriends[$friend->user_id][0]['contenido'];
                     }
                     $textoFormateado[1] .= "</p></div>";
-                    if ($ultimomensajefriends[$friend->user_id] != 'No hay mensajes' && $ultimomensajefriends[$friend->user_id]->where('leido', 0)->count()) {
-                        $textoFormateado[1] .= "<div class='absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-blue-300 rounded-full top-0 right-0'>" . $ultimomensajefriends[$friend->user_id]->where('leido', 0)->count() . "</div>";
+                    if ($ultimomensajefriends[$friend->user_id] != 'No hay mensajes' && $ultimomensajefriends[$friend->user_id]->reject(function ($chat) {$leidos = explode(',', $chat->leido);return in_array(auth()->user()->id, $leidos);})->count()) {
+                        $textoFormateado[1] .= "<div class='absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-blue-300 rounded-full top-0 right-0'>" . $ultimomensajefriends[$friend->user_id]->reject(function ($chat) {$leidos = explode(',', $chat->leido);return in_array(auth()->user()->id, $leidos);})->count() . "</div>";
                     }
                     $textoFormateado[1] .= "</a>";
                 }
@@ -210,8 +208,8 @@ class ChatController extends Controller
                         $textoFormateado[1] .= $ultimomensajemiscomunidades[$myCommunity->id][0]['contenido'];
                     }
                     $textoFormateado[1] .= "</p></div>";
-                    if ($ultimomensajemiscomunidades[$myCommunity->id] != 'No hay mensajes' && $ultimomensajemiscomunidades[$myCommunity->id]->where('leido', 0)->count()) {
-                        $textoFormateado[1] .= "<div class='absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-blue-300 rounded-full top-0 right-0'>" . $ultimomensajemiscomunidades[$myCommunity->id]->where('leido', 0)->count() . "</div>";
+                    if ($ultimomensajemiscomunidades[$myCommunity->id] != 'No hay mensajes' && $ultimomensajemiscomunidades[$myCommunity->id]->reject(function ($chat) {$leidos = explode(',', $chat->leido);return in_array(auth()->user()->id, $leidos);})->count()) {
+                        $textoFormateado[1] .= "<div class='absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-blue-300 rounded-full top-0 right-0'>" . $ultimomensajemiscomunidades[$myCommunity->id]->reject(function ($chat) {$leidos = explode(',', $chat->leido);return in_array(auth()->user()->id, $leidos);})->count() . "</div>";
                     }
                     $textoFormateado[1] .= "</a>";
                 }
@@ -227,8 +225,8 @@ class ChatController extends Controller
                         $textoFormateado[1] .= $ultimomensajecomunidadesparticipante[$communityParticipante->id][0]['contenido'];
                     }
                     $textoFormateado[1] .= "</p></div>";
-                    if ($ultimomensajecomunidadesparticipante[$communityParticipante->id] != 'No hay mensajes' && $ultimomensajecomunidadesparticipante[$communityParticipante->id]->where('leido', 0)->count()) {
-                        $textoFormateado[1] .= "<div class='absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-blue-300 rounded-full top-0 right-0'>" . $ultimomensajecomunidadesparticipante[$communityParticipante->id]->where('leido', 0)->count() . "</div>";
+                    if ($ultimomensajecomunidadesparticipante[$communityParticipante->id] != 'No hay mensajes' && $ultimomensajecomunidadesparticipante[$communityParticipante->id]->reject(function ($chat) {$leidos = explode(',', $chat->leido);return in_array(auth()->user()->id, $leidos);})->count()) {
+                        $textoFormateado[1] .= "<div class='absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-blue-300 rounded-full top-0 right-0'>" . $ultimomensajecomunidadesparticipante[$communityParticipante->id]->reject(function ($chat) {$leidos = explode(',', $chat->leido);return in_array(auth()->user()->id, $leidos);})->count() . "</div>";
                     }
                     $textoFormateado[1] .= "</a>";
                 }

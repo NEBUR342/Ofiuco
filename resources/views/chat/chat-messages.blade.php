@@ -1,7 +1,6 @@
 @extends('components.miscomponentes.baseChat')
 @section('contenido')
     <div>
-        <!-- component -->
         <div class="flex ">
             <input type="checkbox" id="drawer-toggle" class="relative sr-only peer" checked>
             <label for="drawer-toggle"

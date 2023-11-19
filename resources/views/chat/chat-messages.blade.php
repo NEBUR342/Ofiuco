@@ -15,9 +15,7 @@
                 'bg-gray-700 text-white' => auth()->check() && auth()->user()->temaoscuro,
                 'bg-gray-200' => auth()->guest() || !auth()->user()->temaoscuro,
             ])>
-                <div class="px-6 py-4 justify-center">
-                    <div class="px-6 py-4 justify-center" id="contactos">
-                    </div>
+                <div class="px-6 py-4 justify-center" id="contactos">
                 </div>
             </div>
         </div>

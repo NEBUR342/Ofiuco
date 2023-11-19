@@ -182,7 +182,7 @@ class ChatController extends Controller
                 break;
         }
         if ($friends->count() || $myCommunities->count() || $communitiesParticipante->count()) {
-            $textoFormateado[1] .= "<ul role='list' class='max-w-sm divide-y divide-gray-200'>";
+            $textoFormateado[1] .= "<ul role='list' class='divide-y divide-gray-200'>";
             if ($friends->count()) {
                 $textoFormateado[1] .= "<li class='py-3 sm:py-4'><h2 class='text-lg font-semibold text-center mb-5'>CONTACTOS</h2>";
                 foreach ($friends as $friend) {

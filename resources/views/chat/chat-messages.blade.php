@@ -18,7 +18,6 @@
                 <div class="px-6 py-4 justify-center">
                     <div class="px-6 py-4 justify-center" id="contactos">
                     </div>
-
                 </div>
             </div>
         </div>

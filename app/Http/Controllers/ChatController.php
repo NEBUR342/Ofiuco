@@ -14,36 +14,6 @@ class ChatController extends Controller
     use WithPagination;
     public function index($tipo, $tipoid)
     {
-        $friends = Friend::where('aceptado', 'SI')
-            ->where(function ($query) {
-                $query->where('frienduno_id', auth()->user()->id)
-                    ->orWhere('frienddos_id', auth()->user()->id);
-            })
-            ->simplePaginate(5);
-        $ultimomensajefriends = [];
-        foreach ($friends as $item) {
-            if (Chat::where(function ($query) {
-                $query->where('destinatario_id', auth()->user()->id)
-                    ->orWhere('user_id', auth()->user()->id);
-            })->where(function ($query) use ($item) {
-                $query->where('destinatario_id', $item->user_id)->orWhere('user_id', $item->user_id);
-            })->where('community_id', null)->count()) {
-                $ultimomensajefriends[$item->user_id] = Chat::where(function ($query) {
-                    $query->where('destinatario_id', auth()->user()->id)
-                        ->orWhere('user_id', auth()->user()->id);
-                })
-                    ->where(function ($query) use ($item) {
-                        $query->where('destinatario_id', $item->user_id)
-                            ->orWhere('user_id', $item->user_id);
-                    })
-                    ->where('community_id', null)
-                    ->orderBy('id', 'desc')
-                    ->get();
-                foreach ($ultimomensajefriends[$item->user_id] as $ultimomensajefriend) {
-                    $arraymensajes = explode(",", $ultimomensajefriend->leido);
-                }
-            } else $ultimomensajefriends[$item->user_id] = "No hay mensajes";
-        }
         return view('chat.chat-messages', compact('tipo', 'tipoid'));
     }
     public function store(Request $request, $tipo, $tipoid)
@@ -96,9 +66,41 @@ class ChatController extends Controller
                 $query->where('frienduno_id', auth()->user()->id)
                     ->orWhere('frienddos_id', auth()->user()->id);
             })
+            ->leftJoin('chats', function ($join) {
+                $join->on(function ($join) {
+                    $join->on('friends.frienduno_id', '=', 'chats.user_id')
+                        ->whereNull('chats.destinatario_id');
+                })->orWhere(function ($join) {
+                    $join->on('friends.frienddos_id', '=', 'chats.user_id')
+                        ->whereNull('chats.destinatario_id');
+                })->orWhere(function ($join) {
+                    $join->on('friends.frienduno_id', '=', 'chats.destinatario_id')
+                        ->where('chats.user_id', '=', auth()->user()->id);
+                })->orWhere(function ($join) {
+                    $join->on('friends.frienddos_id', '=', 'chats.destinatario_id')
+                        ->where('chats.user_id', '=', auth()->user()->id);
+                });
+            })
+            ->selectRaw('friends.*, MAX(chats.created_at) as created_order')
+            ->groupBy('friends.id')
+            ->orderBy('created_order', 'desc')
             ->simplePaginate(5);
-        $myCommunities = Community::where('user_id', auth()->user()->id)->simplePaginate(5);
-        $communitiesParticipante = auth()->user()->communities()->simplePaginate(5);
+        $myCommunities = Community::where('communities.user_id', auth()->user()->id)
+            ->leftJoin('chats', function ($join) {
+                $join->on('communities.id', '=', 'chats.community_id');
+            })
+            ->selectRaw('communities.*, MAX(chats.created_at) as created_order')
+            ->groupBy('communities.id')
+            ->orderBy('created_order', 'desc')
+            ->simplePaginate(5);
+        $communitiesParticipante = auth()->user()->communities()
+            ->leftJoin('chats', function ($join) {
+                $join->on('communities.id', '=', 'chats.community_id');
+            })
+            ->selectRaw('communities.*, MAX(chats.created_at) as created_order, MAX(chats.updated_at) as updated_order')
+            ->groupBy('communities.id', 'community_user.user_id', 'community_user.created_at', 'community_user.updated_at')
+            ->orderBy('created_order', 'desc')
+            ->simplePaginate(5);
         $ultimomensajefriends = [];
         foreach ($friends as $item) {
             if (Chat::where(function ($query) {

@@ -80,7 +80,7 @@
             </div>
             <div class="flex flex-wrap text-xl">
                 <a title="COMPARTIR PERFIL"
-                    href="https://api.whatsapp.com/send?text=http://127.0.0.1:8000/publications/{{ $usuario->id }}"
+                    href="https://api.whatsapp.com/send?text=http://ofiucofotospfc.es/perfil/{{ $usuario->id }}"
                     class="cursor-pointer mx-auto my-5">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
                         viewBox="0 0 48 48">
@@ -102,7 +102,7 @@
                     </svg>
                 </a>
                 <a title="COMPARTIR PERFIL"
-                    href="http://www.facebook.com/sharer.php?u=http://127.0.0.1:8000/publications/{{ $usuario->id }}&t=Mira el perfil de {{ $usuario->name }} en Ofiuco"
+                    href="http://www.facebook.com/sharer.php?u=http://ofiucofotospfc.es/perfil/{{ $usuario->id }}&t=Mira el perfil de {{ $usuario->name }} en Ofiuco"
                     target="_blank" class="cursor-pointer mx-auto my-5">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
                         viewBox="0 0 64 64">
@@ -133,7 +133,7 @@
                     </svg>
                 </a>
                 <a title="COMPARTIR PERFIL"
-                    href="https://twitter.com/intent/tweet?text=Mira el perfil de {{ $usuario->name }} de Ofiuco en:&url=http://127.0.0.1:8000/community/{{ $usuario->id }}"
+                    href="https://twitter.com/intent/tweet?text=Mira el perfil de {{ $usuario->name }} de Ofiuco en:&url=http://ofiucofotospfc.es/perfil/{{ $usuario->id }}"
                     target="_blank" class="cursor-pointer mx-auto my-5">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
                         viewBox="0 0 48 48">
@@ -143,7 +143,7 @@
                     </svg>
                 </a>
                 <a title="COMPARTIR PERFIL"
-                    href="https://www.reddit.com/submit?url=http://127.0.0.1:8000/community/{{ $usuario->id }}"
+                    href="https://www.reddit.com/submit?url=http://ofiucofotospfc.es/perfil/{{ $usuario->id }}"
                     target="_blank" class="cursor-pointer mx-auto my-5">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
                         viewBox="0 0 48 48">

@@ -10,6 +10,7 @@
         "laravel/framework": "^10.10",
         "laravel/jetstream": "^3.2",
         "laravel/sanctum": "^3.2",
+        "laravel/socialite": "^5.10",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^2.11",
         "mmo/faker-images": "^0.8.0",

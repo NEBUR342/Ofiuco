@@ -4,6 +4,9 @@ use App\Http\Livewire\{ShowCommunities, ShowCommunity, ShowFriends, ShowNotifica
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+
 Route::get('/', ShowPublicationswelcome::class)->name('inicio');
 Route::get('instrucciones', function(){
     return view("livewire.show-instrucciones");
@@ -44,6 +47,42 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
- 
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+Route::get('/login-google', function () {
+    return Socialite::driver('google')->redirect();
+});
+Route::get('/google-callback', function () {
+    try{
+        $user = Socialite::driver('google')->user();
+    }catch(\Exception $e){
+        return redirect()->route('inicio')->with('info', 'ERROR AL HACER LOGIN, INTENTELO DE NUEVO');
+    }
+    //Creamos una variable para comprobar si existe el usuario
+    $userExists = User::where('external_id', $user->id)
+        ->where('external_auth', 'google')
+        ->first();
+    
+    //Si el usuario ya existe le hacemos login, si no, lo creamos cogiendo los campos que da Google
+    if ($userExists) {
+        Auth::login($userExists);
+    } else {
+        $newUser = User::updateOrCreate(
+            [
+                'email' => $user->email,
+            ],
+            [
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatar' => $user->avatar,
+                'external_id' => $user->id,
+                'external_auth' => 'google',
+                'email_verified_at' => now(),
+            ],
+        );
+        //Al crearlo hacemos login
+        Auth::login($newUser);
+    }
+    return redirect()->route('inicio');
+});

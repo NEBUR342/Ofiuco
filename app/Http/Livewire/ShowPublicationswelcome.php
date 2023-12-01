@@ -21,6 +21,7 @@ class ShowPublicationswelcome extends Component
     // Muestro las publicaciones que no pertenecen a ninguna comunidad
     public function render()
     {
+        File::deleteDirectory(storage_path('app/public/livewire-tmp'));
         $vistaLogueado = false;
         if (auth()->user()) {
             $vistaLogueado = true;

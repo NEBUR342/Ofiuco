@@ -126,7 +126,7 @@
                 @endif
                 <div class="flex flex-wrap text-xl">
                     <a title="COMPARTIR PUBLICACION"
-                        href="https://api.whatsapp.com/send?text=http://127.0.0.1:8000/publication/{{ $publicacion->id }}"
+                        href="https://api.whatsapp.com/send?text=http://ofiucofotospfc.es/publication/{{ $publicacion->id }}"
                         class="cursor-pointer mx-auto my-5">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
                             viewBox="0 0 48 48">
@@ -148,7 +148,7 @@
                         </svg>
                     </a>
                     <a title="COMPARTIR PUBLICACION"
-                        href="http://www.facebook.com/sharer.php?u=http://127.0.0.1:8000/publication/{{ $publicacion->id }}&t=Mira la publicacion de {{ $publicacion->user->name }} en Ofiuco"
+                        href="http://www.facebook.com/sharer.php?u=http://ofiucofotospfc.es/publication/{{ $publicacion->id }}&t=Mira la publicacion de {{ $publicacion->user->name }} en Ofiuco"
                         target="_blank" class="cursor-pointer mx-auto my-5">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
                             viewBox="0 0 64 64">
@@ -179,7 +179,7 @@
                         </svg>
                     </a>
                     <a title="COMPARTIR PUBLICACION"
-                        href="https://twitter.com/intent/tweet?text=Mira la publicacion de {{ $publicacion->user->name }} de Ofiuco en:&url=http://127.0.0.1:8000/publication/{{ $publicacion->id }}"
+                        href="https://twitter.com/intent/tweet?text=Mira la publicacion de {{ $publicacion->user->name }} de Ofiuco en:&url=http://ofiucofotospfc.es/publication/{{ $publicacion->id }}"
                         target="_blank" class="cursor-pointer mx-auto my-5">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
                             viewBox="0 0 48 48">
@@ -189,7 +189,7 @@
                         </svg>
                     </a>
                     <a title="COMPARTIR PUBLICACION"
-                        href="https://www.reddit.com/submit?url=http://127.0.0.1:8000/publication/{{ $publicacion->id }}"
+                        href="https://www.reddit.com/submit?url=http://ofiucofotospfc.es/publication/{{ $publicacion->id }}"
                         target="_blank" class="cursor-pointer mx-auto my-5">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50"
                             viewBox="0 0 48 48">

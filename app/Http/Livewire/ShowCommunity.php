@@ -156,15 +156,13 @@ class ShowCommunity extends Component
     {
         // valido los campos de la ventana modal de editar la comunidad.
         $this->validate([
-            'miComunidad.nombre' => ['required', 'string', 'min:3', 'unique:communities,nombre,' . $this->comunidad->id, 'max:255']
+            'miComunidad.nombre' => ['required', 'string', 'min:3', 'unique:communities,nombre,' . $this->comunidad->id]
         ]);
-
         // Si has cambiado la imagen, borro la antigua y la sustituyo por la nueva.
         if ($this->imagen) {
             Storage::delete($this->comunidad->imagen);
             $this->comunidad->imagen = $this->imagen->store('imagenesComunidad');
         }
-
         // Cambio todos los campos de la comunidad
         $this->miComunidad->update([
             "nombre" => $this->miComunidad->nombre,
@@ -172,13 +170,10 @@ class ShowCommunity extends Component
             "imagen" => $this->comunidad->imagen,
             "privacidad" => $this->miComunidad->privacidad,
         ]);
-
         // Reseteo la variable.
         $this->miComunidad = new Community();
         $this->reset('openEditar');
         $this->emit('info', 'Comunidad editada con éxito');
-        // Para borrar la carpeta livewire-tmp que me genera livewire, pero no la borra, he usado la siguiente solucion
-        File::deleteDirectory(storage_path('livewire-tmp'));
     }
 
     public function comprobarPermisosComunidad(Community $comunidad)

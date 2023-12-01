@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class ShowPublication extends Component
-{
+class ShowPublication extends Component {
     use WithFileUploads;
 
     public Publication $publicacion, $miPublicacion;
@@ -79,7 +78,7 @@ class ShowPublication extends Component
         // obtengo al autor de la publicacion, las etiquetas y las comunidades a las que pertenece el autor, y las comunidades que ha creado.
         $autorPublicacion = $this->publicacion->user;
         $etiquetas = Tag::orderBy('nombre')->pluck('nombre', 'id')->toArray();
-        if ($this->publicacion->user_id == auth()->user()->id) {
+        if (auth()->user() && $this->publicacion->user_id == auth()->user()->id) {
             $comunidadesParticipado = $autorPublicacion->communities->pluck('nombre', 'id')->toArray();
             $comunidadesCreador = Community::where('user_id', $publicacion->user->id)->pluck('nombre', 'id')->toArray();
             $comunidades = $comunidadesParticipado + $comunidadesCreador;
@@ -182,27 +181,20 @@ class ShowPublication extends Component
 
     public function update()
     {
-        // Diferencio las validaciones en caso de que tenga comunidad o no.
-        if ($this->selectedComunidades) {
+       // Diferencio las validaciones en caso de que tenga comunidad o no.
+       if ($this->selectedComunidades) {
             $this->tipovalidacion = "publicacion con comunidad";
         } else {
             $this->tipovalidacion = "publicacion sin comunidad";
         }
-        if($this->publicacion->user_id != auth()->user()->id){
-            if($this->publicacion->community_id != $this->selectedComunidades){
-                $this->selectedComunidades=$this->publicacion->community_id;
-            }
-        }
         // Valido los campos de la ventana modal de la publicacion que quiero editar.
         $this->validate([
-            'miPublicacion.titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo,' . $this->publicacion->id, 'max:255']
+            'miPublicacion.titulo' => ['required', 'string', 'min:3', 'unique:publications,titulo,' . $this->publicacion->id]
         ]);
-
         // Agregar borrar likes, comentarios y guardados al cambiar la comunidad.
         // Compruebo si elijes una comunidad diferente a la que ya tenias.
         if ($this->selectedComunidades && $this->selectedComunidades != $this->publicacion->community_id) {
             $comunidadseleccionada = Community::where('id', $this->selectedComunidades)->first();
-
             // Primero borro los comentarios de los usuarios que no pertenecen a la nueva comunidad.
             $comentarios = $this->publicacion->comments;
             foreach ($comentarios as $comentario) {
@@ -211,7 +203,6 @@ class ShowPublication extends Component
                     $comentario->delete();
                 }
             }
-
             // A continuacion borro los likes de los usuarios que no pertenecen a la nueva comunidad.
             $likes = $this->publicacion->likes;
             foreach ($likes as $like) {
@@ -220,7 +211,6 @@ class ShowPublication extends Component
                     $like->delete();
                 }
             }
-
             // A continuacion borro los saves de los usuarios que no pertenecen a la nueva comunidad.
             $saves = $this->publicacion->saves;
             foreach ($saves as $save) {
@@ -259,16 +249,11 @@ class ShowPublication extends Component
         }
         // guardo los cambios de la tabla auxiliar con las etiquetas.
         $this->miPublicacion->tags()->sync($this->selectedTags);
-
         // Reseteo los campos de la variable auxiliar.
         $this->miPublicacion = new Publication();
-
-        // Para borrar la carpeta livewire-tmp que me genera livewire, pero no la borra, he usado la siguiente solucion
-        File::deleteDirectory(storage_path('app/public/livewire-tmp'));
         $this->reset('openEditar');
         $this->emit('info', 'Publicacion editada con éxito');
     }
-
     // Aqui cambio el estado del post de publicado a borrador y viceversa
     public function cambiarEstado()
     {

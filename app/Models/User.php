@@ -15,7 +15,7 @@ class User extends Authenticatable implements MustVerifyEmail {
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    protected $fillable = ['name','email','password','is_admin','temaoscuro','community_id','privado'];
+    protected $fillable = ['name','email','password','is_admin','temaoscuro','community_id','privado', 'avatar','external_id','external_auth'];
     protected $hidden = ['password','remember_token','two_factor_recovery_codes','two_factor_secret',];
     protected $appends = ['profile_photo_url',];
     public function comments(): HasMany {

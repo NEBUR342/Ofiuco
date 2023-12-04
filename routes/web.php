@@ -6,6 +6,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 Route::get('/', ShowPublicationswelcome::class)->name('inicio');
 Route::get('instrucciones', function(){
@@ -57,32 +59,36 @@ Route::get('/google-callback', function () {
     try{
         $user = Socialite::driver('google')->user();
     }catch(\Exception $e){
-        return redirect()->route('inicio')->with('info', 'ERROR AL HACER LOGIN, INTENTELO DE NUEVO');
+        return redirect('/dashboard')->with('error', 'Fallo con conexión a Google');
     }
-    //Creamos una variable para comprobar si existe el usuario
     $userExists = User::where('external_id', $user->id)
         ->where('external_auth', 'google')
         ->first();
-    
-    //Si el usuario ya existe le hacemos login, si no, lo creamos cogiendo los campos que da Google
     if ($userExists) {
         Auth::login($userExists);
     } else {
-        $newUser = User::updateOrCreate(
-            [
-                'email' => $user->email,
-            ],
-            [
-                'name' => $user->name,
-                'email' => $user->email,
+        if(User::where('email',$user->email)->count()){
+            $newUser = User::update([
                 'avatar' => $user->avatar,
                 'external_id' => $user->id,
                 'external_auth' => 'google',
                 'email_verified_at' => now(),
-            ],
-        );
-        //Al crearlo hacemos login
-        Auth::login($newUser);
+            ]);
+            Auth::login($newUser);
+        } else {
+            $pass = Str::random(16);
+            $newUser = User::create([
+                'name' => $user->name,
+                'email' => $user->email,
+                'password' => Hash::make($pass),
+                'avatar' => $user->avatar,
+                'external_id' => $user->id,
+                'external_auth' => 'google',
+                'email_verified_at' => now(),
+            ]);
+            Auth::login($newUser);
+            return redirect()->route('inicio')->with('login',$pass);
+        }
     }
     return redirect()->route('inicio');
 });

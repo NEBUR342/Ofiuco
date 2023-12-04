@@ -26,8 +26,7 @@ class ShowPublication extends Component {
     public $imagen;
     protected $listeners = ["render"];
 
-    protected function rules(): array
-    {
+    protected function rules(): array {
         // Valido los campos diferenciando tres opciones:
         // El contenido de los comentarios.
         // Las publicaciones que pertenecen a una comunidad.
@@ -61,13 +60,11 @@ class ShowPublication extends Component {
         return [];
     }
 
-    public function mount($id)
-    {
+    public function mount($id) {
         $this->publicacion = Publication::findOrFail($id);
     }
 
-    public function render()
-    {
+    public function render() {
         // Obtengo la publicacion.
         $publicacion = Publication::where('id', $this->publicacion->id)->first();
         $this->publicacion = $publicacion;
@@ -93,8 +90,7 @@ class ShowPublication extends Component {
         return view('livewire.show-publication', compact('publicacion', 'comunidades', 'etiquetas', 'aux'));
     }
 
-    public function borrarPublicacion()
-    {
+    public function borrarPublicacion() {
         // Compruebo que eres administrador o si es tuya.
         self::comprobarPermisosPublicacion($this->publicacion);
 
@@ -106,38 +102,33 @@ class ShowPublication extends Component {
         return redirect()->route('dashboard');
     }
 
-    public function darlike()
-    {
+    public function darlike() {
         $like = new Like();
         $like->user_id = auth()->user()->id;
         $this->publicacion->likes()->save($like);
     }
 
-    public function quitarlike()
-    {
+    public function quitarlike() {
         $like = Like::where('publication_id', $this->publicacion->id)
             ->where('user_id', auth()->user()->id)
             ->first();
         $like->delete();
     }
 
-    public function darsave()
-    {
+    public function darsave() {
         $save = new Save();
         $save->user_id = auth()->user()->id;
         $this->publicacion->saves()->save($save);
     }
 
-    public function quitarsave()
-    {
+    public function quitarsave() {
         $save = Save::where('publication_id', $this->publicacion->id)
             ->where('user_id', auth()->user()->id)
             ->first();
         $save->delete();
     }
 
-    public function subirComentario()
-    {
+    public function subirComentario() {
         // Valido el comentario
         $this->tipovalidacion = "comentario";
         $this->validate();
@@ -153,8 +144,7 @@ class ShowPublication extends Component {
         $this->contenido = "";
     }
 
-    public function quitarComentario(Comment $comentario)
-    {
+    public function quitarComentario(Comment $comentario) {
         // Compruebo si eres administrador, dueño de la publicacion o dueño del comentario.
         self::comprobarPermisosPublicacion2($comentario);
 
@@ -163,24 +153,22 @@ class ShowPublication extends Component {
         $this->emit('info', "Comentario eliminado");
     }
 
-    public function editar(Publication $publicacion)
-    {
+    public function editar() {
         // Compruebo que eres administrador, si perteneces a la comunidad o si es tuya.
-        self::comprobarPermisosPublicacion($publicacion);
+        self::comprobarPermisosPublicacion();
 
         // Le doy los valores de la publicacion a una variable auxiliar.
-        $this->miPublicacion = $publicacion;
+        $this->miPublicacion = $this->publicacion;
 
         // Si pertenece a una comunidad he usado una variable auxiliar para guardar la comunidad a la que pertenece la publicacion.
-        if ($publicacion->comunidad == "SI") $this->selectedComunidades = $this->miPublicacion->community->id;
+        if ($this->publicacion->comunidad == "SI") $this->selectedComunidades = $this->miPublicacion->community->id;
 
         // Guardo las etiquetas de la publicacion en un array.
         $this->selectedTags = $this->miPublicacion->tags->pluck('id')->toArray();
         $this->openEditar = true;
     }
 
-    public function update()
-    {
+    public function update() {
        // Diferencio las validaciones en caso de que tenga comunidad o no.
        if ($this->selectedComunidades) {
             $this->tipovalidacion = "publicacion con comunidad";
@@ -254,9 +242,9 @@ class ShowPublication extends Component {
         $this->reset('openEditar');
         $this->emit('info', 'Publicacion editada con éxito');
     }
+
     // Aqui cambio el estado del post de publicado a borrador y viceversa
-    public function cambiarEstado()
-    {
+    public function cambiarEstado() {
         if ($this->publicacion->estado == "BORRADOR") {
             $this->publicacion->update([
                 "estado" => "PUBLICADO"
@@ -268,9 +256,14 @@ class ShowPublication extends Component {
         }
     }
 
-    public function buscarUsuario($id)
-    {
+    public function buscarUsuario() {
+        $id=$this->publicacion->user->id;
         return redirect()->route('perfiluser.show', compact('id'));
+    }
+
+    public function buscarComunidad() {
+        $id=$this->publicacion->community->id;
+        return redirect()->route('community.show', compact('id'));
     }
 
     // Si no debo mostrar la publicacion, voy a forzar el error 404 (pagina no encontrada).
@@ -307,18 +300,15 @@ class ShowPublication extends Component {
     }
 
     // Compruebo que eres administrador, dueño de la comunidad a la que pertenece la publicación o si es tuya.
-    public function comprobarPermisosPublicacion(Publication $publicacion)
-    {
+    public function comprobarPermisosPublicacion() {
         if (auth()->user()->is_admin) return;
-        if ($publicacion->user_id == auth()->user()->id) return;
-        if ($publicacion->comunidad == 'SI' && $publicacion->community->user_id == auth()->user()->id) return;
+        if ($this->publicacion->user_id == auth()->user()->id) return;
+        if ($this->publicacion->comunidad == 'SI' && $this->publicacion->community->user_id == auth()->user()->id) return;
         abort(404);
     }
 
-
     // Compruebo si eres administrador, dueño de la publicacion o dueño del comentario.
-    public function comprobarPermisosPublicacion2(Comment $comentario)
-    {
+    public function comprobarPermisosPublicacion2(Comment $comentario) {
         if (auth()->user()->is_admin) return;
         if ($comentario->user_id == auth()->user()->id) return;
         if ($this->publicacion->user_id == auth()->user()->id) return;

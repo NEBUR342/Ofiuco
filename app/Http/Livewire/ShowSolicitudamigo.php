@@ -78,17 +78,6 @@ class ShowSolicitudamigo extends Component
         return redirect()->route('perfiluser.show', compact('id'));
     }
 
-    public function buscarLikesUsuario($id)
-    {
-        return redirect()->route('publicationslikes.show', compact('id'));
-    }
-    public function buscarSavesUsuario($id)
-    {
-        // Compruebo que el usuario autenticado sea un administrador.
-        if (!auth()->user()->is_admin) abort(404);
-        return redirect()->route('publicationssaves.show', compact('id'));
-    }
-
     public function aceptarsolicitud($id)
     {
         // me aseguro de que no modifiquen desde la consola para repetir amigos

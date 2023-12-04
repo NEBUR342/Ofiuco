@@ -50,7 +50,7 @@
                         </div>
                     @endif
                     @if (auth()->user()->id == $comunidad->user_id || auth()->user()->is_admin)
-                        <div title="EDITAR COMUNIDAD" wire:click="editar({{ $comunidad->id }})"
+                        <div title="EDITAR COMUNIDAD" wire:click="editar()"
                             class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-yellow-500 text-yellow-700 font-semibold hover:text-white py-2 px-4 rounded">
                             <i class="fa-regular fa-pen-to-square"></i>
                         </div>

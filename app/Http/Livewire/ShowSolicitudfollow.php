@@ -6,16 +6,16 @@ use App\Models\Follow;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ShowSolicitudfollow extends Component
-{
+class ShowSolicitudfollow extends Component {
     use WithPagination;
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
     public function updatingBuscar() {
         $this->resetPage();
     }
+    
     public function render() {
-        $follows = Follow::where('aceptado', 'SI')
-            ->where('seguidor_id', auth()->user()->id)
+        $follows = Follow::where('aceptado', 'NO')
+            ->where('seguido_id', auth()->user()->id)
             ->get();
         foreach ($follows as $follow) {
             if ($follow->user_id == auth()->user()->id) {
@@ -48,13 +48,13 @@ class ShowSolicitudfollow extends Component
                 break;
             default:
                 $solicitudes = Follow::where('aceptado', 'NO')
-                    ->where('user_id', auth()->user()->id)
-                    ->whereHas('user', function ($query) {
-                        $query->where('name', 'LIKE', '%' . $this->buscar . '%')
-                            ->orWhere('email', 'LIKE', '%' . $this->buscar . '%');
-                    })
-                    ->orderBy("id", $this->orden)
-                    ->paginate(15);
+                ->where('seguido_id', auth()->user()->id)
+                ->whereHas('user', function ($query) {
+                    $query->where('name', 'LIKE', '%' . $this->buscar . '%')
+                        ->orWhere('email', 'LIKE', '%' . $this->buscar . '%');
+                })
+                ->orderBy("id", $this->orden)
+                ->paginate(15);
                 break;
         }
         return view('livewire.show-solicitudfollow', compact('solicitudes'));
@@ -69,19 +69,9 @@ class ShowSolicitudfollow extends Component
         return redirect()->route('perfiluser.show', compact('id'));
     }
 
-    public function buscarLikesUsuario($id)
-    {
-        return redirect()->route('publicationslikes.show', compact('id'));
-    }
-    public function buscarSavesUsuario($id) {
-        // Compruebo que el usuario autenticado sea un administrador.
-        if (!auth()->user()->is_admin) abort(404);
-        return redirect()->route('publicationssaves.show', compact('id'));
-    }
-
     public function aceptarsolicitud($id) {
         $follow = Follow::where("id", $id)->first();
-        if($follow->seguido_id == auth()->user()->id){
+        if($follow->seguido_id == auth()->user()->id) {
             $follow->update([
                 "aceptado" => "SI"
             ]);

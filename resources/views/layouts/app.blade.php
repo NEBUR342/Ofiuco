@@ -109,6 +109,26 @@
                 timer: 1500
             })
         @endif
+        //Alerta de Login
+        @if (session('login'))
+            Swal.fire({
+                icon: 'info',
+                title: "Su contraseña creada es: <br><i class='fa-solid fa-clipboard cursor-pointer mr-1' id='clipboard' onclick=\"copy(this, '{{session('login')}}')\"></i>{{ session('login') }}",
+                text: 'Este mensaje solo se mostrará una vez, cópialo en algún sitio',
+                showConfirmButton: true,
+            })
+        @endif
+    </script>
+    <script>
+        function copy(element, pass) {
+            const textarea = document.createElement('textarea');
+            textarea.value = pass;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            console.log('Contenido copiado al portapapeles');
+        }
     </script>
 </body>
 

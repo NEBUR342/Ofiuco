@@ -29,7 +29,7 @@
                                     'bg-red-500' => auth()->user()->temaoscuro,
                                     'bg-red-200' => !auth()->user()->temaoscuro,
                                 ]) title="Quitar like"
-                                    wire:click="quitarlike({{ $publicacion }})">
+                                    wire:click="quitarlike()">
                                     <span class="mx-1">
                                         {{ $publicacion->likes->count() }}
                                     </span>
@@ -40,7 +40,7 @@
                                     'bg-red-500' => auth()->user()->temaoscuro,
                                     'bg-red-200' => !auth()->user()->temaoscuro,
                                 ]) title="Dar like"
-                                    wire:click="darlike({{ $publicacion }})">
+                                    wire:click="darlike()">
                                     <span class="mx-1">
                                         {{ $publicacion->likes->count() }}
                                     </span>
@@ -53,7 +53,7 @@
                                     'bg-yellow-500' => auth()->user()->temaoscuro,
                                     'bg-yellow-200' => !auth()->user()->temaoscuro,
                                 ]) title="Quitar like"
-                                    wire:click="quitarsave({{ $publicacion }})">
+                                    wire:click="quitarsave()">
                                     <span class="mx-1">
                                         {{ $publicacion->saves->count() }}
                                     </span>
@@ -64,7 +64,7 @@
                                     'bg-yellow-500' => auth()->user()->temaoscuro,
                                     'bg-yellow-200' => !auth()->user()->temaoscuro,
                                 ]) title="Dar like"
-                                    wire:click="darsave({{ $publicacion }})">
+                                    wire:click="darsave()">
                                     <span class="mx-1">
                                         {{ $publicacion->saves->count() }}
                                     </span>
@@ -103,17 +103,25 @@
                             'bg-gray-500 py-1 px-2' => auth()->check() && auth()->user()->temaoscuro,
                             'bg-gray-400 py-1 px-2' => auth()->guest() || !auth()->user()->temaoscuro,
                         ])
-                            wire:click="buscarUsuario({{ $publicacion->user->id }})">{{ $publicacion->user->name }}
+                            wire:click="buscarUsuario()">{{ $publicacion->user->name }}
                         </span>
                     </div>
                     @if ($publicacion->comunidad == 'SI')
-                        <div class="mb-5 mx-5">Comunidad: {{ $publicacion->community->nombre }}</div>
+                        <div class="my-5 mx-5">Autor:
+                            <span @class([
+                                'rounded-xl cursor-pointer',
+                                'bg-gray-500 py-1 px-2' => auth()->check() && auth()->user()->temaoscuro,
+                                'bg-gray-400 py-1 px-2' => auth()->guest() || !auth()->user()->temaoscuro,
+                            ])
+                                wire:click="buscarComunidad()">{{ $publicacion->community->nombre }}
+                            </span>
+                        </div>
                     @endif
                 </div>
                 @if (auth()->user() && auth()->user()->email_verified_at)
                     @if (auth()->user()->id == $publicacion->user_id || auth()->user()->is_admin || $aux)
                         <div class="flex flex-wrap text-xl">
-                            <div title="EDITAR PUBLICACION" wire:click="editar({{ $publicacion->id }})"
+                            <div title="EDITAR PUBLICACION" wire:click="editar()"
                                 class="cursor-pointer mx-auto my-5 bg-transparent hover:bg-yellow-500 text-yellow-700 font-semibold hover:text-white py-2 px-4 rounded">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </div>

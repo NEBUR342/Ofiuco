@@ -43,16 +43,6 @@
                     </span>
                 </div>
                 <div class="flex flex-row-reverse my-4 mr-2">
-                    @if (auth()->user()->is_admin || $usuario->id == auth()->user()->id)
-                        <span class="mx-2">
-                            <i class="fa-regular fa-bookmark cursor-pointer text-yellow-500"
-                                wire:click="buscarSavesUsuario({{ $usuario->id }})"></i>
-                        </span>
-                    @endif
-                    <span class="mx-2">
-                        <i class="fa-regular fa-heart cursor-pointer text-red-500"
-                            wire:click="buscarLikesUsuario({{ $usuario->id }})"></i>
-                    </span>
                     @if (auth()->user()->id != $usuario->id &&
                             !($amigos->contains('frienduno_id', $usuario->id) || $amigos->contains('frienddos_id', $usuario->id)))
                         <span class="mx-2">

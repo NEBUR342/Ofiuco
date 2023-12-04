@@ -144,11 +144,11 @@ class ShowCommunity extends Component
         }
     }
 
-    public function editar(Community $comunidad)
+    public function editar()
     {
         // Compruebo que puedas editar la comunidad pasada.
-        self::comprobarPermisosComunidad($comunidad);
-        $this->miComunidad = $comunidad;
+        self::comprobarPermisosComunidad($this->comunidad);
+        $this->miComunidad = $this->comunidad;
         $this->openEditar = true;
     }
 

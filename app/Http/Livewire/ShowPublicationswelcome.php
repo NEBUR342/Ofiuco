@@ -1,27 +1,21 @@
 <?php
-
 namespace App\Http\Livewire;
 
 use App\Models\Publication;
-use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\{Component, WithPagination};
 use Illuminate\Support\Facades\File;
 
-class ShowPublicationswelcome extends Component
-{
+class ShowPublicationswelcome extends Component {
     use WithPagination;
 
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
     public bool $otravista = false;
 
-    public function updatingBuscar()
-    {
+    public function updatingBuscar() {
         $this->resetPage();
     }
     // Muestro las publicaciones que no pertenecen a ninguna comunidad
-    public function render()
-    {
-        File::deleteDirectory(storage_path('app/public/livewire-tmp'));
+    public function render() {
         $vistaLogueado = false;
         if (auth()->user()) {
             $vistaLogueado = true;
@@ -229,19 +223,16 @@ class ShowPublicationswelcome extends Component
         return view('livewire.show-publications', compact('publicaciones', 'comunidades', 'otravista'));
     }
 
-    public function ordenar(string $campo)
-    {
+    public function ordenar(string $campo) {
         $this->orden = ($this->orden == 'asc') ? 'desc' : 'asc';
         $this->campo = $campo;
     }
 
-    public function verPublicacion($id)
-    {
+    public function verPublicacion($id) {
         return redirect()->route('publication.show', compact('id'));
     }
     
-    public function cambiarvista()
-    {
+    public function cambiarvista() {
         if ($this->otravista) $this->otravista = false;
         else $this->otravista = true;
     }

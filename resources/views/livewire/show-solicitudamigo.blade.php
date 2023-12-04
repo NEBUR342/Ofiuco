@@ -50,7 +50,7 @@
                     </span>
                     <span class="mx-2">
                         <i class="fa-solid fa-user-plus cursor-pointer text-blue-500"
-                            wire:click="aceptarsolicitud({{ $solicitud->id }})"></i>
+                            wire:click="aceptarsolicitud({{ $solicitud->user->id }})"></i>
                     </span>
                 </div>
             </div>

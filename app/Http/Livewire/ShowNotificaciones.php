@@ -1,25 +1,17 @@
 <?php
-
 namespace App\Http\Livewire;
 
-use App\Models\Comment;
-use App\Models\Like;
-use App\Models\Publication;
-use App\Models\Save;
+use App\Models\{Comment, Like, Publication, Save};
 use Livewire\Component;
 
-class ShowNotificaciones extends Component
-{
+class ShowNotificaciones extends Component {
     public $tiponotificacion;
-    public function mount($id)
-    {
+
+    public function mount($id) {
         $this->tiponotificacion = $id;
     }
-    public function render()
-    {
-        
+    public function render() {
         $publicacionesIds = Publication::where('user_id',auth()->user()->id)->pluck('id'); 
-       
         switch ($this->tiponotificacion) {
             case 1: // Likes
                 $mensaje = "Le ha dado like a la publicacion: ";
@@ -44,12 +36,10 @@ class ShowNotificaciones extends Component
         }
         return view('livewire.show-notificaciones', compact("notificaciones", "mensaje"));
     }
-    public function buscarUsuario($id)
-    {
+    public function buscarUsuario($id) {
         return redirect()->route('perfiluser.show', compact('id'));
     }
-    public function verPublicacion($id)
-    {
+    public function verPublicacion($id) {
         return redirect()->route('publication.show', compact('id'));
     }
 }

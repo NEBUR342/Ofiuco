@@ -43,18 +43,7 @@
                         {{ $solicitud->user->email }}
                     </span>
                 </div>
-
                 <div class="flex flex-row-reverse my-4 mr-2">
-                    @if (auth()->user()->is_admin)
-                        <span class="mx-2">
-                            <i class="fa-regular fa-bookmark cursor-pointer text-yellow-500"
-                                wire:click="buscarSavesUsuario({{ $solicitud->user->id }})"></i>
-                        </span>
-                    @endif
-                    <span class="mx-2">
-                        <i class="fa-regular fa-heart cursor-pointer text-red-500"
-                            wire:click="buscarLikesUsuario({{ $solicitud->user->id }})"></i>
-                    </span>
                     <span class="mx-2">
                         <i class="fa-solid fa-user-minus cursor-pointer text-red-500"
                             wire:click="borrarsolicitudamigo({{ $solicitud->user->id }})"></i>

@@ -2,33 +2,25 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Publication;
-use App\Models\Save;
-use App\Models\User;
-use Livewire\Component;
-use Livewire\WithPagination;
+use App\Models\{Publication, Save, User};
+use Livewire\{Component, WithPagination};
 
-class ShowPublicationssaves extends Component
-{
+class ShowPublicationssaves extends Component {
     use WithPagination;
 
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
     public User $usuario;
 
-    public function updatingBuscar()
-    {
+    public function updatingBuscar() {
         $this->resetPage();
     }
 
-    public function mount($id)
-    {
+    public function mount($id) {
         $this->usuario = User::findOrFail($id);
     }
 
-    public function render()
-    {
+    public function render() {
         $user = User::where('id', $this->usuario->id)->first();
-        if (!auth()->user()->is_admin && $user->id != auth()->user()->id) abort(404);
         // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
         // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
         if (auth()->user()->is_admin) {
@@ -79,7 +71,13 @@ class ShowPublicationssaves extends Component
                     $publicaciones = Publication::query()
                         ->whereIn('id', Save::where('user_id', $user->id)->pluck('publication_id'))
                         ->where(function ($q) {
-                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%');
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                                ->orWhereHas('user', function ($q) {
+                                    $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                                })
+                                ->orWhereHas('community', function ($q) {
+                                    $q->where('nombre', 'like', '%' . trim($this->buscar) . '%');
+                                });
                         })
                         ->orderBy('community_id', $this->orden)
                         ->paginate(15);
@@ -239,14 +237,12 @@ class ShowPublicationssaves extends Component
         return view('livewire.show-publications', compact('publicaciones', 'comunidades'));
     }
 
-    public function ordenar(string $campo)
-    {
+    public function ordenar(string $campo) {
         $this->orden = ($this->orden == 'asc') ? 'desc' : 'asc';
         $this->campo = $campo;
     }
 
-    public function verPublicacion($id)
-    {
+    public function verPublicacion($id) {
         return redirect()->route('publication.show', compact('id'));
     }
 }

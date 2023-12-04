@@ -1,16 +1,10 @@
 <?php
 namespace App\Http\Livewire;
-use App\Models\Community;
-use App\Models\Follow;
-use App\Models\Friend;
-use App\Models\Publication;
-use App\Models\Tag;
-use App\Models\User;
-use Livewire\Component;
-use Livewire\WithPagination;
 
-class ShowPerfiluser extends Component
-{
+use App\Models\{Community, Follow, Friend, Publication, Tag, User};
+use Livewire\{Component, WithPagination};
+
+class ShowPerfiluser extends Component {
     use WithPagination;
 
     public string $campo = 'id', $orden = 'desc', $buscar = "";
@@ -267,30 +261,25 @@ class ShowPerfiluser extends Component
         return view('livewire.show-perfiluser', compact('publicaciones', 'tags', 'usuario', 'comunidadesParticipado', 'comunidadesCreador', 'follow', 'cantidadFollow'));
     }
 
-    public function ordenar(string $campo)
-    {
+    public function ordenar(string $campo) {
         $this->orden = ($this->orden == 'asc') ? 'desc' : 'asc';
         $this->campo = $campo;
     }
 
-    public function verPublicacion($id)
-    {
+    public function verPublicacion($id) {
         return redirect()->route('publication.show', compact('id'));
     }
 
-    public function verComunidad($id)
-    {
+    public function verComunidad($id) {
         return redirect()->route('community.show', compact('id'));
     }
 
-    public function buscarLikesUsuario()
-    {
+    public function buscarLikesUsuario() {
         $id = $this->usuario->id;
         return redirect()->route('publicationslikes.show', compact('id'));
     }
 
-    public function solicitudamigo()
-    {
+    public function solicitudamigo() {
         $id = $this->usuario->id;
         // me aseguro de que no modifiquen desde la consola para repetir amigos
         $amigos = Friend::where("frienduno_id", auth()->user()->id)
@@ -317,8 +306,7 @@ class ShowPerfiluser extends Component
         $this->emit('info', "Solicitud de amistad enviada");
     }
 
-    public function borraramigo()
-    {
+    public function borraramigo() {
         $id = $this->usuario->id;
         // me aseguro de que no modifiquen desde la consola para repetir amigos
         $amigo = Friend::where(function ($query) use ($id) {
@@ -339,8 +327,7 @@ class ShowPerfiluser extends Component
         }
     }
 
-    public function follow()
-    {
+    public function follow() {
         if ($this->usuario->privado) {
             Follow::create([
                 'user_id' => $this->usuario->id,
@@ -357,24 +344,20 @@ class ShowPerfiluser extends Component
             ]);
         }
     }
-    public function followdestroy()
-    {
+    public function followdestroy() {
         $follow = Follow::where('seguido_id', $this->usuario->id)->where('seguidor_id', auth()->user()->id)->first();
         $follow->delete();
     }
 
-    public function verseguidores()
-    {
+    public function verseguidores() {
         return redirect()->route('users.show', ['tipo' => 2, 'id' => $this->usuario->id]);
     }
 
-    public function verseguidos()
-    {
+    public function verseguidos() {
         return redirect()->route('users.show', ['tipo' => 3, 'id' => $this->usuario->id]);
     }
 
-    public function cambiarPrivacidad()
-    {
+    public function cambiarPrivacidad() {
         if (auth()->user()->privado) {
             auth()->user()->update([
                 'privado' => 0

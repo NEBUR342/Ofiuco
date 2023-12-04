@@ -1,13 +1,10 @@
 <?php
-
 namespace App\Http\Livewire;
 
 use App\Models\Tag;
-use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\{Component, WithPagination};
 
-class ShowTags extends Component
-{
+class ShowTags extends Component {
     use WithPagination;
 
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
@@ -15,13 +12,11 @@ class ShowTags extends Component
     public bool $openEditar = false;
     protected $listeners = ["render"];
 
-    public function updatingBuscar()
-    {
+    public function updatingBuscar() {
         $this->resetPage();
     }
 
-    protected function rules(): array
-    {
+    protected function rules(): array {
         // Compruebo los campos de la ventana modal para editar las etiquetas
         return [
             'miTag.nombre' => ['required', 'string', 'min:3', 'unique:tags,nombre,' . $this->miTag->id, 'max:255'],
@@ -30,8 +25,7 @@ class ShowTags extends Component
         ];
     }
 
-    public function render()
-    {
+    public function render() {
         // Compruebo que el usuario autenticado sea un administrador.
         if (!auth()->user()->is_admin) abort(404);
         // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
@@ -68,27 +62,23 @@ class ShowTags extends Component
         return view('livewire.show-tags', compact('tags'));
     }
 
-    public function ordenar(string $campo)
-    {
+    public function ordenar(string $campo) {
         $this->orden = ($this->orden == 'asc') ? 'desc' : 'asc';
         $this->campo = ($campo != "nombre" && $campo != "id") ? "id" : $campo;
     }
 
-    public function borrarEtiqueta($tag)
-    {
+    public function borrarEtiqueta($tag) {
         $etiqueta = Tag::where('id', $tag)->first();
         $etiqueta->delete();
         $this->emit('info', "La etiqueta se ha borrado");
     }
 
-    public function editar(Tag $miTag)
-    {
+    public function editar(Tag $miTag) {
         $this->miTag = $miTag;
         $this->openEditar = true;
     }
 
-    public function update()
-    {
+    public function update() {
         // Valido los campos de la ventana modal.
         $this->validate();
         // Modifico los valores de la base da datos.

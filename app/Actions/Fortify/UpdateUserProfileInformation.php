@@ -27,7 +27,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         if (isset($input['photo'])) {
             $user->deleteProfilePhoto();
             $user->updateProfilePhoto($input['photo']);
-            File::deleteDirectory(storage_path('app/public/livewire-tmp'));
         }
 
         if ($input['email'] !== $user->email &&

@@ -11,7 +11,11 @@
         </div>
     </div>
 
-    <div class="flex flex-row justify-end px-6 py-4 bg-gray-100 text-right">
+    <div @class([
+            "flex flex-row justify-end px-6 py-4 text-right",
+            "bg-gray-700"=>auth()->check() && auth()->user()->temaoscuro,
+            "bg-gray-100"=>auth()->guest() || !auth()->user()->temaoscuro
+        ])>
         {{ $footer }}
     </div>
 </x-modal>

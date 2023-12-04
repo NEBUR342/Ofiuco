@@ -1,26 +1,19 @@
 <?php
-
 namespace App\Http\Livewire;
 
-use App\Models\Community;
-use App\Models\Request;
-use App\Models\User;
-use Livewire\Component;
-use Livewire\WithPagination;
+use App\Models\{Community, Request, User};
+use Livewire\{Component, WithPagination};
 
-class ShowSolicitudparticipante extends Component
-{
+class ShowSolicitudparticipante extends Component {
     use WithPagination;
 
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
 
-    public function updatingBuscar()
-    {
+    public function updatingBuscar() {
         $this->resetPage();
     }
 
-    public function render()
-    {
+    public function render() {
         switch ($this->campo) {
             case "creacion":
                 $solicitudes = Request::whereIn('community_id', Community::where('user_id', auth()->user()->id)
@@ -51,38 +44,34 @@ class ShowSolicitudparticipante extends Component
         }
         return view('livewire.show-solicitudparticipante', compact('solicitudes'));
     }
-    public function ordenar(string $campo)
-    {
+
+    public function ordenar(string $campo) {
         $this->orden = ($this->orden == 'asc') ? 'desc' : 'asc';
         $this->campo = $campo;
     }
-    public function verComunidad($id)
-    {
+
+    public function verComunidad($id) {
         return redirect()->route('community.show', compact('id'));
     }
 
-    public function buscarUsuario($id)
-    {
+    public function buscarUsuario($id) {
         return redirect()->route('perfiluser.show', compact('id'));
     }
 
-    public function aceptarUsuario(Request $solicitud)
-    {
+    public function aceptarUsuario(Request $solicitud) {
         self::comprobarUsuarios($solicitud->user, $solicitud->community);
         $solicitud->user->communities()->attach($solicitud->community);
         $solicitud->delete();
         $this->emit('info', "Participante " . $solicitud->user->name . " ha entrado");
     }
 
-    public function rechazarUsuario(Request $solicitud)
-    {
+    public function rechazarUsuario(Request $solicitud) {
         self::comprobarUsuarios($solicitud->user, $solicitud->community);
         $solicitud->delete();
         $this->emit('info', "Participante " . $solicitud->user->name . " no ha entrado");
     }
 
-    private function comprobarUsuarios(User $user, Community $community)
-    {
+    private function comprobarUsuarios(User $user, Community $community) {
         $solicitudes = Request::whereIn('community_id', Community::where('user_id', auth()->user()->id)->pluck('id'))->get();
         foreach ($solicitudes as $solicitud) {
             if ($solicitud->user_id == $user->id && $solicitud->community_id == $community->id) {

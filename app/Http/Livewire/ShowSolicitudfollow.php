@@ -1,14 +1,14 @@
 <?php
-
 namespace App\Http\Livewire;
 
 use App\Models\Follow;
-use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\{Component, WithPagination};
 
 class ShowSolicitudfollow extends Component {
     use WithPagination;
+
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
+
     public function updatingBuscar() {
         $this->resetPage();
     }
@@ -70,8 +70,10 @@ class ShowSolicitudfollow extends Component {
     }
 
     public function aceptarsolicitud($id) {
-        $follow = Follow::where("id", $id)->first();
-        if($follow->seguido_id == auth()->user()->id) {
+        $follow = Follow::where('aceptado','NO')
+            ->where('seguidor_id', $id)
+            ->first();
+        if($follow) {
             $follow->update([
                 "aceptado" => "SI"
             ]);
@@ -80,12 +82,12 @@ class ShowSolicitudfollow extends Component {
     }
 
     public function borrarsolicitud($id) {
-        $follows = Follow::where('id', $id)
-            ->where('seguido_id', auth()->user()->id)
+        $follow = Follow::where('aceptado','NO')
+            ->where('seguidor_id', $id)
             ->first();
-        if ($follows) {
-            $follows->delete();
-            $this->emit('info', "Solicitud de seguimiento borrada");
+        if($follow) {
+            $follow->delete();
+            $this->emit('info', "Solicitud de seguimiento aceptada");
         }
     }
 }

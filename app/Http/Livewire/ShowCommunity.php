@@ -1,34 +1,22 @@
 <?php
-
 namespace App\Http\Livewire;
 
-use App\Models\Comment;
-use App\Models\Community;
-use App\Models\Like;
-use App\Models\Publication;
-use App\Models\Request;
-use App\Models\Save;
-use App\Models\User;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use Livewire\Component;
-use Livewire\WithFileUploads;
+use App\Models\{Comment, Community, Like, Publication, Request, Save, User};
+use Illuminate\Support\Facades\{File, Storage};
+use Livewire\{Component, WithFileUploads};
 
-class ShowCommunity extends Component
-{
+class ShowCommunity extends Component {
     use WithFileUploads;
 
     public Community $comunidad, $miComunidad;
     public bool $openEditar = false;
     public $imagen;
 
-    public function mount($id)
-    {
+    public function mount($id) {
         $this->comunidad = Community::findOrFail($id);
     }
 
-    protected function rules(): array
-    {
+    protected function rules(): array {
         // Valido los campos de la ventana modal para editar la comunidad.
         return [
             'miComunidad.nombre' => "",
@@ -38,8 +26,7 @@ class ShowCommunity extends Component
         ];
     }
 
-    public function render()
-    {
+    public function render() {
         // Obtengo la comunidad que quiero visualizar.
         $comunidad = Community::where('id', $this->comunidad->id)->first();
         $this->comunidad = $comunidad;
@@ -60,10 +47,9 @@ class ShowCommunity extends Component
         return view('livewire.show-community', compact('comunidad', 'creador', 'aux'));
     }
 
-    public function borrarComunidad()
-    {
+    public function borrarComunidad() {
         // Compruebo que tengas permiso para borrar la comunidad.
-        self::comprobarPermisosComunidad($this->comunidad);
+        self::comprobarPermisosComunidad();
 
         // Obtengo los usuarios para borrarlos.
         $usuarios = $this->comunidad->users;
@@ -78,9 +64,25 @@ class ShowCommunity extends Component
         $this->comunidad->delete();
         return redirect()->route('communities.show');
     }
+    
+    public function meterParticipante() {
+        // Obtengo al usuario autenticado.
+        $user = auth()->user();
+        if ($this->comunidad->privacidad == "PRIVADO") {
+            Request::create([
+                'user_id' => auth()->user()->id,
+                'community_id' => $this->comunidad->id,
+            ]);
+            $this->emit('info', "Solicitud para participar en la comunidad enviada");
+        } else {
+            // Añado el usuario a la comunidad.
+            // Da error en codigo, pero lo hace bien, no saltan excepciones.
+            $user->communities()->attach($this->comunidad);
+            $this->emit('info', "Participante " . $user->name . " ha entrado");
+        }
+    }
 
-    public function sacarParticipante(User $participante)
-    {
+    public function sacarParticipante(User $participante) {
         // Compruebo que el usuario que sale es con el que estas autenticado, es administrador o es dueño de la comunidad.
         self::comprobarUsuario();
         // Elimino al participante deseado
@@ -88,8 +90,7 @@ class ShowCommunity extends Component
         $this->emit('info', "Participante " . $participante->name . " ha salido");
     }
 
-    private function quitarParticipante(User $participante) // Agregar borrar likes, comentarios y guardados al sacar al participante.
-    {
+    private function quitarParticipante(User $participante) {
         // Obtengo la id del participante y de la comunidad.
         $userId = $participante->id;
         $communityId = $this->comunidad->id;
@@ -126,34 +127,14 @@ class ShowCommunity extends Component
         $participante->communities()->detach($this->comunidad->id);
     }
 
-    public function meterParticipante()
-    {
-        // Obtengo al usuario autenticado.
-        $user = auth()->user();
-        if ($this->comunidad->privacidad == "PRIVADO") {
-            Request::create([
-                'user_id' => auth()->user()->id,
-                'community_id' => $this->comunidad->id,
-            ]);
-            $this->emit('info', "Solicitud para participar en la comunidad enviada");
-        } else {
-            // Añado el usuario a la comunidad.
-            // Da error en codigo, pero lo hace bien, no saltan excepciones.
-            $user->communities()->attach($this->comunidad);
-            $this->emit('info', "Participante " . $user->name . " ha entrado");
-        }
-    }
-
-    public function editar()
-    {
+    public function editar() {
         // Compruebo que puedas editar la comunidad pasada.
-        self::comprobarPermisosComunidad($this->comunidad);
+        self::comprobarPermisosComunidad();
         $this->miComunidad = $this->comunidad;
         $this->openEditar = true;
     }
 
-    public function update()
-    {
+    public function update() {
         // valido los campos de la ventana modal de editar la comunidad.
         $this->validate([
             'miComunidad.nombre' => ['required', 'string', 'min:3', 'unique:communities,nombre,' . $this->comunidad->id]
@@ -176,27 +157,23 @@ class ShowCommunity extends Component
         $this->emit('info', 'Comunidad editada con éxito');
     }
 
-    public function comprobarPermisosComunidad(Community $comunidad)
-    {
-        // Compruebo que seas administrador o el dueño de la comunidad.
-        if (auth()->user()->is_admin) return;
-        if ($comunidad->user_id == auth()->user()->id) return;
-        abort(404);
-    }
-
-    public function buscarUsuario($id)
-    {
+    public function buscarUsuario($id) {
         return redirect()->route('perfiluser.show', compact('id'));
     }
 
-    public function verPublicacionesComunidad()
-    {
+    public function verPublicacionesComunidad() {
         $id = $this->comunidad->id;
         return redirect()->route('publicationscommunity.show', compact('id'));
     }
 
-    public function comprobarUsuario()
-    {
+    public function comprobarPermisosComunidad() {
+        // Compruebo que seas administrador o el dueño de la comunidad.
+        if (auth()->user()->is_admin) return;
+        if ($this->comunidad->user_id == auth()->user()->id) return;
+        abort(404);
+    }
+
+    public function comprobarUsuario() {
         // Compruebo que seas administrador o el dueño de la comunidad, 
         if (auth()->user()->is_admin) return;
         if ($this->comunidad->user_id == auth()->user()->id) return;

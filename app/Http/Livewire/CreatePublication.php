@@ -1,17 +1,11 @@
 <?php
-
 namespace App\Http\Livewire;
 
-use App\Models\Community;
-use App\Models\Publication;
-use App\Models\Tag;
-use Livewire\Component;
+use App\Models\{Community, Publication, Tag};
+use Livewire\{Component, WithFileUploads, WithPagination};
 use Illuminate\Support\Facades\File;
-use Livewire\WithFileUploads;
-use Livewire\WithPagination;
 
-class CreatePublication extends Component
-{
+class CreatePublication extends Component {
     use WithPagination;
     use WithFileUploads;
 
@@ -21,8 +15,7 @@ class CreatePublication extends Component
     public array $arraytags = [];
 
     // Aqui voy a gestionar las reglas de validacion que tienen que seguir las publicaciones al ser creadas.
-    protected function rules(): array
-    {
+    protected function rules(): array {
         // Separo las correcciones de si has elegido que pertenezca a una comunidad o no.
         if ($this->comunidad) {
             // Pertenece a una comunidad.
@@ -46,8 +39,7 @@ class CreatePublication extends Component
         }
     }
 
-    public function render()
-    {
+    public function render() {
         // Obtengo los tags.
         $tags = Tag::pluck('nombre', 'id')->toArray();
 
@@ -68,8 +60,7 @@ class CreatePublication extends Component
         return view('livewire.create-publication', compact('tags', 'comunidades'));
     }
 
-    public function guardar()
-    {
+    public function guardar() {
         // Validamos la publicacion antes de guardarla.
         $this->validate();
 
@@ -100,9 +91,6 @@ class CreatePublication extends Component
         // Guardo en la tabla auxiliar los tags añadidos a la publicacion.
         $publicacion->tags()->attach($this->arraytags);
 
-        // Para borrar la carpeta livewire-tmp que me genera livewire, pero no la borra, he usado la siguiente solucion
-        File::deleteDirectory(storage_path('app/public/livewire-tmp'));
-
         // Reseteo los campos de la ventana modal
         $this->reset('openCrear', 'titulo', 'contenido', 'estado', 'arraytags', 'comunidad');
 
@@ -112,13 +100,11 @@ class CreatePublication extends Component
         return redirect()->route('perfiluser.show',compact('id'));
     }
 
-    public function cerrar()
-    {
+    public function cerrar() {
         $this->reset('openCrear', 'titulo', 'contenido', 'estado', 'arraytags', 'comunidad');
     }
 
-    public function openCrear()
-    {
+    public function openCrear() {
         $this->openCrear = true;
     }
 }

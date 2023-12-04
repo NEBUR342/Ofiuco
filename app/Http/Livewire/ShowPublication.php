@@ -1,18 +1,9 @@
 <?php
-
 namespace App\Http\Livewire;
 
-use App\Models\Comment;
-use App\Models\Community;
-use App\Models\Like;
-use App\Models\Publication;
-use App\Models\Save;
-use App\Models\Tag;
-use App\Models\User;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use Livewire\Component;
-use Livewire\WithFileUploads;
+use App\Models\{Comment, Community, Like, Publication, Save, Tag, User};
+use Illuminate\Support\Facades\{File, Storage};
+use Livewire\{Component, WithFileUploads};
 
 class ShowPublication extends Component {
     use WithFileUploads;

@@ -1,25 +1,19 @@
 <?php
-
 namespace App\Http\Livewire;
 
-use App\Models\Community;
-use App\Models\Publication;
-use Livewire\Component;
-use Livewire\WithPagination;
+use App\Models\{Community, Publication};
+use Livewire\{Component, WithPagination};
 
-class ShowPublicationscommunities extends Component
-{
+class ShowPublicationscommunities extends Component {
     use WithPagination;
 
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
 
-    public function updatingBuscar()
-    {
+    public function updatingBuscar() {
         $this->resetPage();
     }
 
-    public function render()
-    {
+    public function render() {
         // Obtener todas las comunidades a las que pertenece el usuario autenticado.
         $usuarioAutenticado = auth()->user();
         $comunidades = $usuarioAutenticado->communities;
@@ -150,14 +144,12 @@ class ShowPublicationscommunities extends Component
         return view('livewire.show-publications', compact('publicaciones', 'comunidades'));
     }
 
-    public function ordenar(string $campo)
-    {
+    public function ordenar(string $campo) {
         $this->orden = ($this->orden == 'asc') ? 'desc' : 'asc';
         $this->campo = $campo;
     }
 
-    public function verPublicacion($id)
-    {
+    public function verPublicacion($id) {
         return redirect()->route('publication.show', compact('id'));
     }
 }

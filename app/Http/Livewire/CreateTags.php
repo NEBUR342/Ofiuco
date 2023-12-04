@@ -1,20 +1,17 @@
 <?php
-
 namespace App\Http\Livewire;
 
 use App\Models\Tag;
-use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\{Component, WithPagination};
 
-class CreateTags extends Component
-{
+class CreateTags extends Component {
     use WithPagination;
+
     public bool $openCrear = false;
     public string $nombre ="",$descripcion="", $color = "";
 
     // Valido los campos de las etiquetas.
-    protected function rules(): array
-    {
+    protected function rules(): array {
         return [
             'nombre' => ['required', 'string', 'min:3', 'unique:tags,nombre', 'max:255'],
             'descripcion' => ['required', 'string', 'min:3'],
@@ -22,12 +19,11 @@ class CreateTags extends Component
         ];
     }
 
-    public function render()
-    {
+    public function render() {
         return view('livewire.create-tags');
     }
 
-    public function guardar(){
+    public function guardar() {
         // Hago que compruebe que los campos esten correctos.
         $this->validate();
 
@@ -46,11 +42,11 @@ class CreateTags extends Component
         $this->emit("info", "Etiqueta creada");
     }
 
-    public function cerrar(){
+    public function cerrar() {
         $this->reset(["openCrear","nombre","descripcion","color"]);
     }
 
-    public function openCrear(){
+    public function openCrear() {
         $this->openCrear = true;
     }
 }

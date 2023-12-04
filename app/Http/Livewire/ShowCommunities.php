@@ -1,13 +1,10 @@
 <?php
-
 namespace App\Http\Livewire;
 
 use App\Models\Community;
-use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\{Component, WithPagination};
 
-class ShowCommunities extends Component
-{
+class ShowCommunities extends Component {
     use WithPagination;
 
     public int $tipoConsulta = 1;

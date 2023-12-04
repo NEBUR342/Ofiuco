@@ -1,11 +1,8 @@
 <?php
 namespace App\Http\Livewire;
 
-use App\Models\Follow;
-use App\Models\Friend;
-use App\Models\User;
-use Livewire\Component;
-use Livewire\WithPagination;
+use App\Models\{Follow, Friend, User};
+use Livewire\{Component, WithPagination};
 
 class ShowUsers extends Component {
     use WithPagination;
@@ -16,7 +13,7 @@ class ShowUsers extends Component {
 
     public function mount($tipo, $id) {
         $this->tipousuarios = $tipo;
-        $this->iduser = $id;
+        $this->iduser = User::findOrFail($id)->id;
     }
     
     public function updatingBuscar() {

@@ -1,35 +1,28 @@
 <?php
-
 namespace App\Http\Livewire;
 
-use App\Models\Community;
-use App\Models\Publication;
-use Livewire\Component;
-use Livewire\WithPagination;
+use App\Models\{Community, Publication};
+use Livewire\{Component, WithPagination};
 
-class ShowPublicationscommunity extends Component
-{
+class ShowPublicationscommunity extends Component {
     use WithPagination;
-    public Community $comunidad;
 
+    public Community $comunidad;
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
 
-    public function updatingBuscar()
-    {
+    public function updatingBuscar() {
         $this->resetPage();
     }
 
-    public function mount($id)
-    {
+    public function mount($id) {
         $this->comunidad = Community::findOrFail($id);
     }
 
-    public function render()
-    {
+    public function render() {
         // Obtener todas las comunidades a las que pertenece el usuario autenticado.
         $comunidad = Community::where('id', $this->comunidad->id)->first();
         $this->comunidad = $comunidad;
-        self::comprobarPermisosPublicacion();
+        self::comprobarPermisosComunidad();
         // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
         // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
         if ($comunidad->user_id == auth()->user()->id || auth()->user()->is_admin) {
@@ -175,20 +168,17 @@ class ShowPublicationscommunity extends Component
         return view('livewire.show-publications', compact('publicaciones', 'comunidades'));
     }
 
-    public function ordenar(string $campo)
-    {
+    public function ordenar(string $campo) {
         $this->orden = ($this->orden == 'asc') ? 'desc' : 'asc';
         $this->campo = $campo;
     }
 
-    public function verPublicacion($id)
-    {
+    public function verPublicacion($id) {
         return redirect()->route('publication.show', compact('id'));
     }
 
     // Compruebo que eres administrador, si perteneces a la comunidad o si es tuya.
-    public function comprobarPermisosPublicacion()
-    {
+    private function comprobarPermisosComunidad() {
         if (auth()->user()->is_admin) return;
         if ($this->comunidad->user_id == auth()->user()->id) return;
         foreach ($this->comunidad->users as $usuario) {

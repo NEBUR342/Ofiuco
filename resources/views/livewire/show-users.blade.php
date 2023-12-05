@@ -43,17 +43,42 @@
                     </span>
                 </div>
                 <div class="flex flex-row-reverse my-4 mr-2">
-                    @if (auth()->user()->id != $usuario->id &&
-                            !($amigos->contains('frienduno_id', $usuario->id) || $amigos->contains('frienddos_id', $usuario->id)))
-                        <span class="mx-2">
-                            <i class="fa-solid fa-user-plus cursor-pointer text-blue-500"
-                                wire:click="solicitudamigo({{ $usuario->id }})"></i>
-                        </span>
-                    @elseif(auth()->user()->id != $usuario->id)
-                        <span class="mx-2">
-                            <i class="fa-solid fa-user-minus cursor-pointer text-red-500"
-                                wire:click="borraramigo({{ $usuario->id }})"></i>
-                        </span>
+                    @if(auth()->user()->id != $usuario->id)
+                        <?php
+                            $amigoEncontrado=0;
+                            foreach($amigos as $amigo){
+                                if($amigo->frienduno_id==$usuario->id || $amigo->frienddos_id==$usuario->id) $amigoEncontrado = $amigo;
+                            }
+                        ?>
+                        @if($amigoEncontrado)
+                            @if($amigoEncontrado->aceptado == "SI")
+                                <span class="mx-2">
+                                    <i class="fa-solid fa-person-circle-minus cursor-pointer text-red-500"
+                                        wire:click="borraramigo({{ $usuario->id }})"></i>
+                                </span>
+                            @elseif($amigoEncontrado->aceptado == "NO")
+                                @if($amigoEncontrado->user_id == auth()->user()->id)
+                                    <span class="mx-2">
+                                        <i class="fa-solid fa-person-circle-question cursor-pointer text-yellow-500"
+                                            wire:click="borraramigo({{ $usuario->id }})"></i>
+                                    </span>
+                                @elseif($amigoEncontrado->user_id == $usuario->id)
+                                    <span class="mx-2">
+                                        <i class="fa-solid fa-person-circle-xmark cursor-pointer text-red-500"
+                                            wire:click="borraramigo({{ $usuario->id }})"></i>
+                                    </span>
+                                    <span class="mx-2">
+                                        <i class="fa-solid fa-person-circle-check cursor-pointer text-green-500"
+                                            wire:click="solicitudamigo({{ $usuario->id }})"></i>
+                                    </span>
+                                @endif
+                            @endif
+                        @else
+                            <span class="mx-2">
+                                <i class="fa-solid fa-person-circle-plus cursor-pointer text-blue-500"
+                                    wire:click="solicitudamigo({{ $usuario->id }})"></i>
+                            </span>
+                        @endif
                     @endif
                 </div>
             </div>

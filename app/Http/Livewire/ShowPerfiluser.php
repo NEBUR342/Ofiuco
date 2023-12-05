@@ -258,7 +258,29 @@ class ShowPerfiluser extends Component {
                 ]);
             }
         }
-        return view('livewire.show-perfiluser', compact('publicaciones', 'tags', 'usuario', 'comunidadesParticipado', 'comunidadesCreador', 'follow', 'cantidadFollow'));
+        $friends = Friend::where('aceptado', 'SI')
+            ->where(function ($query) {
+                $query->where('frienduno_id', auth()->user()->id)
+                    ->orWhere('frienddos_id', auth()->user()->id);
+            })
+            ->get();
+        foreach ($friends as $friend) {
+            if ($friend->user_id == auth()->user()->id) {
+                if ($friend->frienduno_id == auth()->user()->id) {
+                    $friend->update([
+                        "user_id" => $friend->frienddos_id,
+                    ]);
+                } else {
+                    $friend->update([
+                        "user_id" => $friend->frienduno_id,
+                    ]);
+                }
+            }
+        }
+        $amigos = Friend::where("frienduno_id", auth()->user()->id)
+            ->orwhere("frienddos_id", auth()->user()->id)
+            ->get();
+        return view('livewire.show-perfiluser', compact('publicaciones', 'tags', 'usuario', 'comunidadesParticipado', 'comunidadesCreador', 'follow', 'cantidadFollow', 'amigos'));
     }
 
     public function ordenar(string $campo) {
@@ -279,35 +301,48 @@ class ShowPerfiluser extends Component {
         return redirect()->route('publicationslikes.show', compact('id'));
     }
 
-    public function solicitudamigo() {
-        $id = $this->usuario->id;
-        // me aseguro de que no modifiquen desde la consola para repetir amigos
+    public function solicitudamigo($id) {
+        if(auth()->user()->id == $id || !User::where('id', $id)->count()) return;
         $amigos = Friend::where("frienduno_id", auth()->user()->id)
             ->orwhere("frienddos_id", auth()->user()->id)
             ->get();
-        if (auth()->user()->id == $id || ($amigos->contains('frienduno_id', $id) || $amigos->contains('frienddos_id', $id))) return;
-        // pongo primero el usuario con id menor.
-        // asi evito amigos duplicados
-        if ($id > auth()->user()->id) {
-            Friend::create([
-                'user_id' => auth()->user()->id,
-                'frienduno_id' => auth()->user()->id,
-                'frienddos_id' => $id,
-                'aceptado' => "NO"
+        if (($amigos->contains('frienduno_id', $id) || $amigos->contains('frienddos_id', $id))){
+            $amigo = Friend::where('aceptado','NO')
+            ->where(function ($query) use ($id) {
+                $query->where('frienduno_id', $id)
+                ->orWhere('frienddos_id', $id);
+            })
+            ->where(function ($query) {
+                $query->where('frienduno_id', auth()->user()->id)
+                ->orWhere('frienddos_id', auth()->user()->id);
+            })
+            ->update([
+                "aceptado" => "SI"
             ]);
+            $this->emit('info', "Solicitud de amistad aceptada");
         } else {
-            Friend::create([
-                'user_id' => auth()->user()->id,
-                'frienduno_id' => $id,
-                'frienddos_id' => auth()->user()->id,
-                'aceptado' => "NO"
-            ]);
+            // pongo primero el usuario con id menor.
+            // asi evito amigos duplicados
+            if ($id > auth()->user()->id) {
+                Friend::create([
+                    'user_id' => auth()->user()->id,
+                    'frienduno_id' => auth()->user()->id,
+                    'frienddos_id' => $id,
+                    'aceptado' => "NO"
+                ]);
+            } else {
+                Friend::create([
+                    'user_id' => auth()->user()->id,
+                    'frienduno_id' => $id,
+                    'frienddos_id' => auth()->user()->id,
+                    'aceptado' => "NO"
+                ]);
+            }
+            $this->emit('info', "Solicitud de amistad enviada");
         }
-        $this->emit('info', "Solicitud de amistad enviada");
     }
 
-    public function borraramigo() {
-        $id = $this->usuario->id;
+    public function borraramigo($id) {
         // me aseguro de que no modifiquen desde la consola para repetir amigos
         $amigo = Friend::where(function ($query) use ($id) {
             $query->where('frienduno_id', $id)

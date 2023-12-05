@@ -90,7 +90,7 @@ class ShowSolicitudamigo extends Component {
         }
     }
 
-    public function borrarsolicitud($id) {
+    public function borrarsolicitudamigo($id) {
         $amigo = Friend::where('aceptado','NO')
             ->where(function ($query) use ($id) {
                 $query->where('frienduno_id', $id)

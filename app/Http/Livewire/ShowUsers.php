@@ -226,29 +226,44 @@ class ShowUsers extends Component {
     }
 
     public function solicitudamigo($id) {
-        // me aseguro de que no modifiquen desde la consola para repetir amigos
+        if(auth()->user()->id == $id || !User::where('id', $id)->count()) return;
         $amigos = Friend::where("frienduno_id", auth()->user()->id)
             ->orwhere("frienddos_id", auth()->user()->id)
             ->get();
-        if (auth()->user()->id == $id || ($amigos->contains('frienduno_id', $id) || $amigos->contains('frienddos_id', $id))) return;
-        // pongo primero el usuario con id menor.
-        // asi evito amigos duplicados
-        if ($id > auth()->user()->id) {
-            Friend::create([
-                'user_id' => auth()->user()->id,
-                'frienduno_id' => auth()->user()->id,
-                'frienddos_id' => $id,
-                'aceptado' => "NO"
+        if (($amigos->contains('frienduno_id', $id) || $amigos->contains('frienddos_id', $id))){
+            $amigo = Friend::where('aceptado','NO')
+            ->where(function ($query) use ($id) {
+                $query->where('frienduno_id', $id)
+                ->orWhere('frienddos_id', $id);
+            })
+            ->where(function ($query) {
+                $query->where('frienduno_id', auth()->user()->id)
+                ->orWhere('frienddos_id', auth()->user()->id);
+            })
+            ->update([
+                "aceptado" => "SI"
             ]);
+            $this->emit('info', "Solicitud de amistad aceptada");
         } else {
-            Friend::create([
-                'user_id' => auth()->user()->id,
-                'frienduno_id' => $id,
-                'frienddos_id' => auth()->user()->id,
-                'aceptado' => "NO"
-            ]);
+            // pongo primero el usuario con id menor.
+            // asi evito amigos duplicados
+            if ($id > auth()->user()->id) {
+                Friend::create([
+                    'user_id' => auth()->user()->id,
+                    'frienduno_id' => auth()->user()->id,
+                    'frienddos_id' => $id,
+                    'aceptado' => "NO"
+                ]);
+            } else {
+                Friend::create([
+                    'user_id' => auth()->user()->id,
+                    'frienduno_id' => $id,
+                    'frienddos_id' => auth()->user()->id,
+                    'aceptado' => "NO"
+                ]);
+            }
+            $this->emit('info', "Solicitud de amistad enviada");
         }
-        $this->emit('info', "Solicitud de amistad enviada");
     }
 
     public function borraramigo($id) {

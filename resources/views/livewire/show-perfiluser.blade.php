@@ -10,11 +10,7 @@
                 </span>
                 <div class="text-3xl mt-2">{{ $usuario->name }}</div>
             </div>
-            @if (
-                !$usuario->privado ||
-                    ($usuario->privado && ($follow && $follow->aceptado == 'SI')) ||
-                    auth()->user()->is_admin ||
-                    $usuario->id == auth()->user()->id)
+            @if (!$usuario->privado || ($usuario->privado && ($follow && $follow->aceptado == 'SI')) || auth()->user()->is_admin || $usuario->id == auth()->user()->id)
                 <div class="max-[700px]:flex min-[700px]:ml-3">
                     <div class="mx-auto bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer mb-1 w-32"
                         wire:click="verseguidores">
@@ -61,19 +57,31 @@
                             wire:click="cambiarPrivacidad">PUBLICO</span>
                     @endif
                 @endif
-                @if (auth()->user()->id != $usuario->id)
-                    @if (
-                        !(auth()->user()->friends->contains('frienduno_id', $usuario->id) ||
-                            auth()->user()->friends->contains('frienddos_id', $usuario->id)
-                        ))
-                        <span
-                            class="min-[480px]:ml-12 cursor-pointer bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 rounded">
-                            <i class="fa-solid fa-user-plus" wire:click="solicitudamigo()"></i>
-                        </span>
-                    @elseif(auth()->user()->id != $usuario->id)
-                        <span
-                            class="min-[480px]:ml-12 cursor-pointer bg-transparent hover:bg-red-500 text-red-500 font-semibold hover:text-white py-2 px-4 rounded">
-                            <i class="fa-solid fa-user-minus" wire:click="borraramigo()"></i>
+                @if(auth()->user()->id != $usuario->id)
+                    <?php
+                        $amigoEncontrado=0;
+                        foreach($amigos as $amigo){
+                            if($amigo->frienduno_id==$usuario->id || $amigo->frienddos_id==$usuario->id) $amigoEncontrado = $amigo;
+                        }
+                    ?>
+                    @if($amigoEncontrado)
+                        @if($amigoEncontrado->aceptado == "SI")
+                            <span class="mx-2">
+                                <i class="fa-solid fa-person-circle-minus cursor-pointer text-red-500"
+                                    wire:click="borraramigo({{ $usuario->id }})"></i>
+                            </span>
+                        @elseif($amigoEncontrado->aceptado == "NO")
+                            @if($amigoEncontrado->user_id == auth()->user()->id)
+                                <span class="mx-2">
+                                    <i class="fa-solid fa-person-circle-question cursor-pointer text-yellow-500"
+                                        wire:click="borraramigo({{ $usuario->id }})"></i>
+                                </span>
+                            @endif
+                        @endif
+                    @else
+                        <span class="mx-2">
+                            <i class="fa-solid fa-person-circle-plus cursor-pointer text-blue-500"
+                                wire:click="solicitudamigo({{ $usuario->id }})"></i>
                         </span>
                     @endif
                 @endif
@@ -198,11 +206,7 @@
             </div>
         </div>
     </div>
-    @if (
-        !$usuario->privado ||
-            ($usuario->privado && ($follow && $follow->aceptado == 'SI')) ||
-            auth()->user()->is_admin ||
-            $usuario->id == auth()->user()->id)
+    @if ( !$usuario->privado || ($usuario->privado && ($follow && $follow->aceptado == 'SI')) || auth()->user()->is_admin || $usuario->id == auth()->user()->id)
         <div class="flex mb-3">
             <div class="flex-1">
                 <x-input class="w-full text-gray-800" type='search' placeholder="Buscar publicaciones..."
@@ -226,11 +230,7 @@
                     class="fa-solid fa-fire"></i></span>
             <span class="mx-3 cursor-pointer" wire:click="ordenar('creacion')" title="ORDENAR POR ANTIGUEDAD"><i
                     class="fa-regular fa-clock"></i></span>
-            @if (
-                !$usuario->privado ||
-                    ($usuario->privado && ($follow && $follow->aceptado == 'SI')) ||
-                    auth()->user()->is_admin ||
-                    $usuario->id == auth()->user()->id)
+            @if ( !$usuario->privado || ($usuario->privado && ($follow && $follow->aceptado == 'SI')) || auth()->user()->is_admin || $usuario->id == auth()->user()->id)
                 <span title="VER LIKES DEL USUARIO" wire:click="buscarLikesUsuario()"
                     class="min-[480px]:ml-12 cursor-pointer bg-transparent hover:bg-yellow-500 text-yellow-500 font-semibold hover:text-white py-2 px-4 rounded">
                     <i class="fa-regular fa-face-grin-hearts"></i>

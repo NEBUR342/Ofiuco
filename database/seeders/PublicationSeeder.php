@@ -5,7 +5,7 @@ use App\Models\Tag;
 use Illuminate\Database\Seeder;
 class PublicationSeeder extends Seeder {
     public function run(): void {
-        Publication::factory(20)->create();
+        Publication::factory(200)->create();
         $publicaciones = Publication::all();
         $tags = Tag::all()->pluck('id')->toArray();
         foreach ($publicaciones as $publicacion) {

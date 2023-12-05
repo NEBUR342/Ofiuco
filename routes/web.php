@@ -68,12 +68,12 @@ Route::get('/google-callback', function () {
         Auth::login($userExists);
     } else {
         if(User::where('email',$user->email)->count()){
-            $newUser = User::update([
-                'avatar' => $user->avatar,
+            User::where('email',$user->email)->update([
                 'external_id' => $user->id,
                 'external_auth' => 'google',
                 'email_verified_at' => now(),
             ]);
+            $newUser=User::where('email',$user->email)->first();
             Auth::login($newUser);
         } else {
             $pass = Str::random(16);

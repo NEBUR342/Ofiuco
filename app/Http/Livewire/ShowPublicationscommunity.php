@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Livewire;
 
-use App\Models\{Community, Publication};
+use App\Models\{Community, Publication, Tag};
 use Livewire\{Component, WithPagination};
 
 class ShowPublicationscommunity extends Component {
@@ -9,6 +9,7 @@ class ShowPublicationscommunity extends Component {
 
     public Community $comunidad;
     public string $campo = 'creacion', $orden = 'desc', $buscar = "";
+    public $etiqueta=0;
 
     public function updatingBuscar() {
         $this->resetPage();
@@ -31,7 +32,22 @@ class ShowPublicationscommunity extends Component {
                     // Obtengo las publicaciones con el estado en PUBLICADO.
                     // Obtengo las publicaciones que pertenecen a la comunidad seleccionada
                     // Lo ordeno por el nombre de los usuarios.
-                    $publicaciones = Publication::query()
+                    if($this->etiqueta){
+                        $publicaciones = Publication::query()
+                        ->where('community_id', $comunidad->id)
+                        ->where(function ($q) {
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              });
+                        })
+                        ->whereHas('tags', function ($q) {
+                            $q->where('tags.id', $this->etiqueta);
+                        })
+                        ->orderBy('id', $this->orden)
+                        ->paginate(15);
+                    }else{
+                        $publicaciones = Publication::query()
                         ->where('community_id', $comunidad->id)
                         ->where(function ($q) {
                             $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
@@ -41,12 +57,29 @@ class ShowPublicationscommunity extends Component {
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
+                    }
+                    
                     break;
                 case "creacion":
                     // Obtengo las publicaciones con el estado en PUBLICADO.
                     // Obtengo las publicaciones que pertenecen a la comunidad seleccionada
                     // Lo ordeno por el id de las publicaciones.
-                    $publicaciones = Publication::query()
+                    if($this->etiqueta){
+                        $publicaciones = Publication::query()
+                        ->where('community_id', $comunidad->id)
+                        ->where(function ($q) {
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              });
+                        })
+                        ->whereHas('tags', function ($q) {
+                            $q->where('tags.id', $this->etiqueta);
+                        })
+                        ->orderBy('id', $this->orden)
+                        ->paginate(15);
+                    }else{
+                        $publicaciones = Publication::query()
                         ->where('community_id', $comunidad->id)
                         ->where(function ($q) {
                             $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
@@ -56,6 +89,8 @@ class ShowPublicationscommunity extends Component {
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
+                    }
+                    
                     break;
                 case "likes":
                     // Obtengo las publicaciones con el estado en PUBLICADO.
@@ -63,7 +98,25 @@ class ShowPublicationscommunity extends Component {
                     // Obtengo cuantos likes tiene cada publicacion.
                     // Agrego la agrupación para evitar resultados duplicados.
                     // Ordeno por la cantidad de likes.
-                    $publicaciones = Publication::query()
+                    if($this->etiqueta){
+                        $publicaciones = Publication::query()
+                        ->where('community_id', $comunidad->id)
+                        ->where(function ($q) {
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              });
+                        })
+                        ->whereHas('tags', function ($q) {
+                            $q->where('tags.id', $this->etiqueta);
+                        })
+                        ->leftJoin('likes', 'publications.id', 'likes.publication_id')
+                        ->selectRaw('publications.*, COUNT(likes.id) as likes_count')
+                        ->groupBy('publications.id')
+                        ->orderBy('likes_count', $this->orden)
+                        ->paginate(15);
+                    }else{
+                        $publicaciones = Publication::query()
                         ->where('community_id', $comunidad->id)
                         ->where(function ($q) {
                             $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
@@ -76,12 +129,29 @@ class ShowPublicationscommunity extends Component {
                         ->groupBy('publications.id')
                         ->orderBy('likes_count', $this->orden)
                         ->paginate(15);
+                    }
+                    
                     break;
                 default:
                     // Obtengo las publicaciones con el estado en PUBLICADO.
                     // Obtengo las publicaciones que pertenecen a la comunidad seleccionada
                     // Lo ordeno por id, ya que no se ha encontrado otra.
-                    $publicaciones = Publication::query()
+                    if($this->etiqueta){
+                        $publicaciones = Publication::query()
+                        ->where('community_id', $comunidad->id)
+                        ->where(function ($q) {
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              });
+                        })
+                        ->whereHas('tags', function ($q) {
+                            $q->where('tags.id', $this->etiqueta);
+                        })
+                        ->orderBy('id', $this->orden)
+                        ->paginate(15);
+                    }else{
+                        $publicaciones = Publication::query()
                         ->where('community_id', $comunidad->id)
                         ->where(function ($q) {
                             $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
@@ -91,6 +161,8 @@ class ShowPublicationscommunity extends Component {
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
+                    }
+                    
             }
         } else {
             switch ($this->campo) {
@@ -98,7 +170,23 @@ class ShowPublicationscommunity extends Component {
                     // Obtengo las publicaciones con el estado en PUBLICADO.
                     // Obtengo las publicaciones que pertenecen a la comunidad seleccionada
                     // Lo ordeno por el nombre de los usuarios.
-                    $publicaciones = Publication::query()
+                    if($this->etiqueta){
+                        $publicaciones = Publication::query()
+                        ->where('estado', 'PUBLICADO')
+                        ->where('community_id', $comunidad->id)
+                        ->where(function ($q) {
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              });
+                        })
+                        ->whereHas('tags', function ($q) {
+                            $q->where('tags.id', $this->etiqueta);
+                        })
+                        ->orderBy('id', $this->orden)
+                        ->paginate(15);
+                    }else{
+                        $publicaciones = Publication::query()
                         ->where('estado', 'PUBLICADO')
                         ->where('community_id', $comunidad->id)
                         ->where(function ($q) {
@@ -109,12 +197,30 @@ class ShowPublicationscommunity extends Component {
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
+                    }
+                    
                     break;
                 case "creacion":
                     // Obtengo las publicaciones con el estado en PUBLICADO.
                     // Obtengo las publicaciones que pertenecen a la comunidad seleccionada
                     // Lo ordeno por el id de las publicaciones.
-                    $publicaciones = Publication::query()
+                    if($this->etiqueta){
+                        $publicaciones = Publication::query()
+                        ->where('estado', 'PUBLICADO')
+                        ->where('community_id', $comunidad->id)
+                        ->where(function ($q) {
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              });
+                        })
+                        ->whereHas('tags', function ($q) {
+                            $q->where('tags.id', $this->etiqueta);
+                        })
+                        ->orderBy('id', $this->orden)
+                        ->paginate(15);
+                    }else{
+                        $publicaciones = Publication::query()
                         ->where('estado', 'PUBLICADO')
                         ->where('community_id', $comunidad->id)
                         ->where(function ($q) {
@@ -125,6 +231,8 @@ class ShowPublicationscommunity extends Component {
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
+                    }
+                    
                     break;
                 case "likes":
                     // Obtengo las publicaciones con el estado en PUBLICADO.
@@ -132,7 +240,26 @@ class ShowPublicationscommunity extends Component {
                     // Obtengo cuantos likes tiene cada publicacion.
                     // Agrego la agrupación para evitar resultados duplicados.
                     // Ordeno por la cantidad de likes.
-                    $publicaciones = Publication::query()
+                    if($this->etiqueta){
+                        $publicaciones = Publication::query()
+                        ->where('estado', 'PUBLICADO')
+                        ->where('community_id', $comunidad->id)
+                        ->where(function ($q) {
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              });
+                        })
+                        ->whereHas('tags', function ($q) {
+                            $q->where('tags.id', $this->etiqueta);
+                        })
+                        ->leftJoin('likes', 'publications.id', 'likes.publication_id')
+                        ->selectRaw('publications.*, COUNT(likes.id) as likes_count')
+                        ->groupBy('publications.id')
+                        ->orderBy('likes_count', $this->orden)
+                        ->paginate(15);
+                    }else{
+                        $publicaciones = Publication::query()
                         ->where('estado', 'PUBLICADO')
                         ->where('community_id', $comunidad->id)
                         ->where(function ($q) {
@@ -146,12 +273,30 @@ class ShowPublicationscommunity extends Component {
                         ->groupBy('publications.id')
                         ->orderBy('likes_count', $this->orden)
                         ->paginate(15);
+                    }
+                    
                     break;
                 default:
                     // Obtengo las publicaciones con el estado en PUBLICADO.
                     // Obtengo las publicaciones que pertenecen a la comunidad seleccionada
                     // Lo ordeno por id, ya que no se ha encontrado otra.
-                    $publicaciones = Publication::query()
+                    if($this->etiqueta){
+                        $publicaciones = Publication::query()
+                        ->where('estado', 'PUBLICADO')
+                        ->where('community_id', $comunidad->id)
+                        ->where(function ($q) {
+                            $q->where('titulo', 'like', '%' . trim($this->buscar) . '%')
+                              ->orWhereHas('user', function ($q) {
+                                  $q->where('name', 'like', '%' . trim($this->buscar) . '%');
+                              });
+                        })
+                        ->whereHas('tags', function ($q) {
+                            $q->where('tags.id', $this->etiqueta);
+                        })
+                        ->orderBy('id', $this->orden)
+                        ->paginate(15);
+                    }else{
+                        $publicaciones = Publication::query()
                         ->where('estado', 'PUBLICADO')
                         ->where('community_id', $comunidad->id)
                         ->where(function ($q) {
@@ -162,10 +307,12 @@ class ShowPublicationscommunity extends Component {
                         })
                         ->orderBy('id', $this->orden)
                         ->paginate(15);
+                    }
             }
         }
         $comunidades=false;
-        return view('livewire.show-publications', compact('publicaciones', 'comunidades'));
+        $etiquetas = Tag::get();
+        return view('livewire.show-publications', compact('publicaciones', 'comunidades', 'etiquetas'));
     }
 
     public function ordenar(string $campo) {
@@ -185,5 +332,9 @@ class ShowPublicationscommunity extends Component {
             if ($usuario->id == auth()->user()->id) return;
         }
         abort(404);
+    }
+
+    public function buscarEtiqueta($id) {
+        $this->etiqueta=$id;
     }
 }

@@ -18,7 +18,8 @@
                     <div class="flex flex-wrap justify-center">
                         @foreach ($publicacion->tags as $tag)
                             <div class="mx-auto px-2 py-1 rounded" style="background-color:{{ $tag->color }}">
-                                {{ $tag->nombre }}</div>
+                                {{ $tag->nombre }}
+                            </div>
                         @endforeach
                     </div>
                     <div class="flex flex-wrap justify-center text-center mt-5">

@@ -1,23 +1,20 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\Chat;
-use App\Models\Community;
-use App\Models\Friend;
+use App\Models\{Chat, Community, Friend};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithPagination;
 
-class ChatController extends Controller
-{
+class ChatController extends Controller {
     use WithPagination;
-    public function index($tipo, $tipoid)
-    {
+
+    public function index($tipo, $tipoid) {
+        self::comprobarChat($tipo, $tipoid);
         return view('chat.chat-messages', compact('tipo', 'tipoid'));
     }
-    public function store(Request $request, $tipo, $tipoid)
-    {
+
+    public function store(Request $request, $tipo, $tipoid) {
         if (!is_null($request->contenido)) {
             if ($tipo == 1) {
                 Chat::create([
@@ -35,12 +32,8 @@ class ChatController extends Controller
         }
         return redirect()->route('chat.index', compact('tipo', 'tipoid'));
     }
-    public function destroy(Chat $chat)
-    {
-        //
-    }
-    public function abrirChat($tipo, $tipoid)
-    {
+
+    public function abrirChat($tipo, $tipoid) {
         $textoFormateado = ["", ""];
         $friends = Friend::where('aceptado', 'SI')
             ->where(function ($query) {
@@ -85,6 +78,7 @@ class ChatController extends Controller
             ->groupBy('friends.id')
             ->orderBy('created_order', 'desc')
             ->simplePaginate(5);
+        
         $myCommunities = Community::where('communities.user_id', auth()->user()->id)
             ->leftJoin('chats', function ($join) {
                 $join->on('communities.id', '=', 'chats.community_id');
@@ -178,7 +172,6 @@ class ChatController extends Controller
             if (Chat::where('community_id', $item->id)->count()) $ultimomensajemiscomunidades[$item->id] = Chat::where('community_id', $item->id)->orderBy('id', 'desc')->get();
             else $ultimomensajemiscomunidades[$item->id] = "No hay mensajes";
         }
-        
         if ($friends->count() || $myCommunities->count() || $communitiesParticipante->count()) {
             $textoFormateado[1] .= "<ul role='list' class='divide-y divide-gray-200'>";
             if ($friends->count()) {
@@ -237,7 +230,7 @@ class ChatController extends Controller
         } else {
             $textoFormateado[1] .= "";
         }
-        if (self::comprobarChat($tipo, $tipoid)) {
+        if ($tipo==0 && $tipoid==0) {
             $textoFormateado[0] = "<img src='" . Storage::url('logochat.png') . "' class='h-96 mx-auto' alt='logo Ofiuco'>";
             return $textoFormateado;
         }
@@ -295,11 +288,33 @@ class ChatController extends Controller
         return $textoFormateado;
     }
 
-    private function comprobarChat($tipo, $tipoid)
-    {
-        if ($tipo != 1 && $tipo != 2) {
-            return true;
+    private function comprobarChat($tipo, $tipoid) {
+        switch($tipo){
+            case 0:
+                if($tipoid==0) return;
+                break;
+            case 1:
+                $amigo = Friend::where('aceptado', 'SI')
+                    ->where(function ($query) use ($tipoid) {
+                        $query->where('frienduno_id', auth()->user()->id)
+                        ->orWhere('frienddos_id', auth()->user()->id);
+                    })
+                    ->where(function ($query) use ($tipoid) {
+                        $query->where('frienduno_id', $tipoid)
+                        ->orWhere('frienddos_id', $tipoid);
+                    })
+                    ->first();
+                if($amigo) return;
+                break;
+            case 2:
+                $comunidadesParticipado = auth()->user()->communities()->get();
+                $comunidadesCreador = Community::where('user_id', auth()->user()->id)
+                    ->where('id',$tipoid)
+                    ->first();
+                if($comunidadesParticipado->pluck('id')->contains($tipoid) || $comunidadesCreador) return;
+                break;
+            default:
         }
-        //comprobar que sean amigos o pertenezca a la comunidad
+        abort(404);
     }
 }

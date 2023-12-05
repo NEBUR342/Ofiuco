@@ -157,4 +157,11 @@
     @else
         <x-miscomponentes.sinresultados></x-miscomponentes.sinresultados>
     @endif
+    <div class="flex flex-wrap justify-around">
+        @foreach($etiquetas as $etiqueta)
+            <div class="my-1 px-2 py-1 rounded cursor-pointer" style="background-color:{{ $etiqueta->color }}" wire:click="buscarEtiqueta({{$etiqueta->id}})">
+                {{ $etiqueta->nombre }}
+            </div>
+        @endforeach
+    </div>
 </div>

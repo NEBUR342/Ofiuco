@@ -46,16 +46,16 @@
                     'bg-white' => !auth()->user()->temaoscuro,
                 ])>
                     <div
-                        class="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 transform bg-sky-400 duration-300 group-hover:scale-x-100">
+                        class="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 transform bg-indigo-500 duration-300 group-hover:scale-x-100">
                     </div>
                     <div
-                        class="absolute bottom-0 left-0 h-full w-1 origin-top scale-y-0 transform bg-sky-400 duration-300 group-hover:scale-y-100">
+                        class="absolute bottom-0 left-0 h-full w-1 origin-top scale-y-0 transform bg-indigo-500 duration-300 group-hover:scale-y-100">
                     </div>
                     <div
-                        class="absolute top-0 left-0 h-1 w-full origin-right scale-x-0 transform bg-sky-400 duration-300 group-hover:scale-x-100">
+                        class="absolute top-0 left-0 h-1 w-full origin-right scale-x-0 transform bg-indigo-500 duration-300 group-hover:scale-x-100">
                     </div>
                     <div
-                        class="absolute bottom-0 right-0 h-full w-1 origin-bottom scale-y-0 transform bg-sky-400 duration-300 group-hover:scale-y-100">
+                        class="absolute bottom-0 right-0 h-full w-1 origin-bottom scale-y-0 transform bg-indigo-500 duration-300 group-hover:scale-y-100">
                     </div>
                     <div @class([
                         'text-white' => auth()->user()->temaoscuro,

@@ -65,7 +65,7 @@
                                         <div class="border-t border-gray-200"></div>
                                         {{-- Amigos --}}
                                         <x-dropdown-link href="{{ route('solicitudesamigos.show') }}">
-                                            <i class="fa-solid fa-user-group"></i> Amigos
+                                            <i class="fa-solid fa-children"></i> Amigos
                                         </x-dropdown-link>
                                         <div class="border-t border-gray-200"></div>
                                         {{-- Foolows --}}
@@ -129,7 +129,7 @@
                                 <!-- Amigos -->
                                 <x-dropdown-link
                                     href="{{ route('friends.show') }}">
-                                    <i class="fa-solid fa-user-group"></i> Amigos
+                                    <i class="fa-solid fa-children"></i> Amigos
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
                                 <!-- Tema oscuro -->
@@ -234,7 +234,6 @@
                         <x-slot name="trigger">
                             <i class="fa-regular fa-bell"></i> NOTIFICACIONES
                         </x-slot>
-
                         <x-slot name="content">
                             {{-- Likes --}}
                             <x-dropdown-link href="{{ route('notificaciones.show', ['id' => '1']) }}">
@@ -258,7 +257,7 @@
                             <div class="border-t border-gray-200"></div>
                             {{-- amigos --}}
                             <x-dropdown-link href="{{ route('solicitudesamigos.show') }}">
-                                <i class="fa-solid fa-user-group"></i> Amigos
+                                <i class="fa-solid fa-children"></i> Amigos
                             </x-dropdown-link>
                             <div class="border-t border-gray-200"></div>
                             {{-- amigos --}}
@@ -302,27 +301,23 @@
                             </span>
                         @endif
                     </x-slot>
-
                     <x-slot name="content">
                         <!-- Account Management -->
                         <div class="block px-4 py-2 text-xs text-gray-400">
                             {{ __('Manage Account') }}
                         </div>
-
                         <x-dropdown-link href="{{ route('profile.show') }}">
                             <i class="fa-solid fa-user-gear"></i> {{ __('Profile') }}
                         </x-dropdown-link>
-
                         @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                             <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                 {{ __('API Tokens') }}
                             </x-dropdown-link>
                         @endif
-
                         <div class="border-t border-gray-200"></div>
                         <!-- amigos -->
                         <x-dropdown-link href="{{ route('friends.show') }}">
-                            <i class="fa-solid fa-user-group"></i> Amigos
+                            <i class="fa-solid fa-children"></i> Amigos
                         </x-dropdown-link>
                         <div class="border-t border-gray-200"></div>
                         <!-- Tema oscuro -->

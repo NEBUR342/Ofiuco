@@ -53,6 +53,11 @@
                         @if($amigoEncontrado)
                             @if($amigoEncontrado->aceptado == "SI")
                                 <span class="mx-2">
+                                    <a href="{{route('chat.index', ['tipo'=>'1', 'tipoid' => $usuario->id])}}" title="CHAT">
+                                        <i class="fa-regular fa-comment-dots cursor-pointer"></i>
+                                    </a>
+                                </span>
+                                <span class="mx-2">
                                     <i class="fa-solid fa-person-circle-minus cursor-pointer text-red-500"
                                         wire:click="borraramigo({{ $usuario->id }})"></i>
                                 </span>

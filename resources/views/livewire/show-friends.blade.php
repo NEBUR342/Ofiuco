@@ -45,8 +45,13 @@
                 </div>
                 <div class="flex flex-row-reverse my-4 mr-2">
                     <span class="mx-2">
-                        <i class="fa-solid fa-user-minus cursor-pointer text-red-500"
-                            wire:click="borrarsolicitudamigo({{ $solicitud->user->id }})"></i>
+                        <a href="{{route('chat.index', ['tipo'=>'1', 'tipoid' => $solicitud->user->id])}}" title="CHAT">
+                            <i class="fa-regular fa-comment-dots cursor-pointer"></i>
+                        </a>
+                    </span>
+                    <span class="mx-2">
+                    <i class="fa-solid fa-person-circle-minus cursor-pointer text-red-500"
+                        wire:click="borrarsolicitudamigo({{ $solicitud->user->id }})"></i>
                     </span>
                 </div>
             </div>

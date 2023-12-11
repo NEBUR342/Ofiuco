@@ -22,7 +22,7 @@ Bajo los siguientes términos:
 + Sin restricciones adicionales: no puede aplicar términos legales ni medidas tecnológicas que restrinjan legalmente a otros hacer cualquier cosa que la licencia permita.
 + Avisos: No tiene que cumplir con la licencia para elementos del material que sean de dominio público o donde su uso esté permitido por una excepción o limitación aplicable.
 
-No se dan garantías. Es posible que la licencia no le otorgue todos los permisos necesarios para el uso previsto.
+- No se dan garantías. Es posible que la licencia no le otorgue todos los permisos necesarios para el uso previsto.
 Por ejemplo, otros derechos como publicidad, privacidad o derechos morales pueden limitar la forma en que utiliza el material.
 
 ## Autor :boy:

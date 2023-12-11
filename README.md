@@ -11,7 +11,7 @@ En esta podrás encontrar diversas funcioones:
 - Compartir publicaciones, comunidades y perfiles de usuarios de la red social con otra.
 
 ## Copyright ©️
-<h2>Eres libre de:</h2>
+Eres libre de:
 - Compartir : copiar y redistribuir el material en cualquier medio o formato para cualquier fin, incluso comercial.
 - Adapte : remezcle, transforme y desarrolle el material para cualquier propósito, incluso comercialmente.
 

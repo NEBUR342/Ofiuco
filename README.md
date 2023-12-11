@@ -17,19 +17,10 @@ En esta podrás encontrar diversas funcioones:
 
 El licenciante no puede revocar estas libertades siempre que cumpla con los términos de la licencia.
 
-<h2>Bajo los siguientes términos:</h2>
-<ul>
-    <li>
-        Atribución: debe dar el crédito apropiado , proporcionar un enlace a la licencia e indicar si se realizaron cambios . Puede hacerlo de cualquier manera razonable, pero no de ninguna manera que sugiera que el licenciante lo respalda a usted o su uso.
-    </li>
-    <li>
-        Sin restricciones adicionales: no puede aplicar términos legales ni medidas tecnológicas que restrinjan legalmente a otros hacer cualquier cosa que la licencia permita.
-    </li>
-    <li>
-        Avisos: No tiene que cumplir con la licencia para elementos del material que sean de dominio público o donde su uso esté permitido por una excepción o limitación aplicable.
-    </li>
-    <li></li>
-</ul>
+Bajo los siguientes términos:
++ Atribución: debe dar el crédito apropiado , proporcionar un enlace a la licencia e indicar si se realizaron cambios . Puede hacerlo de cualquier manera razonable, pero no de ninguna manera que sugiera que el licenciante lo respalda a usted o su uso.
++ Sin restricciones adicionales: no puede aplicar términos legales ni medidas tecnológicas que restrinjan legalmente a otros hacer cualquier cosa que la licencia permita.
++ Avisos: No tiene que cumplir con la licencia para elementos del material que sean de dominio público o donde su uso esté permitido por una excepción o limitación aplicable.
 
 No se dan garantías. Es posible que la licencia no le otorgue todos los permisos necesarios para el uso previsto.
 Por ejemplo, otros derechos como publicidad, privacidad o derechos morales pueden limitar la forma en que utiliza el material.

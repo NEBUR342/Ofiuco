@@ -12,12 +12,12 @@
             </div>
             @if (!$usuario->privado || ($usuario->privado && ($follow && $follow->aceptado == 'SI')) || auth()->user()->is_admin || $usuario->id == auth()->user()->id)
                 <div class="max-[700px]:flex min-[700px]:ml-3">
-                    <div class="mx-auto bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer mb-1 w-32"
+                    <div class="mx-auto bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer min-[700px]:mb-1 w-32"
                         wire:click="verseguidores">
                         <p>SEGUIDORES</p>
                         <p>({{ $usuario->follows()->where('aceptado', 'SI')->count() }})</p>
                     </div>
-                    <div class="mx-auto bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer mt-1 w-32"
+                    <div class="mx-auto bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer min-[700px]:mt-1 w-32"
                         wire:click="verseguidos">
                         <p>SIGUIENDO</p>
                         <p>({{ $cantidadFollow }})</p>
@@ -29,7 +29,7 @@
                         <p>SEGUIDORES</p>
                         <p>({{ $usuario->follows()->where('aceptado', 'SI')->count() }})</p>
                     </div>
-                    <div class="mx-auto bg-red-600 p-2 rounded-lg min-[700px]:mt-1 w-32">
+                    <div class="mx-auto bg-red-600 p-2 rounded-lg min-[700px]:mb-1 w-32">
                         <p>SIGUIENDO</p>
                         <p>({{ $cantidadFollow }})</p>
                     </div>
@@ -37,7 +37,7 @@
             @endif
         </div>
         <div class="flex-1 justify-center items-center min-[700px]:w-2/3">
-            <div class="flex justify-around">
+            <div class="flex justify-around items-center">
                 @if (auth()->user()->id != $usuario->id)
                     @if (!$follow)
                         <div wire:click="follow()" class="bg-red-600 hover:bg-red-700 p-2 rounded-lg cursor-pointer">
@@ -69,6 +69,11 @@
                             <span class="mx-2">
                                 <i class="fa-solid fa-person-circle-minus cursor-pointer text-red-500"
                                     wire:click="borraramigo({{ $usuario->id }})"></i>
+                            </span>
+                            <span class="mx-2">
+                                <a href="{{route('chat.index', ['tipo'=>'1', 'tipoid' => $usuario->id])}}" title="CHAT">
+                                    <i class="fa-regular fa-comment-dots cursor-pointer"></i>
+                                </a>
                             </span>
                         @elseif($amigoEncontrado->aceptado == "NO")
                             @if($amigoEncontrado->user_id == auth()->user()->id)
@@ -251,7 +256,7 @@
         @else
             <x-miscomponentes.sinresultados></x-miscomponentes.sinresultados>
         @endif
-        <div class="min-[700px]:flex min-[700px]:flex-wrap text-center">
+        <div class="min-[700px]:flex min-[700px]:flex-wrap justify-around text-center">
             <div class="min-[700px]:flex-1 mt-6">
                 <h1 class="text-2xl">COMUNIDADES CREADAS</h1>
                 @if ($comunidadesCreador->count())

@@ -55,7 +55,10 @@ class ShowUsers extends Component {
                         break;
                 }
                 break;
-            case 2:
+            case 2: 
+                $follow = Follow::where('seguido_id', $this->iduser)->where('seguidor_id', auth()->user()->id)->where('aceptado','SI')->first();
+                $usuario = User::where('id', $this->iduser)->first();
+                if($this->iduser!=auth()->user()->id && ($follow==null || $follow->aceptado=='NO') && $usuario->privado) abort(404);
                 $usuario = User::where('id', $this->iduser)->first();
                 $follows = Follow::where('aceptado', 'SI')
                     ->where('seguido_id', $usuario->id)
@@ -105,7 +108,9 @@ class ShowUsers extends Component {
                 }
                 break;
             case 3:
+                $follow = Follow::where('seguido_id', $this->iduser)->where('seguidor_id', auth()->user()->id)->where('aceptado','SI')->first();
                 $usuario = User::where('id', $this->iduser)->first();
+                if($this->iduser!=auth()->user()->id && ($follow==null || $follow->aceptado=='NO') && $usuario->privado) abort(404);
                 $follows = Follow::where('aceptado', 'SI')
                     ->where('seguidor_id', $usuario->id)
                     ->get();

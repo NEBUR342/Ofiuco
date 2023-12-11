@@ -5,4 +5,7 @@
 Ofiuco es una aplicación diseñada para la gente que se dedica a la fotografía, pues en esta red social encontrarás a gente interesada en este campo.
 En esta podrás encontrar diversas funcioones:
 
-- 
+- c
+
+## Autor :boy:
+Rubén Álvarez Fernández. Estudiante de 2ºDAW en I.E.S. AlAndalus

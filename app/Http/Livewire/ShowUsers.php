@@ -58,7 +58,7 @@ class ShowUsers extends Component {
             case 2: 
                 $follow = Follow::where('seguido_id', $this->iduser)->where('seguidor_id', auth()->user()->id)->where('aceptado','SI')->first();
                 $usuario = User::where('id', $this->iduser)->first();
-                if($this->iduser!=auth()->user()->id && ($follow==null || $follow->aceptado=='NO') && $usuario->privado) abort(404);
+                if(!auth()->user()->is_admin && $this->iduser!=auth()->user()->id && ($follow==null || $follow->aceptado=='NO') && $usuario->privado) abort(404);
                 $usuario = User::where('id', $this->iduser)->first();
                 $follows = Follow::where('aceptado', 'SI')
                     ->where('seguido_id', $usuario->id)
@@ -110,7 +110,7 @@ class ShowUsers extends Component {
             case 3:
                 $follow = Follow::where('seguido_id', $this->iduser)->where('seguidor_id', auth()->user()->id)->where('aceptado','SI')->first();
                 $usuario = User::where('id', $this->iduser)->first();
-                if($this->iduser!=auth()->user()->id && ($follow==null || $follow->aceptado=='NO') && $usuario->privado) abort(404);
+                if(!auth()->user()->is_admin && $this->iduser!=auth()->user()->id && ($follow==null || $follow->aceptado=='NO') && $usuario->privado) abort(404);
                 $follows = Follow::where('aceptado', 'SI')
                     ->where('seguidor_id', $usuario->id)
                     ->get();

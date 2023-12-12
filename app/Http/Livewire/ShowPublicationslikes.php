@@ -443,7 +443,6 @@ class ShowPublicationslikes extends Component {
                         ->orderBy('titulo', $this->orden)
                         ->paginate(15);
                     }
-                    
             }
         }
         $comunidades=true;

@@ -66,16 +66,16 @@
             <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"
                 class="flex flex-wrap justify-center items-center mt-5 mx-2">
                 <a property="dct:title" rel="cc:attributionURL" href="https://github.com/NEBUR342/Ofiuco"
-                    class="flex mr-1">
+                    class="flex mr-1 text-blue-500 hover:text-blue-700">
                     Ofiuco
                 </a>
                 by 
                 <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/NEBUR342"
-                    class="flex mx-1">
+                    class="flex mx-1 text-blue-500 hover:text-blue-700">
                     Rubén Álvarez Fernández
                 </a>
                 is licensed under
-                <a class="flex ml-1" href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank"
+                <a class="flex ml-1 text-blue-500 hover:text-blue-700" href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank"
                     rel="license noopener noreferrer">
                     Attribution 4.0 International
                     <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"

@@ -82,6 +82,10 @@ class ShowCommunity extends Component {
         }
     }
 
+    public function eliminarSolicitud(){
+        Request::where('user_id',auth()->user()->id)->where('community_id',$this->comunidad->id)->delete();
+        $this->emit('info', "Participante " . auth()->user()->name . " ha borrado la solicitud");
+    }
     public function sacarParticipante(User $participante) {
         // Compruebo que el usuario que sale es con el que estas autenticado, es administrador o es dueño de la comunidad.
         self::comprobarUsuario();

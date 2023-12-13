@@ -145,14 +145,16 @@
         ])>
             <p class="text-2xl py-3">PUBLICACIONES SIN COMUNIDAD</p>
             <div class="pb-2 text-left mx-3">
-                <p>
+                <p class="flex items-center">
                     Es la primera vista que encuentras al entrar a la página, la forma de acceder a este es mediante la
                     imagen (el logo) que hay situada en la barra de navegación de la página.
+                    <img src="{{Storage::url('logopeque.png')}}" alt="logo" class="h-24">
                 </p>
                 <p>
                     Cuando entras a la página lo primero que encontrarás es una sección en la que se muestran publicaciones
                     de usuarios que han subido una publicación la cual no pertenece a una comunidad.
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion01/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p class="mb-2">
                     En la parte superior de esta encontrarás un buscador que te permite encontrar las publicaciones mediante
                     el nombre del usuario, o por el titulo de la publicación. Mientras que debajo de este se encuentran 3
@@ -189,6 +191,10 @@
                     su lugar aparecerá un nuevo botón para volver a la vista anterior, el cual es:
                 </p>
                 <span class="mx-3 cursor-pointer bg-red-600 hover:bg-red-700 p-2 rounded-lg">GENERAL</span>
+                <p class="my-2">
+                    En la parte inferior se encuentran las etiquetas, las cuales te permiten filtrar las imágenes con 
+                    los temas que más te gusten.
+                </p>
                 <div class="h-2"></div>
             </div>
         </div>
@@ -208,6 +214,7 @@
                     Cuando accedes a esta vista lo que encontrarás es una sección en la que se muestran publicaciones de
                     usuarios que han subido una publicación la cual si pertenece a una comunidad.
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion02/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p class="mb-2">
                     En la parte superior de esta encontrarás un buscador que te permite encontrar las publicaciones mediante
                     el nombre del usuario, el nombre de la comunidad o por el titulo de la publicación. Mientras que debajo
@@ -245,6 +252,10 @@
                         <p class="ml-1">Ordena las publicaciones según su antiguedad.</p>
                     </div>
                 </div>
+                <p class="my-2">
+                    En la parte inferior se encuentran las etiquetas, las cuales te permiten filtrar las imágenes con 
+                    los temas que más te gusten.
+                </p>
             </div>
         </div>
         <div id="seccion03" class="h-24"></div>
@@ -263,6 +274,7 @@
                     Cuando accedes a esta vista lo que encontrarás es una sección en la que se muestran publicaciones de
                     usuarios que han subido una publicación la cual si pertenece a una comunidad.
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion03/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p class="mb-2">
                     En la parte superior de esta encontrarás un buscador que te permite encontrar las publicaciones mediante
                     el nombre del usuario, el nombre de la comunidad o por el titulo de la publicación. Mientras que debajo
@@ -326,6 +338,7 @@
                     Al entrar en esta vista lo que se mostrará es el perfil de tu usuario, mostrando primero tu foto de
                     usuario, el nombre y otras cosas:
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion04/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p>
                     Los iconos de redes sociales te permiten compartir el perfil de usuario en estas redes sociales:
                 </p>
@@ -380,13 +393,14 @@
             <p class="text-2xl py-3">ETIQUETAS</p>
             <div class="pb-2 text-left mx-3">
                 <p>
-                    Para poder acceder a este apartado debes pinchar en el icono:
+                    Para poder acceder a este apartado debes pinchar en el icono (solo es accesible para usuarios administradores):
                     <i class="fa-solid fa-tags"></i>
                 </p>
                 <p>
                     Al entrar en esta vista lo que se mostrarán son las etiquetas que los usuarios de la página pueden
                     añadir a sus publicaciones:
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion05/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p class="mb-2">
                     En la parte superior de la pantalla encontrarás un buscador que te permite encontrar las etiquetas
                     por su nombre. Mientras que debajo de este se encuentran 2 iconos:
@@ -422,6 +436,7 @@
                     <i class="fa-solid fa-users"></i>
                 </p>
                 <p>Al entrar en esta vista lo que se mostrarán son todos los usuarios de la página.</p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion06/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p class="mb-2">
                     En la parte superior de la pantalla encontrarás un buscador que te permite encontrar los usuarios por su
                     nombre o por su apellido. Mientras que debajo de este se encuentran 2 iconos:
@@ -463,6 +478,7 @@
                 <p>
                     Al pulsar en esta opcón lo que se mostrará es un dropdown con diferentes opciones:
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion07/captura01.jpg')}}" alt="logo" class="ml-6 rounded-lg mt-2">
             </div>
             <div id="seccion08" class="h-16"></div>
             <div>
@@ -476,6 +492,7 @@
                         Al pulsar en esta opcón se mostrará una vista que enseña que usuarios han dado like a tus
                         publicaciones.
                     </p>
+                    <img src="{{Storage::url('imagenesInstrucciones/seccion08/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg mt-2">
                 </div>
             </div>
             <div id="seccion09" class="h-16"></div>
@@ -490,6 +507,7 @@
                         Al pulsar en esta opcón se mostrará una vista que enseña que usuarios ha dado save
                         (se han guardado la publicación) a tus publicaciones.
                     </p>
+                    <img src="{{Storage::url('imagenesInstrucciones/seccion09/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg mt-2">
                 </div>
             </div>
             <div id="seccion10" class="h-16"></div>
@@ -504,6 +522,7 @@
                         Al pulsar en esta opcón se mostrará una vista que enseña que usuarios han comentado
                         en tus publicaciones.
                     </p>
+                    <img src="{{Storage::url('imagenesInstrucciones/seccion10/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg mt-2">
                 </div>
             </div>
             <div id="seccion11" class="h-16"></div>
@@ -518,7 +537,7 @@
                         Al pulsar en esta opcón se mostrará una vista que enseña que usuarios han enviado
                         una solicitud para participar en alguna de tus comunidades.
                     </p>
-                    <p>También mostrará un listado de personas que se han unido a tus comunidades.</p>
+                    <img src="{{Storage::url('imagenesInstrucciones/seccion11/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg mt-2">
                 </div>
             </div>
             <div id="seccion12" class="h-16"></div>
@@ -534,6 +553,7 @@
                         una solicitud para ser tu amigo, lo que te permite esto es poder mandarte mensajes con dicha
                         persona.
                     </p>
+                    <img src="{{Storage::url('imagenesInstrucciones/seccion12/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg mt-2">
                 </div>
             </div>
             <div id="seccion13" class="h-16"></div>
@@ -549,7 +569,7 @@
                         Al pulsar en esta opcón se mostrará una vista que enseña que usuarios han enviado
                         una solicitud para poder seguirte.
                     </p>
-                    <p>También mostrará un listado de personas que te están siguiendo.</p>
+                    <img src="{{Storage::url('imagenesInstrucciones/seccion13/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg mt-2">
                 </div>
             </div>
         </div>
@@ -592,7 +612,7 @@
                                                 <a href="#" title='nombre usuario'
                                                     class='flex items-center space-x-3 relative mb-5'>
                                                     <div class='flex-shrink-0'>
-                                                        <img class='w-8 h-8 rounded-full' src="imagen" alt='foto'>
+                                                        <img class='w-8 h-8 rounded-full' src="{{Storage::url('imagenesInstrucciones/fotoperfil.jpg')}}" alt='foto'>
                                                     </div>
                                                     <div class='min-w-0'>
                                                         <p class='text-sm font-semibold truncate'>Usuario</p>
@@ -608,7 +628,7 @@
                                                 <a href="#" title='nombre comunidad'
                                                     class='flex items-center space-x-3 relative mb-5'>
                                                     <div class='flex-shrink-0'>
-                                                        <img class='w-8 h-8 rounded-full' src="imagen" alt='foto'>
+                                                        <img class='w-8 h-8 rounded-full' src="{{Storage::url('imagenesInstrucciones/fotoperfil.jpg')}}" alt='foto'>
                                                     </div>
                                                     <div class='min-w-0'>
                                                         <p class='text-sm font-semibold truncate'>Comunidad</p>
@@ -624,7 +644,7 @@
                                                 <a href="#" title='nombre comunidad'
                                                     class='flex items-center space-x-3 relative mb-5'>
                                                     <div class='flex-shrink-0'>
-                                                        <img class='w-8 h-8 rounded-full' src="imagen" alt='foto'>
+                                                        <img class='w-8 h-8 rounded-full' src="{{Storage::url('imagenesInstrucciones/fotoperfil.jpg')}}" alt='foto'>
                                                     </div>
                                                     <div class='min-w-0'>
                                                         <p class='text-sm font-semibold truncate'>Comunidad</p>
@@ -664,6 +684,7 @@
                     administrador del sistema. En caso de que esté logueado podrá observar que su email ya viene por
                     defecto.
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion15/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p>
                     En la parte inferior verá dos botones, si ha introducido en todos los campos los datos correctamente al
                     pulsar en
@@ -699,6 +720,7 @@
                     En esta vista se pueden hacer diversas acciones, desde modificar el perfil del usuario hasta realizar
                     una autenticación en dos pasos del usuario como s muestra en la imagen:
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion16/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p>
                     En el primer apartado se puede cambiar la información del perfil del usuario registrado, tales como la
                     foto
@@ -716,15 +738,15 @@
             <div class="pb-2 text-left mx-3">
                 <p>
                     Para poder acceder a este apartado debes pinchar en el icono:
-                    <i class="fa-solid fa-user-group"></i>
+                    <i class="fa-solid fa-children"></i>
                 </p>
                 <p>
                     Una vez accedes a este apartado se mostrará una lista de todos los usuarios de la página que son tus
                     amigos.
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion17/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p>
-                    En la parte derecha se visualizarán diferentes iconos, los cuales te permiten realizar diferentes
-                    acciones:
+                    En la parte derecha se visualizarán diferentes iconos, uno es para dejar de ser amigos y el otro es para chatear con este.
                 </p>
             </div>
         </div>
@@ -743,9 +765,11 @@
                 <p>
                     Si tienes el modo oscuro aparece: <i class="fa-regular fa-moon ml-1"></i>
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion18/captura02.jpg')}}" alt="logo" class="ml-6 rounded-lg my-2">
                 <p>
                     Si tienes el modo claro aparece: <i class="fa-regular fa-sun ml-1"></i>
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion18/captura01.jpg')}}" alt="logo" class="ml-6 rounded-lg my-2">
             </div>
         </div>
         <div id="seccion19" class="h-24"></div>
@@ -763,6 +787,7 @@
                 <p>
                     Este apartado te permitirá ver las publicaciones a las que el usuario registrado le ha dado like.
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion19/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
             </div>
         </div>
         <div id="seccion20" class="h-24"></div>
@@ -780,6 +805,7 @@
                 <p>
                     Este apartado te permitirá ver las publicaciones a las que el usuario registrado le ha dado save.
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion20/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
             </div>
         </div>
         <div id="seccion21" class="h-24"></div>
@@ -792,13 +818,14 @@
             <div class="pb-2 text-left mx-3">
                 <p>
                     Para poder acceder a este apartado debes pinchar en donde pone 'login', situado a la derecha en la barra
-                    de navegación:
+                    de navegación.
                 </p>
                 <p>
                     Lo que se mostrará por pantalla es un formulario muy básico que te pedirá el email y la contraseña que
                     has introducido cuando te registraste.
                     Si te has registrado con google la contraseña será la de tu correo.
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion21/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p>
                     En este formulario podrás observar el icono de google, el cual si lo pulsas podrás acceder a la página
                     con tu cuenta de google sin preocuparte en registrarte primero, ya que te registras de forma automática.
@@ -820,12 +847,13 @@
             <div class="pb-2 text-left mx-3">
                 <p>
                     Para poder acceder a este apartado debes pinchar en donde pone 'register', situado a la derecha en la
-                    barra de navegación:
+                    barra de navegación.
                 </p>
                 <p>
                     Lo que se mostrará por pantalla es un formulario muy básico que te pedirá el nombre de usuario, el email
                     y la contraseña que quieras para la cuenta.
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion22/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p>
                     En este formulario podrás observar el icono de google, el cual si lo pulsas podrás acceder a la página
                     con tu cuenta de google.
@@ -852,6 +880,7 @@
             <p class="text-2xl py-3">VERIFICACIÓN DE CORREO</p>
             <div class="pb-2 text-left mx-3">
                 <p>Esta verificación se realiza cuando un usuario se registra en la página.</p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion23/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p>
                     El motivo de esta verificación es por temas de seguridad, para que no suplanten la identidad de otra
                     persona en la página.
@@ -862,6 +891,7 @@
                     la página.
                 </p>
                 <p>El correo que llegará es de la siguiente manera:</p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion23/captura02.jpg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p>Al verificar el correo este te llevará a la página con todos los permisos ya habilitados.</p>
             </div>
         </div>
@@ -877,6 +907,7 @@
                     Cuando quieras ver una publicación te verás en esta vista, la cual muestra con detalle toda la
                     información de la publicación que has seleccionado.
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion24/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p>
                     Muestra la imagen de la publicación junto a la información de esta, como quien la ha creado, la
                     descripción...
@@ -907,6 +938,7 @@
                     Cuando quieras ver una comunidad te verás en esta vista, la cual muestra con detalle toda la
                     información de la comunidad que has seleccionado.
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion25/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p>
                     Muestra la imagen de la comunidad junto a la información de esta, como quien la ha creado, la
                     descripción...
@@ -942,8 +974,9 @@
                     solo que en esta vista lo que se mostrará es el perfil de otro usuario, mostrando primero la foto del
                     usuario, el nombre y otras cosas:
                 </p>
+                <img src="{{Storage::url('imagenesInstrucciones/seccion26/captura01.jpeg')}}" alt="logo" class="mx-auto rounded-lg my-2">
                 <p>
-                    Los iconos de redes sociales te permiten compartir el perfil de usuario en estas redes sociales:
+                    Los iconos de redes sociales te permiten compartir el perfil de usuario en las redes sociales.
                 </p>
                 <p class="mb-2">
                     Posteriormente encontrarás un buscador que te permite encontrar las publicaciones mediante el nombre de

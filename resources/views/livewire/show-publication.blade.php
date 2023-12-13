@@ -108,7 +108,7 @@
                         </span>
                     </div>
                     @if ($publicacion->comunidad == 'SI')
-                        <div class="my-5 mx-5">Autor:
+                        <div class="my-5 mx-5">Comunidad:
                             <span @class([
                                 'rounded-xl cursor-pointer',
                                 'bg-gray-500 py-1 px-2' => auth()->check() && auth()->user()->temaoscuro,

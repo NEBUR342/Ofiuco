@@ -22,6 +22,7 @@ class ShowPublicationssaves extends Component {
 
     public function render() {
         $user = User::where('id', $this->usuario->id)->first();
+        if(!auth()->user()->is_admin && auth()->user()->id!=$user->id) abort(404);
         // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".
         // Considero que es una forma mas segura que introducir directamente los nombre de las columnas de las tablas.
         if (auth()->user()->is_admin) {

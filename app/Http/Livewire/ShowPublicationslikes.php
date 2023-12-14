@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Livewire;
 
-use App\Models\{Community, Like, Publication, User, Tag};
+use App\Models\{Community, Like, Publication, User, Tag, Follow};
 use Livewire\{Component, WithPagination};
 
 class ShowPublicationslikes extends Component {
@@ -21,6 +21,8 @@ class ShowPublicationslikes extends Component {
 
     public function render() {
         $user = User::where('id', $this->usuario->id)->first();
+        $follow = Follow::where('seguido_id', $user->id)->where('seguidor_id', auth()->user()->id)->where('aceptado','SI')->first();
+        if(!auth()->user()->is_admin && auth()->user()->id!=$user->id && ($follow==null || $follow->aceptado=='NO') && $user->privado) abort(404);
         $comunidades = $user->communities;
         // if (!auth()->user()->is_admin && $user->id != auth()->user()->id) abort(404);
         // Uso este metodo para evitar que me introduzcan campos indevidos desde el "inspeccionar".

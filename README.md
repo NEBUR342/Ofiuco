@@ -29,6 +29,12 @@ Por ejemplo, otros derechos como publicidad, privacidad o derechos morales puede
 Rubén Álvarez Fernández.
 Desarrollador de aplicaciones web.
 
+## Herramientas usadas
++ Laravel
++ Tailwind
++ Docker (base de datos)
++ AWS (despliegue de la aplicacion)
+
 ## Descargarlo
 + Empiezas introduciendo en la terminal:
 

@@ -29,7 +29,7 @@ Por ejemplo, otros derechos como publicidad, privacidad o derechos morales puede
 Rubén Álvarez Fernández.
 Desarrollador de aplicaciones web.
 
-## Descargarlo:
+## Descargarlo
 + Empiezas introduciendo en la terminal:
    git clone https://github.com/NEBUR342/Ofiuco.git
 + Creas la base de datos y un usuario (si es necesario) y le das permisos al usuario para modificar la base de datos.

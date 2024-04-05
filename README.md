@@ -26,4 +26,16 @@ Bajo los siguientes términos:
 Por ejemplo, otros derechos como publicidad, privacidad o derechos morales pueden limitar la forma en que utiliza el material.
 
 ## Autor :boy:
-Rubén Álvarez Fernández. Estudiante de 2ºDAW en I.E.S. AlAndalus.
+Rubén Álvarez Fernández.
+Desarrollador de aplicaciones web.
+
+## Descargarlo:
++ Empiezas introduciendo en la terminal:
+   git clone https://github.com/NEBUR342/Ofiuco.git
++ Creas la base de datos y un usuario (si es necesario) y le das permisos al usuario para modificar la base de datos.
++ Cambias los datos en el fichero .env.
++ Introduces en la terminal:
+   composer update
++ Para inicializarlo hay que hacer en la terminal:
+   npm run dev
+   php artisan serve

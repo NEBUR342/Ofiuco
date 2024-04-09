@@ -27,6 +27,7 @@ Por ejemplo, otros derechos como publicidad, privacidad o derechos morales puede
 
 ## Autor :boy:
 Rubén Álvarez Fernández.
+
 Desarrollador de aplicaciones web.
 
 ## Herramientas usadas

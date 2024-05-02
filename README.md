@@ -3,7 +3,7 @@
 ## Sobre Ofiuco
 
 Ofiuco es una aplicación diseñada para la gente que se dedica a la fotografía, pues en esta red social encontrarás a gente interesada en este campo.
-En esta podrás encontrar diversas funcioones:
+En esta podrás encontrar diversas funciones:
 
 - Subir publicaciones.
 - Crear y pertenecer a comunidades.
